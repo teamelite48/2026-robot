@@ -188,15 +188,6 @@ public class DriveSubsystem extends SubsystemBase{
 
         var rotation = 0.0;
 
-        if (RobotContainer.rearVisionSubsystem.hasTarget() == false) {
-            if ((Math.abs(x) > 0.0 || Math.abs(y) > 0.0)) {
-                rotation = movingRoationPidController.calculate(rotationError, 0.0);
-            }
-            else {
-                rotation = (ROTATION_BREAKAWAY_OUTPUT * (rotationError >= 0 ? -1 : 1)) + standingRoationPidController.calculate(rotationError, 0.0);
-            }
-        }
-
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             yLimiter.calculate(y * speedModifier) * MAX_METERS_PER_SECOND,
             xLimiter.calculate(x * speedModifier) * MAX_METERS_PER_SECOND,

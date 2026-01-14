@@ -20,7 +20,6 @@ public class SeekTargetCommand extends Command {
 
   @Override
   public void initialize() {
-    visionSubsystem = RobotContainer.rearVisionSubsystem;
     visionSubsystem.startTracking(VisionTarget.ReefApriltag);
   }
 

@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import static frc.robot.subsystems.drive.DriveConfig.*;
@@ -65,7 +66,7 @@ public class SparkMaxAngleController {
         sparkMaxConfig.closedLoop.pid(1.0, 0.0, 0.0);
         sparkMaxConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-        motorController.configure(sparkMaxConfig, ResetMode.kResetSafeParameters, null); // TODO: null, null, wat?
+        motorController.configure(sparkMaxConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // TODO: null, null, wat?
     }
 
     // Just about most of the time the motor encoder doesn't initialize properly, so we force it until it do
