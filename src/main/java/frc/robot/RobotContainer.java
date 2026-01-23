@@ -16,12 +16,13 @@ import frc.robot.RobotConfig.GamePiece;
 import frc.robot.RobotConfig.VisionTrackingMode;
 import frc.robot.commands.Robot.RobotCommands;
 import frc.robot.controls.DualShock4Controller;
-import frc.robot.subsystems.climber.ClimberCommands;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem.Gear;
 import frc.robot.subsystems.led.LedSubsystem;
+import frc.robot.subsystems.turret.TurretCommands;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class RobotContainer {
@@ -45,6 +46,7 @@ public class RobotContainer {
   public static boolean isWristFlippable = false;
 
   public static CameraServer camera;
+  public static TurretSubsystem turretSubsystem;
 
   public RobotContainer() {
 
@@ -78,7 +80,10 @@ public class RobotContainer {
   }
 
   private void bindTestControls() {
-
+    testController.left
+      .whileTrue(TurretCommands.RotateTurretCounterClockwise());
+    testController.right
+      .whileTrue(TurretCommands.RotateTurretClockwise());
   }
 
   public static SendableChooser<Command> initAutoChooser() {
