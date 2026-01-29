@@ -53,11 +53,11 @@ public class TurretSubsystem extends SubsystemBase {
       camMode.setNumber(1);
     }
 
-    SmartDashboard.putNumber("Turret Degrees", getPositionInDegrees());
-    SmartDashboard.putNumber("Turret tx", tx.getDouble(0.0));
-    SmartDashboard.putBoolean("Auto Aim Enabled", isAutoAimEnabled);
-    SmartDashboard.putBoolean("Auto Aim On", isAutoAimOn);
-    SmartDashboard.putBoolean("Target Acquired", isTargetAcquired());
+    // SmartDashboard.putNumber("Turret Degrees", getPositionInDegrees());
+    // SmartDashboard.putNumber("Turret tx", tx.getDouble(0.0));
+    // SmartDashboard.putBoolean("Auto Aim Enabled", isAutoAimEnabled);
+    // SmartDashboard.putBoolean("Auto Aim On", isAutoAimOn);
+    // SmartDashboard.putBoolean("Target Acquired", isTargetAcquired());
   }
 
   public void simulationPeriodic() {

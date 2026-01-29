@@ -28,7 +28,7 @@ public class TurretConfig {
 
     public static MotorConfig getMotorConfig() {
 
-        var config = new MotorConfig(17);
+        var config = new MotorConfig(20);
 
         config.isInverted = true;
         config.positionConversionFactor = (1.0/40.0) * 360.0;

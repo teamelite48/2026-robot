@@ -31,8 +31,6 @@ public class RobotContainer {
   DualShock4Controller copilotController = new DualShock4Controller(1);
   DualShock4Controller testController = new DualShock4Controller(2);
 
-
-
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   // public static VisionSubsystem rearVisionSubsystem = new VisionSubsystem("limelight-rear");
   // public static VisionSubsystem frontVisionSubsystem = new VisionSubsystem("limelight-front");
@@ -98,7 +96,7 @@ public class RobotContainer {
   }
 
   public void initDashboard() {
-    // var robotContainerTab = Shuffleboard.getTab("Robot Container");
+    var robotContainerTab = Shuffleboard.getTab("Robot Container");
 
     // robotContainerTab.addString("Game Piece Mode", () -> gamePieceMode.toString())
     //   .withPosition(0, 0)
