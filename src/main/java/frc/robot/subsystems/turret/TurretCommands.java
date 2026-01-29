@@ -19,6 +19,10 @@ public class TurretCommands {
     return Commands.run(() -> turretSubsystem.rotateCounterClockwise(), turretSubsystem);
   }
 
+  public static Command stop() {
+    return Commands.run(() -> turretSubsystem.stop(), turretSubsystem);
+  }
+
   // @Override
   // public boolean isFinished() {
   //   return false;

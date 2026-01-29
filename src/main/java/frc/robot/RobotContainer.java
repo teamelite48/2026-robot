@@ -16,6 +16,7 @@ import frc.robot.RobotConfig.GamePiece;
 import frc.robot.RobotConfig.VisionTrackingMode;
 import frc.robot.commands.Robot.RobotCommands;
 import frc.robot.controls.DualShock4Controller;
+import frc.robot.subsystems.climber.ClimberCommands;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -44,7 +45,7 @@ public class RobotContainer {
   public static boolean isWristFlippable = false;
 
   public static CameraServer camera;
-  public static TurretSubsystem turretSubsystem;
+  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
 
   public RobotContainer() {
 
@@ -79,9 +80,11 @@ public class RobotContainer {
 
   private void bindTestControls() {
     testController.left
-      .whileTrue(TurretCommands.RotateTurretCounterClockwise());
+      .whileTrue(TurretCommands.RotateTurretCounterClockwise())
+      .onFalse(TurretCommands.stop());
     testController.right
-      .whileTrue(TurretCommands.RotateTurretClockwise());
+      .whileTrue(TurretCommands.RotateTurretClockwise())
+      .onFalse(TurretCommands.stop());
   }
 
   public static SendableChooser<Command> initAutoChooser() {
