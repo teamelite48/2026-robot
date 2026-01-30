@@ -20,10 +20,10 @@ public class VisionSubsystem extends SubsystemBase {
 
   public enum VisionTarget {
 
-    ReefApriltag(0, REEF_APRILTAG_HEIGHT_INCHES),
-    LoadStationAprilTag(0, LOAD_STATION_APRILTAG_HEIGHT_INCHES),
-    BargeAprilTag(0, BARGE_APRILTAG_HEIGHT_INCHES),
-    ProcessorAprilTag(0, PROCESSOR_APRILTAG_HEIGHT_INCHES);
+    HubApriltag(0, HUB_APRILTAG_HEIGHT_INCHES);
+    // LoadStationAprilTag(0, LOAD_STATION_APRILTAG_HEIGHT_INCHES),
+    // BargeAprilTag(0, BARGE_APRILTAG_HEIGHT_INCHES),
+    // ProcessorAprilTag(0, PROCESSOR_APRILTAG_HEIGHT_INCHES);
 
     public final int pipelineId;
     public final double heightInInches;
@@ -48,8 +48,9 @@ public class VisionSubsystem extends SubsystemBase {
   private boolean isTracking = false;
   private double feetFromTarget;
 
-
   public VisionSubsystem(String limelightName) {
+    // stopTracking();
+    
     final NetworkTable table = NetworkTableInstance.getDefault().getTable(limelightName);
 
     this.tid = table.getEntry("tid");
@@ -59,7 +60,7 @@ public class VisionSubsystem extends SubsystemBase {
     this.ledMode = table.getEntry("ledMode");
     this.pipeline = table.getEntry("pipeline");
     this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
-
+    
     enableLed(false);
     initDashboard(limelightName);
   }

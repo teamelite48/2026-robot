@@ -33,13 +33,14 @@ public class RobotContainer {
   DualShock4Controller testController = new DualShock4Controller(2);
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // public static VisionSubsystem rearVisionSubsystem = new VisionSubsystem("limelight-rear");
-  // public static VisionSubsystem frontVisionSubsystem = new VisionSubsystem("limelight-front");
+  // public static VisionSubsystem collectorVisionSubsystem = new VisionSubsystem("limelight-collector");         // This is Limelight hostname
+  public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-shooter");  // This is Limelight hostname
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   public static ClimberSubsystem climberSubsytem = new ClimberSubsystem();
   
   private final SendableChooser<Command> autoChooser;
 
+  public static boolean isAimAssistEnabled = true;
   public static GamePiece gamePieceMode = GamePiece.Coral;
   public static VisionTrackingMode visionTrackingMode = VisionTrackingMode.Rear;
   public static boolean isWristFlippable = false;
@@ -61,6 +62,10 @@ public class RobotContainer {
     bindTestControls();
 
     initDashboard();
+  }
+
+  public static boolean getIsAimAssistEnabled() {
+    return isAimAssistEnabled;
   }
 
   public Command getAutonomousCommand() {
@@ -85,13 +90,14 @@ public class RobotContainer {
     testController.right
       .whileTrue(TurretCommands.RotateTurretClockwise())
       .onFalse(TurretCommands.stop());
+    
+    testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
   }
 
   public static SendableChooser<Command> initAutoChooser() {
 
     NamedCommands.registerCommand("Seek Target", DriveCommands.seekTarget());
     
-
     var autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -120,5 +126,6 @@ public class RobotContainer {
     // robotContainerTab.addBoolean("Is Wrist Flippable", () -> RobotContainer.isWristFlippable)
     //   .withPosition(4, 0)
     //   .withSize(1, 1);
+    robotContainerTab.addBoolean("Aim Assist", () -> RobotContainer.isAimAssistEnabled);
   }
 }
