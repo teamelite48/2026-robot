@@ -2,32 +2,31 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.drive.components;
+package frc.robot.components.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.components.controllers.angle.lib.AngleController;
+import frc.robot.components.controllers.drive.lib.DriveController;
+import frc.robot.components.swerve.lib.SwerveConfig;
 
+import static frc.robot.components.swerve.lib.SwerveMath.*;
 import static frc.robot.subsystems.drive.DriveConfig.*;
-import static frc.robot.subsystems.drive.lib.SwerveMath.*;
 
 public class SwerveModule {
 
+    final SwerveConfig config;
     private final DriveController driveController;
-    private final SparkMaxAngleController angleController;
+    private final AngleController angleController;
 
-    public SwerveModule(
-        int driveMotorId,
-        int angleMotorId,
-        int absoluteEncoderId,
-        double angleOffsetDegrees
-    ) {
-        driveController = new DriveController(driveMotorId);
-        angleController = new SparkMaxAngleController(angleMotorId, absoluteEncoderId, angleOffsetDegrees);
-
-        initDashboard(driveMotorId);
+    public SwerveModule(SwerveConfig swerveConfig, DriveController driveController, AngleController angleController) {
+        this.config = swerveConfig;
+        this.driveController = driveController;
+        this.angleController = angleController;
+        initDashboard(driveController.getCanBusId());
     }
 
     public void init() {
@@ -86,19 +85,19 @@ public class SwerveModule {
         var columnIndex = 0;
 
         switch (driveMotorId) {
-            case FRONT_LEFT_DRIVE_MOTOR_ID:
+            case FRONT_LEFT_DRIVE_CAN_ID:
                 title = "Front Left";
                 columnIndex = 0;
                 break;
-            case FRONT_RIGHT_DRIVE_MOTOR_ID:
+            case FRONT_RIGHT_DRIVE_CAN_ID:
                 title = "Front Right";
                 columnIndex = 2;
                 break;
-            case BACK_LEFT_DRIVE_MOTOR_ID:
+            case REAR_LEFT_DRIVE_CAN_ID:
                 title = "Back Left";
                 columnIndex = 4;
                 break;
-            case BACK_RIGHT_DRIVE_MOTOR_ID:
+            case REAR_RIGHT_DRIVE_CAN_ID:
                 title = "Back Right";
                 columnIndex = 6;
                 break;

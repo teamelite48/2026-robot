@@ -1,65 +1,106 @@
 package frc.robot.subsystems.drive;
 
-import com.ctre.phoenix6.signals.SensorDirectionValue;
-
+import frc.robot.components.controllers.angle.lib.AngleControllerConfig;
+import frc.robot.components.motors.lib.MotorConfig;
+import frc.robot.components.swerve.lib.SwerveConfig;
 import frc.robot.lib.PIDParameters;
 
 public class DriveConfig {
 
-    public static final double STRAFE_SPEED = 0.1;
-
     public static final int GYRO_ID = 5;
+    public static final boolean IS_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean IS_DRIVE_BRAKE_MODE_ENABLED = true;
 
-    public static final int FRONT_LEFT_DRIVE_MOTOR_ID = 21;
-    public static final int FRONT_LEFT_ANGLE_MOTOR_ID = 22;
-    public static final int FRONT_LEFT_ANGLE_ENCODER_ID = 31;
-    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES =  356.31 + 180.0; //175.16; //182.54; //176.57;
+    // Set offset using values from Elastic; always start with 0.0 & wheels straight when configuring
+    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES =  0.0;
+    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 0.0;
+    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 0.0;
+    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 0.0;
 
-    public static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 23;
-    public static final int FRONT_RIGHT_ANGLE_MOTOR_ID = 24;
-    public static final int FRONT_RIGHT_ANGLE_ENCODER_ID = 33;
-    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 75.85 + 180.0; //255.41; //80.85 + 180.0;
+    // Can remove if different solution in SwerveModule.java initDashboard()
+    public static final int FRONT_LEFT_DRIVE_CAN_ID = 21;
+    public static final int FRONT_RIGHT_DRIVE_CAN_ID = 23;
+    public static final int REAR_LEFT_DRIVE_CAN_ID = 25;
+    public static final int REAR_RIGHT_DRIVE_CAN_ID = 27;
 
-    public static final int BACK_LEFT_DRIVE_MOTOR_ID = 25;
-    public static final int BACK_LEFT_ANGLE_MOTOR_ID = 26;
-    public static final int BACK_LEFT_ANGLE_ENCODER_ID = 35;
-    public static final double BACK_LEFT_ANGLE_OFFSET_DEGREES = 47.55 + 180.0; //46.75 + 180.0; //47.37 + 180.0;  //227.72;
 
-    public static final int BACK_RIGHT_DRIVE_MOTOR_ID = 27;
-    public static final int BACK_RIGHT_ANGLE_MOTOR_ID = 28;
-    public static final int BACK_RIGHT_ANGLE_ENCODER_ID = 37;
-    public static final double BACK_RIGHT_ANGLE_OFFSET_DEGREES = 96.15 + 180.0; //98.17 + 180.0; //96.85 + 180.0;
+    public static SwerveConfig getSwerveConfig() {
+        var config = new SwerveConfig();
+        config.wheelDiameter = 0.10033;
+        config.trackWidthMeters = 0.5588;
+        config.wheelbaseMeters = 0.6858;
+        config.maxMetersPerSecond = 5.334;
+        config.isAngleMotorInverted = false;
+        config.driveMotorReduction = (1.0 / 6.0);
+        config.angleMotorReduction = (1.0 / 25.0);
+        config.movingRotationPid = new PIDParameters(0.005, 0.0001, 0);
+        config.standingRotationPid = new PIDParameters(0.01, 0.01, 0.0);
+        return config;
+    }
 
-    public static final double MAX_OUTPUT = 1.0;
-    public static final double LOW_GEAR_SPEED = MAX_OUTPUT / 2.0;
-    public static final double SLEW_RATE = 2.0;
 
-    public static final double WHEEL_DIAMETER = 0.10033;
-    public static final double TRACKWIDTH_METERS = 0.5588;
-    public static final double WHEELBASE_METERS = 0.6858;
+    public static AngleControllerConfig getAngleControllerConfigLeftFrontAngle() {
+        var config = new AngleControllerConfig(22, 31);
+        config.angleOffsetDegrees = FRONT_LEFT_ANGLE_OFFSET_DEGREES;
+        return config;
+    }
 
-    public static final double MAX_METERS_PER_SECOND = 5.334;
-    public static final double MAX_ANGULAR_METERS_PER_SECOND = MAX_METERS_PER_SECOND / Math.hypot(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0);
+    public static AngleControllerConfig getAngleControllerConfigRightFrontAngle() {
+        var config = new AngleControllerConfig(24, 33);
+        config.angleOffsetDegrees = FRONT_RIGHT_ANGLE_OFFSET_DEGREES;
+        return config;
+    }
 
-    public static final double NOMINAL_VOLTAGE = 12.0;
-    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 55;
-    public static final int ANGLE_MOTOR_CURRENT_LIMIT = 30;
+    public static AngleControllerConfig getAngleControllerConfigLeftRearAngle() {
+        var config = new AngleControllerConfig(26, 35);
+        config.angleOffsetDegrees = REAR_LEFT_ANGLE_OFFSET_DEGREES;
+        return config;
+    }
 
-    public static final boolean IS_INVERTED = true;
-    public static final SensorDirectionValue ANGLE_MOTOR_ABSOLUTE_ENCODER_INVERSION =  SensorDirectionValue.CounterClockwise_Positive;
-    public static final boolean ANGLE_MOTOR_INVERTED = false;
+    public static AngleControllerConfig getAngleControllerConfigRightRearAngle() {
+        var config = new AngleControllerConfig(28, 37);
+        config.angleOffsetDegrees = REAR_RIGHT_ANGLE_OFFSET_DEGREES;
+        return config;
+    }
 
-    public static final double DRIVE_MOTOR_REDUCTION = (1.0 / 6.0); //(14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 45.0);
-    public static final double ANGLE_MOTOR_REDUCTION = (1.0 / 25.0); //(14.0 / 50.0) * (10.0 / 60.0);
 
-    public final static double DRIVE_POSITION_TO_METERS_CONVERSION_FACTOR = Math.PI * WHEEL_DIAMETER * DRIVE_MOTOR_REDUCTION;
-    public final static double ANGLE_POSITION_TO_RADIANS_CONVERSION_FACTOR = 2.0 * Math.PI * ANGLE_MOTOR_REDUCTION;
+    public static MotorConfig getDriveControllerConfigLeftFrontDrive() {
+        var config = new MotorConfig(FRONT_LEFT_DRIVE_CAN_ID);
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
+        config.positionConversionFactor = getSwerveConfig().drivePositionToMetersConversionFactor;
+        config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
+        config.initialPosition = 0.0;
+        return config;
+    }
 
-    public static final int ENCODER_RESET_ITERATIONS = 500;
-    public static final double ENCODER_RESET_MAX_ANGULAR_VELOCITY = Math.toRadians(0.5);
+    public static MotorConfig getDriveControllerConfigRightFrontDrive() {
+        var config = new MotorConfig(FRONT_RIGHT_DRIVE_CAN_ID);
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
+        config.positionConversionFactor = getSwerveConfig().drivePositionToMetersConversionFactor;
+        config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
+        config.initialPosition = 0.0;
+        return config;
+    }
 
-    public static final double ROTATION_BREAKAWAY_OUTPUT = 0.0; //0.05;
-    public static final PIDParameters MOVING_ROTATION_PID = new PIDParameters(0.005, 0.0001, 0);
-    public static final PIDParameters STANDING_ROTATION_PID = new PIDParameters(0.01, 0.01, 0.0);
-    // public static final PIDParameters STANDING_ROTATION_PID = new PIDParameters(0.012, 0.02, 0.0018);
+    public static MotorConfig getDriveControllerConfigLeftRearDrive() {
+        var config = new MotorConfig(REAR_LEFT_DRIVE_CAN_ID);
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
+        config.positionConversionFactor = getSwerveConfig().drivePositionToMetersConversionFactor;
+        config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
+        config.initialPosition = 0.0;
+        return config;
+    }
+
+    public static MotorConfig getDriveControllerConfigRightRearDrive() {
+        var config = new MotorConfig(REAR_RIGHT_DRIVE_CAN_ID);
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
+        config.positionConversionFactor = getSwerveConfig().drivePositionToMetersConversionFactor;
+        config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
+        config.initialPosition = 0.0;
+        return config;
+    }
 }

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive.components;
+package frc.robot.components.controllers.angle;
 
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -10,31 +10,38 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import frc.robot.components.controllers.angle.lib.AngleController;
+import frc.robot.components.controllers.angle.lib.AngleControllerConfig;
+import frc.robot.components.swerve.lib.SwerveConfig;
 
-import static frc.robot.subsystems.drive.DriveConfig.*;
-import static frc.robot.subsystems.drive.lib.SwerveMath.*;
+import static frc.robot.components.swerve.lib.SwerveMath.*;
 
-public class TalonFxAngleController {
+
+public class TalonFxAngleController implements AngleController {
 
     private final TalonFX motorController;
     private final CANcoder absoluteEncoder;
+    private final SwerveConfig swerveConfig;
+    private final AngleControllerConfig angleConfig;
 
     private double targetAngle = 0.0;
     private int resetIteration = 0;
+    private boolean isInitialized = false;
 
-    public TalonFxAngleController(int motorId, int absoluteEncoderId, double offsetDegrees) {
-
-        absoluteEncoder = new CANcoder(absoluteEncoderId);
+    public TalonFxAngleController(SwerveConfig swerveConfig, AngleControllerConfig angleControllerConfig) {
+        this.swerveConfig = swerveConfig;
+        this.angleConfig = angleControllerConfig;
+        this.absoluteEncoder = new CANcoder(angleConfig.absoluteEncoderCanBusId);
 
         var canCoderConfig = new CANcoderConfiguration();
 
         canCoderConfig.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(1.0);
-        canCoderConfig.MagnetSensor.withMagnetOffset(-(offsetDegrees / 360));
+        canCoderConfig.MagnetSensor.withMagnetOffset(-(angleConfig.angleOffsetDegrees / 360));
         canCoderConfig.MagnetSensor.withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
 
         absoluteEncoder.getConfigurator().apply(canCoderConfig);
 
-        motorController = new TalonFX(motorId);
+        motorController = new TalonFX(angleConfig.canBusId);
 
         var talonFxConfig = new TalonFXConfiguration();
 
@@ -43,13 +50,13 @@ public class TalonFxAngleController {
             .withNeutralMode(NeutralModeValue.Brake);
 
         talonFxConfig.Feedback
-            .withSensorToMechanismRatio(ANGLE_POSITION_TO_RADIANS_CONVERSION_FACTOR)
+            .withSensorToMechanismRatio(swerveConfig.anglePositionToRadiansConversionFactor)
             .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
             .withFeedbackRotorOffset(getAbsoluteAngle());
 
         talonFxConfig.CurrentLimits
             .withStatorCurrentLimitEnable(true)
-            .withStatorCurrentLimit(ANGLE_MOTOR_CURRENT_LIMIT);
+            .withStatorCurrentLimit(swerveConfig.angleMotorCurrentLimit);
 
         var slot0Configs = talonFxConfig.Slot0;
 
@@ -61,6 +68,20 @@ public class TalonFxAngleController {
         motorController.getConfigurator().apply(talonFxConfig, 0.05);
     }
 
+    // Just about most of the time the motor encoder doesn't initialize properly, so we force it until it do
+    public void init() {
+
+        if (isInitialized) return;
+
+        var currentAngle = getCurrentAngle();
+        var absoluteAngle = getAbsoluteAngle();
+
+        if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
+            isInitialized = true;
+            return;
+        }
+    }
+
     public void setAngle(double desiredAngle) {
 
         double currentAngle = motorController.getPosition().getValueAsDouble();
@@ -68,8 +89,8 @@ public class TalonFxAngleController {
         // Reset the NEO's encoder periodically when the module is not rotating.
         // Sometimes (~5% of the time) when we initialize, the absolute encoder isn't fully set up, and we don't
         // end up getting a good reading. If we reset periodically this won't matter anymore.
-        if (motorController.getVelocity().getValueAsDouble() < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
-            if (++resetIteration >= ENCODER_RESET_ITERATIONS) {
+        if (motorController.getVelocity().getValueAsDouble() < swerveConfig.encoderResetMaxAngularVelocity) {
+            if (++resetIteration >= swerveConfig.encoderResetIterations) {
                 currentAngle = getAbsoluteAngle();
                 motorController.setPosition(currentAngle);
 
@@ -108,5 +129,9 @@ public class TalonFxAngleController {
     public double getAbsoluteAngle() {
 
         return normalizeAngle(absoluteEncoder.getAbsolutePosition().getValueAsDouble() * TAU);
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
     }
 }

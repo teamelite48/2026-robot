@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive.components;
+package frc.robot.components.controllers.angle;
 
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -8,17 +8,23 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import frc.robot.components.controllers.angle.lib.AngleControllerConfig;
+import frc.robot.components.swerve.lib.SwerveConfig;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
-import static frc.robot.subsystems.drive.DriveConfig.*;
-import static frc.robot.subsystems.drive.lib.SwerveMath.*;
+import static frc.robot.components.swerve.lib.SwerveMath.*;
+
 
 public class SparkMaxAngleController {
 
+    private final SwerveConfig swerveConfig;
+    private final AngleControllerConfig angleConfig;
     private final SparkMax motorController;
     private final SparkClosedLoopController pidController;
     private final RelativeEncoder motorEncoder;
@@ -27,29 +33,32 @@ public class SparkMaxAngleController {
     private double targetAngle = 0.0;
     private boolean isInitialized = false;
 
-    public SparkMaxAngleController(int motorId, int absoluteEncoderId, double offsetDegrees) {
 
-        absoluteEncoder = new CANcoder(absoluteEncoderId);
+    public SparkMaxAngleController(SwerveConfig swerveModuleConfig, AngleControllerConfig angleControllerConfig) {
+
+        this.swerveConfig = swerveModuleConfig;
+        this.angleConfig = angleControllerConfig;
+        this.absoluteEncoder = new CANcoder(angleConfig.absoluteEncoderCanBusId);
 
         var config = new CANcoderConfiguration();
 
         config.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(1.0); // TODO: need to update logic because we no longer have 0 to 360 output. No clue what this means.
-        config.MagnetSensor.withMagnetOffset(-(offsetDegrees / 360));
-        config.MagnetSensor.withSensorDirection(ANGLE_MOTOR_ABSOLUTE_ENCODER_INVERSION);
+        config.MagnetSensor.withMagnetOffset(-(angleConfig.angleOffsetDegrees / 360));
+        config.MagnetSensor.withSensorDirection(swerveConfig.angleMotorAbsolueEncoderInversion);
 
         absoluteEncoder.getConfigurator().apply(config);
 
 
-        motorController = new SparkMax(motorId, MotorType.kBrushless);
+        motorController = new SparkMax(angleConfig.canBusId, MotorType.kBrushless);
         motorEncoder = motorController.getEncoder();
         pidController = motorController.getClosedLoopController();
 
         var sparkMaxConfig = new SparkMaxConfig();
 
-        sparkMaxConfig.voltageCompensation(NOMINAL_VOLTAGE);
-        sparkMaxConfig.smartCurrentLimit(ANGLE_MOTOR_CURRENT_LIMIT);
+        sparkMaxConfig.voltageCompensation(swerveConfig.nominalVoltage);
+        sparkMaxConfig.smartCurrentLimit(swerveConfig.angleMotorCurrentLimit);
 
-        sparkMaxConfig.inverted(ANGLE_MOTOR_INVERTED);
+        sparkMaxConfig.inverted(swerveConfig.isAngleMotorInverted);
 
         // TODO: 2024 => 2025
         // motorController.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus0, 100);
@@ -58,8 +67,8 @@ public class SparkMaxAngleController {
 
         sparkMaxConfig.idleMode(IdleMode.kCoast);
 
-        sparkMaxConfig.encoder.positionConversionFactor(ANGLE_POSITION_TO_RADIANS_CONVERSION_FACTOR);
-        sparkMaxConfig.encoder.velocityConversionFactor(ANGLE_POSITION_TO_RADIANS_CONVERSION_FACTOR / 60.0);
+        sparkMaxConfig.encoder.positionConversionFactor(swerveConfig.anglePositionToRadiansConversionFactor);
+        sparkMaxConfig.encoder.velocityConversionFactor(swerveConfig.anglePositionToRadiansConversionFactor / 60.0);
         motorEncoder.setPosition(getAbsoluteAngle());
 
 

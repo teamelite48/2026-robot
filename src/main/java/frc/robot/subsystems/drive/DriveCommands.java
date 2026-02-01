@@ -22,10 +22,10 @@ public class DriveCommands {
   }
 
   public static Command strafeLeft() {
-    return Commands.run(() -> driveSubsystem.driveRobotRelative(DriveConfig.STRAFE_SPEED, 0), driveSubsystem);
+    return Commands.run(() -> driveSubsystem.driveRobotRelative(driveSubsystem.getStrafeSpeed(), 0), driveSubsystem);
   }
 
   public static Command strafeRight() {
-    return Commands.run(() -> driveSubsystem.driveRobotRelative(-DriveConfig.STRAFE_SPEED, 0), driveSubsystem);
+    return Commands.run(() -> driveSubsystem.driveRobotRelative(-driveSubsystem.getStrafeSpeed(), 0), driveSubsystem);
   }
 }
