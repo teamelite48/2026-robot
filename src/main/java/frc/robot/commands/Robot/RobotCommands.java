@@ -6,17 +6,17 @@ import frc.robot.RobotConfig.GamePiece;
 import frc.robot.RobotContainer;
 
 public class RobotCommands {
-  public static Command ToggleGamePieceMode() {
-    return Commands.runOnce(() -> {
+  // public static Command ToggleGamePieceMode() {
+  //   return Commands.runOnce(() -> {
 
-      if (RobotContainer.gamePieceMode == GamePiece.Algae) {
-        RobotContainer.gamePieceMode = GamePiece.Coral;
-      }
-      else {
-        RobotContainer.gamePieceMode = GamePiece.Algae;
-      }
+  //     if (RobotContainer.gamePieceMode == GamePiece.Algae) {
+  //       RobotContainer.gamePieceMode = GamePiece.Coral;
+  //     }
+  //     else {
+  //       RobotContainer.gamePieceMode = GamePiece.Algae;
+  //     }
 
-      RobotContainer.ledSubsystem.setLedMode(RobotContainer.gamePieceMode.ledMode);
-    });
-  }
+  //     RobotContainer.ledSubsystem.setLedMode(RobotContainer.gamePieceMode.ledMode);
+  //   });
+  // }
 }

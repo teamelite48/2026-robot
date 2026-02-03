@@ -49,6 +49,7 @@ public class VisionSubsystem extends SubsystemBase {
   private double feetFromTarget;
 
   public VisionSubsystem(String limelightName) {
+    // limielightName = hostname in Limelight settings
     // stopTracking();
     
     final NetworkTable table = NetworkTableInstance.getDefault().getTable(limelightName);

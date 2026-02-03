@@ -33,20 +33,21 @@ public class RobotContainer {
   DualShock4Controller testController = new DualShock4Controller(2);
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // public static VisionSubsystem collectorVisionSubsystem = new VisionSubsystem("limelight-collector");         // This is Limelight hostname
-  public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-shooter");  // This is Limelight hostname
+  // public static VisionSubsystem collectorVisionSubsystem = new VisionSubsystem("limelight-collector");
+  public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-shooter");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   public static ClimberSubsystem climberSubsytem = new ClimberSubsystem();
-  
+  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+
   private final SendableChooser<Command> autoChooser;
 
   public static boolean isAimAssistEnabled = true;
-  public static GamePiece gamePieceMode = GamePiece.Coral;
+  //public static GamePiece gamePieceMode = GamePiece.Coral;
   public static VisionTrackingMode visionTrackingMode = VisionTrackingMode.Rear;
-  public static boolean isWristFlippable = false;
+  //public static boolean isWristFlippable = false;
 
   public static CameraServer camera;
-  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+  
 
   public RobotContainer() {
 
