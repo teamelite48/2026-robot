@@ -44,7 +44,7 @@ public class SparkMaxAngleController {
 
         config.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(1.0); // TODO: need to update logic because we no longer have 0 to 360 output. No clue what this means.
         config.MagnetSensor.withMagnetOffset(-(angleConfig.angleOffsetDegrees / 360));
-        config.MagnetSensor.withSensorDirection(swerveConfig.angleMotorAbsolueEncoderInversion);
+        config.MagnetSensor.withSensorDirection(swerveConfig.angleMotorAbsoluteEncoderInversion);
 
         absoluteEncoder.getConfigurator().apply(config);
 

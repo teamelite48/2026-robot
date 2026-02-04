@@ -28,8 +28,8 @@ public class TalonFxAngleController implements AngleController {
     private int resetIteration = 0;
     private boolean isInitialized = false;
 
-    public TalonFxAngleController(SwerveConfig swerveConfig, AngleControllerConfig angleControllerConfig) {
-        this.swerveConfig = swerveConfig;
+    public TalonFxAngleController(SwerveConfig swerveConfigs, AngleControllerConfig angleControllerConfig) {
+        this.swerveConfig = swerveConfigs;
         this.angleConfig = angleControllerConfig;
         this.absoluteEncoder = new CANcoder(angleConfig.absoluteEncoderCanBusId);
 

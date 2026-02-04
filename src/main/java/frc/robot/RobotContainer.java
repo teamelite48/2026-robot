@@ -68,7 +68,7 @@ public class RobotContainer {
   public static boolean getIsAimAssistEnabled() {
     return isAimAssistEnabled;
   }
-
+ 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
@@ -76,8 +76,15 @@ public class RobotContainer {
   private void bindPilotControls() {
     pilotController.ps.onTrue(new InstantCommand(() -> driveSubsystem.zeroGyro(), driveSubsystem));
 
-    
+    // pilotController.touchpad
+    //   .onTrue(Commands.either(
+    //     Commands.runOnce(() -> driveSubsystem.setHighGear(), driveSubsystem),
+    //     Commands.runOnce(() -> driveSubsystem.setLowGear(), driveSubsystem),
+    //     () -> driveSubsystem.getGear() == Gear.Low));
+
   }
+
+  
 
   private void bindCopilotControls() {
 

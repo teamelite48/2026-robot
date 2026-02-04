@@ -11,11 +11,11 @@ public class DriveConfig {
     public static final boolean IS_DRIVE_MOTOR_INVERTED = true;
     public static final boolean IS_DRIVE_BRAKE_MODE_ENABLED = true;
 
-    // Set offset using values from Elastic; always start with 0.0 & wheels straight when configuring
-    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES =  0.0;
-    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 0.0;
-    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 0.0;
-    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 0.0;
+    // Set offset using Absolute Angle values from Elastic; always start with 0.0 & wheels straight when configuring.
+    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES = 65.30;
+    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 17.49;
+    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 325.46;
+    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 130.86;
 
     // Can remove if different solution in SwerveModule.java initDashboard()
     public static final int FRONT_LEFT_DRIVE_CAN_ID = 21;
@@ -26,13 +26,13 @@ public class DriveConfig {
 
     public static SwerveConfig getSwerveConfig() {
         var config = new SwerveConfig();
-        config.wheelDiameter = 0.10033;
-        config.trackWidthMeters = 0.5588;
-        config.wheelbaseMeters = 0.6858;
-        config.maxMetersPerSecond = 5.334;
+        config.wheelDiameterMeters = 0.10033;
+        config.trackWidthMeters = 0.47625;
+        config.wheelbaseMeters = 0.61595;
+        config.maxMetersPerSecond = 5.193792;  // with_foc=16.08f/s=4.901184m/s; without_foc=17.4f/s=5.193792m/s
         config.isAngleMotorInverted = false;
-        config.driveMotorReduction = (1.0 / 6.0);
-        config.angleMotorReduction = (1.0 / 25.0);
+        config.driveMotorReduction = (1.0 / 6.03);
+        config.angleMotorReduction = (1.0 / 26.0);
         config.movingRotationPid = new PIDParameters(0.005, 0.0001, 0);
         config.standingRotationPid = new PIDParameters(0.01, 0.01, 0.0);
         return config;

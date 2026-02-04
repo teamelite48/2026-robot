@@ -117,7 +117,7 @@ public class SwerveModule {
 
         layout.addDouble("Absolute Angle", () -> Math.toDegrees(angleController.getAbsoluteAngle())).withPosition(0, 2);
 
-        layout.addDouble("Position", () -> driveController.getCurrentPosition()).withPosition(0,3);
+        // layout.addDouble("Position", () -> driveController.getCurrentPosition()).withPosition(0,3);
 
         layout.addBoolean("Is Initialized", () -> angleController.isInitialized()).withPosition(0, 4);
     }

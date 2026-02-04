@@ -1,7 +1,7 @@
 package frc.robot.components.motors.lib;
 
 public interface Motor {
-    public double  getPosition();
+    public double getPosition();
     public double getVelocity();
     public void setPosition(double position);
     public void setSpeed(double speed);
