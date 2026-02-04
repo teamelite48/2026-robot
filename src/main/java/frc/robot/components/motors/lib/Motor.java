@@ -8,4 +8,5 @@ public interface Motor {
     public void setVoltage(double d);
     public void stop();
     public void setInitialPosition();
+    public void setInitialPosition(double position);
 }

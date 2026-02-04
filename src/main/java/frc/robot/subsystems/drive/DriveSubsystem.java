@@ -80,10 +80,10 @@ public class DriveSubsystem extends SubsystemBase{
         // movingRoationPidController = new PIDController(swerveConfig.movingRotationPid.P, swerveConfig.movingRotationPid.I, swerveConfig.movingRotationPid.D);
         // standingRoationPidController = new PIDController(swerveConfig.standingRotationPid.P, swerveConfig.standingRotationPid.I, swerveConfig.standingRotationPid.D);
 
-        frontLeftAngle = new TalonFxAngleController(swerveConfig, getAngleControllerConfigLeftFrontAngle());
-        frontRightAngle = new TalonFxAngleController(swerveConfig, getAngleControllerConfigRightFrontAngle());
-        backLeftAngle = new TalonFxAngleController(swerveConfig, getAngleControllerConfigLeftRearAngle());
-        backRightAngle = new TalonFxAngleController(swerveConfig, getAngleControllerConfigRightRearAngle());
+        frontLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftFrontAngle(), getAbsEncoderConfigLeftFront());
+        frontRightAngle = new TalonFxAngleController(getAngleControllerConfigRightFrontAngle(), getAbsEncoderConfigRightFront());
+        backLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftRearAngle(), getAbsEncoderConfigLeftRear());
+        backRightAngle = new TalonFxAngleController(getAngleControllerConfigRightRearAngle(), getAbsEncoderConfigRightRear());
 
         frontLeftDrive = new TalonFxDriveController(swerveConfig, getDriveControllerConfigLeftFrontDrive());
         frontRightDrive = new TalonFxDriveController(swerveConfig, getDriveControllerConfigRightFrontDrive());

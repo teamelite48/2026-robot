@@ -20,7 +20,7 @@ public class CanCoder implements AbsoluteEncoder {
 
     var canCoderConfig = new CANcoderConfiguration();
 
-    canCoderConfig.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(1.0);
+    canCoderConfig.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(1.0);  // TODO: need to update logic because we no longer have 0 to 360 output. No clue what this means.
     canCoderConfig.MagnetSensor.withMagnetOffset(-(config.offset / config.positionConversionFactor));
     canCoderConfig.MagnetSensor.withSensorDirection(config.isInverted ? SensorDirectionValue.CounterClockwise_Positive : SensorDirectionValue.Clockwise_Positive);
 

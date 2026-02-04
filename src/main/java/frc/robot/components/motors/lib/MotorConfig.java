@@ -15,6 +15,7 @@ public class MotorConfig {
     public Double initialPosition = null;
     public Double maxForwardSpeed = null;
     public Double maxReverseSpeed = null;
+    public Double velocityConversionFactor = null;
     public PIDParameters pidParameters = null;
 
     public MotorConfig(int canBusId) {

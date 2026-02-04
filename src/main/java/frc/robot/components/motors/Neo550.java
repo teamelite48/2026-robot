@@ -38,8 +38,10 @@ public class Neo550 implements Motor {
       sparkMaxConfig.smartCurrentLimit(config.currentLimit);
     }
 
-    // TODO: implement when refactoring drive subsystem angle controller
-    // sparkMaxConfig.encoder.velocityConversionFactor(ANGLE_POSITION_TO_RADIANS_CONVERSION_FACTOR / 60.0);
+    if (config.velocityConversionFactor != null) {
+      // For Angle Controller in Drive Subsystem
+      sparkMaxConfig.encoder.velocityConversionFactor(config.velocityConversionFactor / 60.0);
+    }
 
     sparkMaxConfig.inverted(motorConfig.isInverted);
     sparkMaxConfig.idleMode(motorConfig.isBrakeModeEnabled ? IdleMode.kBrake : IdleMode.kCoast);
@@ -104,6 +106,10 @@ public class Neo550 implements Motor {
 
   public void setInitialPosition() {
       relativeEncoder.setPosition(config.initialPosition);
+  }
+
+  public void setInitialPosition(double position) {
+      relativeEncoder.setPosition(position);
   }
 
   public void setSpeed(double speed) {

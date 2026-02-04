@@ -114,4 +114,9 @@ public class Kraken implements Motor {
     public void setInitialPosition() {
         // does nothing
     }
+
+    @Override
+    public void setInitialPosition(double position) {
+        // does nothing
+    }
 }

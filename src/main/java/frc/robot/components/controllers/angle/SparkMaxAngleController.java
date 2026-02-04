@@ -1,81 +1,38 @@
 package frc.robot.components.controllers.angle;
 
-
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
-import frc.robot.components.controllers.angle.lib.AngleControllerConfig;
-import frc.robot.components.swerve.lib.SwerveConfig;
-
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import frc.robot.components.encoders.absolute.CanCoder;
+import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
+import frc.robot.components.motors.Neo550;
+import frc.robot.components.motors.lib.Motor;
+import frc.robot.components.motors.lib.MotorConfig;
 
 import static frc.robot.components.swerve.lib.SwerveMath.*;
 
 
 public class SparkMaxAngleController {
 
-    private final SwerveConfig swerveConfig;
-    private final AngleControllerConfig angleConfig;
-    private final SparkMax motorController;
-    private final SparkClosedLoopController pidController;
-    private final RelativeEncoder motorEncoder;
-    private final CANcoder absoluteEncoder;
+    private final Motor motor;
+    private final MotorConfig motorConfig;
+    // private final RelativeEncoder motorEncoder;
+    private final CanCoder absoluteEncoder;
+    private final AbsoluteEncoderConfig absoluteEncoderConfig;
 
     private double targetAngle = 0.0;
     private boolean isInitialized = false;
 
 
-    public SparkMaxAngleController(SwerveConfig swerveModuleConfig, AngleControllerConfig angleControllerConfig) {
+    public SparkMaxAngleController(MotorConfig motorConfigs, AbsoluteEncoderConfig absEncoderConfig) {
 
-        this.swerveConfig = swerveModuleConfig;
-        this.angleConfig = angleControllerConfig;
-        this.absoluteEncoder = new CANcoder(angleConfig.absoluteEncoderCanBusId);
+        this.motorConfig = motorConfigs;
+        // this.angleConfig = angleControllerConfig;
+        this.absoluteEncoderConfig = absEncoderConfig;
 
-        var config = new CANcoderConfiguration();
+        motor = new Neo550(motorConfig);
+        absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
-        config.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(1.0); // TODO: need to update logic because we no longer have 0 to 360 output. No clue what this means.
-        config.MagnetSensor.withMagnetOffset(-(angleConfig.angleOffsetDegrees / 360));
-        config.MagnetSensor.withSensorDirection(swerveConfig.angleMotorAbsoluteEncoderInversion);
+        motor.setInitialPosition(getAbsoluteAngle());
 
-        absoluteEncoder.getConfigurator().apply(config);
-
-
-        motorController = new SparkMax(angleConfig.canBusId, MotorType.kBrushless);
-        motorEncoder = motorController.getEncoder();
-        pidController = motorController.getClosedLoopController();
-
-        var sparkMaxConfig = new SparkMaxConfig();
-
-        sparkMaxConfig.voltageCompensation(swerveConfig.nominalVoltage);
-        sparkMaxConfig.smartCurrentLimit(swerveConfig.angleMotorCurrentLimit);
-
-        sparkMaxConfig.inverted(swerveConfig.isAngleMotorInverted);
-
-        // TODO: 2024 => 2025
-        // motorController.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus0, 100);
-        // motorController.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus1, 20);
-        // motorController.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus2, 20);
-
-        sparkMaxConfig.idleMode(IdleMode.kCoast);
-
-        sparkMaxConfig.encoder.positionConversionFactor(swerveConfig.anglePositionToRadiansConversionFactor);
-        sparkMaxConfig.encoder.velocityConversionFactor(swerveConfig.anglePositionToRadiansConversionFactor / 60.0);
-        motorEncoder.setPosition(getAbsoluteAngle());
-
-
-        sparkMaxConfig.closedLoop.pid(1.0, 0.0, 0.0);
-        sparkMaxConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-
-        motorController.configure(sparkMaxConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // TODO: null, null, wat?
+        // sparkMaxConfig.closedLoop.pid(1.0, 0.0, 0.0);
     }
 
     // Just about most of the time the motor encoder doesn't initialize properly, so we force it until it do
@@ -91,14 +48,14 @@ public class SparkMaxAngleController {
             return;
         }
 
-        motorEncoder.setPosition(absoluteAngle);
+        motor.setInitialPosition(absoluteAngle);
     }
 
     public void setAngle(double desiredAngle) {
 
         if (isInitialized == false) return;
 
-        double currentAngle = motorEncoder.getPosition();
+        double currentAngle = motor.getPosition();
         var currentAngleMod = normalizeAngle(currentAngle);
 
         // The target angle has the range [0, 2pi) but the Neo's encoder can go above that
@@ -113,7 +70,7 @@ public class SparkMaxAngleController {
 
         this.targetAngle = adjustedDesiredAngle;
 
-        pidController.setReference(this.targetAngle, SparkMax.ControlType.kPosition);
+        motor.setPosition(this.targetAngle);
     }
 
     public double getTargetAngle() {
@@ -121,11 +78,11 @@ public class SparkMaxAngleController {
     }
 
     public double getCurrentAngle() {
-        return normalizeAngle(motorEncoder.getPosition());
+        return normalizeAngle(motor.getPosition());
     }
 
     public double getAbsoluteAngle() {
-        return normalizeAngle(absoluteEncoder.getAbsolutePosition().getValueAsDouble() * TAU);
+        return normalizeAngle(absoluteEncoder.getPosition());
     }
 
     public boolean isInitialized() {

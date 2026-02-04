@@ -21,7 +21,7 @@ public class SwerveConfig {
     // public boolean isInverted = true;
     public boolean isAngleMotorInverted = false;
     public double driveMotorReduction = (1.0 / 6.0);
-    public double angleMotorReduction = (1.0 / 25.0);
+    public double angleMotorReduction = (1.0 / 26.0);
     public double drivePositionToMetersConversionFactor = Math.PI * wheelDiameterMeters * driveMotorReduction;
     public double anglePositionToRadiansConversionFactor = 2.0 * Math.PI * angleMotorReduction;
     public int encoderResetIterations = 500;
