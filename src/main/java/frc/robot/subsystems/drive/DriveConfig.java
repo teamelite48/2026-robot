@@ -15,10 +15,16 @@ public class DriveConfig {
     public static final boolean IS_ANGLE_BRAKE_MODE_ENABLED = false;
 
     // Set offset using Absolute Angle values from Elastic; always start with 0.0 & wheels straight when configuring.
-    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES = 65.30;
-    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 17.49;
-    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 325.46;
-    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 130.86;
+    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES = 294.83;
+    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 343.21;
+    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 34.57;
+    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 50.18;
+
+    //Backup values
+    //public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES = 65.30;
+    //public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 17.49;
+    //public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 325.46;
+    //public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 130.86;
 
     // Can remove if different solution in SwerveModule.java initDashboard()
     public static final int FRONT_LEFT_DRIVE_CAN_ID = 21;
@@ -49,7 +55,7 @@ public class DriveConfig {
 
     public static MotorConfig getAngleControllerConfigLeftFrontAngle() {
         var config = new MotorConfig(FRONT_LEFT_ANGLE_CAN_ID);
-        config.isInverted = IS_MOTOR_INVERTED;
+        config.isInverted = !IS_MOTOR_INVERTED;   //note the inversion
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = getSwerveConfig().anglePositionToRadiansConversionFactor;
         config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
@@ -59,7 +65,7 @@ public class DriveConfig {
 
     public static MotorConfig getAngleControllerConfigRightFrontAngle() {
         var config = new MotorConfig(FRONT_RIGHT_ANGLE_CAN_ID);
-        config.isInverted = IS_MOTOR_INVERTED;
+        config.isInverted = !IS_MOTOR_INVERTED;   //note the inversion
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = getSwerveConfig().anglePositionToRadiansConversionFactor;
         config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
@@ -69,7 +75,7 @@ public class DriveConfig {
 
     public static MotorConfig getAngleControllerConfigLeftRearAngle() {
         var config = new MotorConfig(REAR_LEFT_ANGLE_CAN_ID);
-        config.isInverted = IS_MOTOR_INVERTED;
+        config.isInverted = !IS_MOTOR_INVERTED;   //note the inversion
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = getSwerveConfig().anglePositionToRadiansConversionFactor;
         config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
@@ -79,7 +85,7 @@ public class DriveConfig {
 
     public static MotorConfig getAngleControllerConfigRightRearAngle() {
         var config = new MotorConfig(REAR_RIGHT_ANGLE_CAN_ID);
-        config.isInverted = IS_MOTOR_INVERTED;
+        config.isInverted = !IS_MOTOR_INVERTED;   //note the inversion
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = getSwerveConfig().anglePositionToRadiansConversionFactor;
         config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;

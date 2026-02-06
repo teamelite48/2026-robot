@@ -26,6 +26,10 @@ public class TalonFxAngleController implements AngleController {
 
         motor = new Kraken(motorConfig);
         absoluteEncoder = new CanCoder(absoluteEncoderConfig);
+
+        //TRAVIS
+        //motor.setInitialPosition(getAbsoluteAngle());
+    
     }
 
     // Just about most of the time the motor encoder doesn't initialize properly, so we force it until it do
@@ -36,7 +40,11 @@ public class TalonFxAngleController implements AngleController {
         var currentAngle = getCurrentAngle();
         var absoluteAngle = getAbsoluteAngle();
 
-        if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
+        //if (Math.abs(360.0 - currentAngle) < 0.5) currentAngle = 360.0 - currentAngle;
+        if (Math.abs(360.0 - absoluteAngle) < 0.2) absoluteAngle = 360.0 - absoluteAngle;
+
+        //if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
+        if (Math.abs(currentAngle - absoluteAngle) < 0.1) {
             isInitialized = true;
             return;
         }
