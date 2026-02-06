@@ -9,8 +9,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.components.controllers.angle.lib.AngleController;
-import frc.robot.components.controllers.drive.lib.DriveController;
+//import frc.robot.components.controllers.angle.lib.AngleController;
+import frc.robot.components.controllers.angle.TalonFxAngleController;
+//import frc.robot.components.controllers.drive.lib.DriveController;
+import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.lib.SwerveConfig;
 
 import static frc.robot.components.swerve.lib.SwerveMath.*;
@@ -19,10 +21,10 @@ import static frc.robot.subsystems.drive.DriveConfig.*;
 public class SwerveModule {
 
     final SwerveConfig config;
-    private final DriveController driveController;
-    private final AngleController angleController;
+    private final TalonFxDriveController driveController;
+    private final TalonFxAngleController angleController;
 
-    public SwerveModule(SwerveConfig swerveConfig, DriveController driveController, AngleController angleController) {
+    public SwerveModule(SwerveConfig swerveConfig, TalonFxDriveController driveController, TalonFxAngleController angleController) {
         this.config = swerveConfig;
         this.driveController = driveController;
         this.angleController = angleController;
