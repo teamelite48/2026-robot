@@ -145,7 +145,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigLeftRearDrive() {
         var config = new MotorConfig(REAR_LEFT_DRIVE_CAN_ID);
-        config.isInverted = IS_MOTOR_INVERTED;
+        config.isInverted = !IS_MOTOR_INVERTED;   //note the inversion
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = getSwerveConfig().drivePositionToMetersConversionFactor;
         config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
@@ -155,7 +155,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigRightRearDrive() {
         var config = new MotorConfig(REAR_RIGHT_DRIVE_CAN_ID);
-        config.isInverted = IS_MOTOR_INVERTED;
+        config.isInverted = !IS_MOTOR_INVERTED;   //note the inversion
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = getSwerveConfig().drivePositionToMetersConversionFactor;
         config.currentLimit = getSwerveConfig().driveMotorCurrentLimit;
