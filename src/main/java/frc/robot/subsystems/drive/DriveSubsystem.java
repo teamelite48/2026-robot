@@ -39,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase{
 
     private final Pigeon2 gyro = new Pigeon2(GYRO_ID);
 
-    private final SwerveConfig swerveConfig;
+    // private final SwerveConfig swerveConfig;
 
     private final SlewRateLimiter xLimiter;
     private final SlewRateLimiter yLimiter;
@@ -72,11 +72,11 @@ public class DriveSubsystem extends SubsystemBase{
 
     public DriveSubsystem() {
 
-        this.swerveConfig = getSwerveConfig();
+        // this.swerveConfig = getSwerveConfig();
 
-        xLimiter = new SlewRateLimiter(swerveConfig.slewRate);
-        yLimiter = new SlewRateLimiter(swerveConfig.slewRate);
-        rotationLimiter = new SlewRateLimiter(swerveConfig.slewRate);
+        xLimiter = new SlewRateLimiter(SWERVE_CONFIG.slewRate);
+        yLimiter = new SlewRateLimiter(SWERVE_CONFIG.slewRate);
+        rotationLimiter = new SlewRateLimiter(SWERVE_CONFIG.slewRate);
         // movingRoationPidController = new PIDController(swerveConfig.movingRotationPid.P, swerveConfig.movingRotationPid.I, swerveConfig.movingRotationPid.D);
         // standingRoationPidController = new PIDController(swerveConfig.standingRotationPid.P, swerveConfig.standingRotationPid.I, swerveConfig.standingRotationPid.D);
 
@@ -85,21 +85,21 @@ public class DriveSubsystem extends SubsystemBase{
         backLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftRearAngle(), getAbsEncoderConfigLeftRear());
         backRightAngle = new TalonFxAngleController(getAngleControllerConfigRightRearAngle(), getAbsEncoderConfigRightRear());
 
-        frontLeftDrive = new TalonFxDriveController(swerveConfig, getDriveControllerConfigLeftFrontDrive());
-        frontRightDrive = new TalonFxDriveController(swerveConfig, getDriveControllerConfigRightFrontDrive());
-        backLeftDrive = new TalonFxDriveController(swerveConfig, getDriveControllerConfigLeftRearDrive());
-        backRightDrive = new TalonFxDriveController(swerveConfig, getDriveControllerConfigRightRearDrive());
+        frontLeftDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftFrontDrive());
+        frontRightDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightFrontDrive());
+        backLeftDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftRearDrive());
+        backRightDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightRearDrive());
 
-        frontLeft = new SwerveModule(swerveConfig, frontLeftDrive, frontLeftAngle);
-        frontRight = new SwerveModule(swerveConfig, frontRightDrive, frontRightAngle);
-        backLeft = new SwerveModule(swerveConfig, backLeftDrive, backLeftAngle);
-        backRight = new SwerveModule(swerveConfig, backRightDrive, backRightAngle);
+        frontLeft = new SwerveModule(SWERVE_CONFIG, frontLeftDrive, frontLeftAngle);
+        frontRight = new SwerveModule(SWERVE_CONFIG, frontRightDrive, frontRightAngle);
+        backLeft = new SwerveModule(SWERVE_CONFIG, backLeftDrive, backLeftAngle);
+        backRight = new SwerveModule(SWERVE_CONFIG, backRightDrive, backRightAngle);
 
         kinematics = new SwerveDriveKinematics(
-            new Translation2d(swerveConfig.trackWidthMeters / 2.0, swerveConfig.wheelbaseMeters / 2.0),
-            new Translation2d(swerveConfig.trackWidthMeters / 2.0, -swerveConfig.wheelbaseMeters / 2.0),
-            new Translation2d(-swerveConfig.trackWidthMeters / 2.0, swerveConfig.wheelbaseMeters / 2.0),
-            new Translation2d(-swerveConfig.trackWidthMeters / 2.0, -swerveConfig.wheelbaseMeters / 2.0)
+            new Translation2d(SWERVE_CONFIG.trackWidthMeters / 2.0, SWERVE_CONFIG.wheelbaseMeters / 2.0),
+            new Translation2d(SWERVE_CONFIG.trackWidthMeters / 2.0, -SWERVE_CONFIG.wheelbaseMeters / 2.0),
+            new Translation2d(-SWERVE_CONFIG.trackWidthMeters / 2.0, SWERVE_CONFIG.wheelbaseMeters / 2.0),
+            new Translation2d(-SWERVE_CONFIG.trackWidthMeters / 2.0, -SWERVE_CONFIG.wheelbaseMeters / 2.0)
         );
 
         odometry = new SwerveDriveOdometry(
