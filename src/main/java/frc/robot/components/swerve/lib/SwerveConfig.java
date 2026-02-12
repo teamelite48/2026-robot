@@ -15,8 +15,8 @@ public class SwerveConfig {
     public double maxMetersPerSecond;
     public double maxAngularMetersPerSecond = maxMetersPerSecond / Math.hypot(trackWidthMeters / 2.0, wheelbaseMeters / 2.0);
     public double nominalVoltage = 12.0;
-    public int driveMotorCurrentLimit = 55;
-    public int angleMotorCurrentLimit = 30;
+    public int driveMotorCurrentLimit = 80;
+    public int angleMotorCurrentLimit = 80;
     public SensorDirectionValue angleMotorAbsoluteEncoderInversion = SensorDirectionValue.CounterClockwise_Positive;
     // public boolean isInverted = true;
     public boolean isAngleMotorInverted = false;
