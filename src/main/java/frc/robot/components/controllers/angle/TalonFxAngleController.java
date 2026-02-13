@@ -35,12 +35,18 @@ public class TalonFxAngleController implements AngleController {
     // Just about most of the time the motor encoder doesn't initialize properly, so we force it until it do
     public void init() {
 
-        isInitialized = true;
+        // isInitialized = true;
 
         if (isInitialized) return;
 
-        var currentAngle = getCurrentAngle();
-        var absoluteAngle = getAbsoluteAngle();
+        double abs = getAbsoluteAngle();
+
+        motor.setPosition(abs);
+        targetAngle = abs;
+        isInitialized = true;
+
+        // var currentAngle = getCurrentAngle();
+        // var absoluteAngle = getAbsoluteAngle();
 
         //if (Math.abs(360.0 - currentAngle) < 0.5) currentAngle = 360.0 - currentAngle;
         // if (Math.abs(360.0 - absoluteAngle) < 0.2) absoluteAngle = 360.0 - absoluteAngle;
