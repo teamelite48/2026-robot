@@ -7,6 +7,7 @@ package frc.robot.subsystems.drive.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -35,6 +36,11 @@ public class DriveCommand extends Command {
   public void execute() {
 
     var translation = translationSupplier.get();
+
+    DriverStation.reportWarning(
+      String.format("DriveCmd exec: tx=%.3f ty=%.3f rot=%.3f", translation.getX(), translation.getY(), rotationSupplier.get().getX()),
+      false
+    );
 
     driveSubsystem.drive(
       translation.getX(),

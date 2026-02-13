@@ -24,7 +24,7 @@ public class TalonFxDriveController implements DriveController {
 
     public void setVelocity(double metersPerSecond) {
         this.targetVelocity = metersPerSecond;
-        motor.setVoltage(this.targetVelocity / swerveConfig.maxMetersPerSecond * swerveConfig.nominalVoltage);
+        motor.setVoltage(this.targetVelocity / swerveConfig.getMaxMetersPerSecond() * swerveConfig.nominalVoltage);
     }
 
     public double getTargetVelocity() {

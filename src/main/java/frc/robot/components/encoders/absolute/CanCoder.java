@@ -31,4 +31,9 @@ public class CanCoder implements AbsoluteEncoder {
   public double getPosition() {
     return encoder.getAbsolutePosition().getValueAsDouble() * config.positionConversionFactor;
   }
+
+
+  public double getRawPosition() {
+    return encoder.getAbsolutePosition().getValueAsDouble();
+  }
 }

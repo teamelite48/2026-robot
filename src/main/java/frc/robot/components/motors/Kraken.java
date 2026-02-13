@@ -91,7 +91,7 @@ public class Kraken implements Motor {
 
     public void setPosition(double position) {
         var rotations = calculateRotations(position, config.positionConversionFactor);
-        talonFx.setControl(positionDutyCycle.withPosition(rotations).withFeedForward(config.feedFoward));
+        talonFx.setControl(positionDutyCycle.withPosition(rotations).withFeedForward(config.feedForward));
     }
 
     public void setSpeed(double speed) {
