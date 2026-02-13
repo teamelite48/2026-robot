@@ -15,6 +15,12 @@ public final class SwerveConfig {
     public final int driveMotorCurrentLimit;
     public final int angleMotorCurrentLimit;
     public final double slewRate;
+    public final double maxGearSpeed;
+    public final double lowGearSpeed;
+    public final double strafeSpeed;
+    public final double nominalVoltage;
+    public final boolean isAngleMotorInverted;
+    public final boolean isInverted;
 
     private final PIDParameters movingPid;
     private final PIDParameters standingPid;
@@ -31,6 +37,16 @@ public final class SwerveConfig {
         driveMotorCurrentLimit = b.driveMotorCurrentLimit;
         angleMotorCurrentLimit = b.angleMotorCurrentLimit;
         slewRate = b.slewRate;
+        maxGearSpeed = b.maxGearSpeed;
+        lowGearSpeed = b.lowGearSpeed;
+        strafeSpeed = b.strafeSpeed;
+        nominalVoltage = b.nominalVoltage;
+        isAngleMotorInverted = b.isAngleMotorInverted;
+        isInverted = b.isInverted;
+    }
+
+    public double getMaxAngularMetersPerSecond() {
+        return maxMetersPerSecond / Math.hypot(trackWidthMeters / 2.0, wheelbaseMeters / 2.0);
     }
 
     public double driveMetersPerRotation() {
@@ -46,20 +62,40 @@ public final class SwerveConfig {
         return maxMetersPerSecond / radius;
     }
 
+    public double getLowGearSpeed() {
+        return this.maxGearSpeed / 2.0;
+    }
+
+    public double getMaxGearSpeed() {
+        return this.maxGearSpeed;
+    }
+
+    public double getMaxMetersPerSecond() {
+        return this.maxMetersPerSecond;
+    }
+
     public PIDParameters getMovingPid() {
-        return movingPid;
+        return this.movingPid;
     }
 
     public PIDParameters getStandingPid() {
-        return standingPid;
+        return this.standingPid;
     }
 
     public int getDriveMotorCurrentLimit() {
-        return driveMotorCurrentLimit;
+        return this.driveMotorCurrentLimit;
     }
 
     public int getAngleMotorCurrentLimit() {
-        return angleMotorCurrentLimit;
+        return this.angleMotorCurrentLimit;
+    }
+
+    public double getTrackWidthMeters() {
+        return this.trackWidthMeters;
+    }
+
+    public double getWheelBaseMeters() {
+        return this.wheelbaseMeters;
     }
 
 
@@ -73,6 +109,12 @@ public final class SwerveConfig {
         public int driveMotorCurrentLimit = 80;
         public int angleMotorCurrentLimit = 80;
         public double slewRate = 2.0;
+        public double maxGearSpeed = 1.0;
+        public double lowGearSpeed = 0.5;
+        public double strafeSpeed = 0.1;
+        public double nominalVoltage = 12.0;
+        public boolean isAngleMotorInverted = false;
+        public boolean isInverted = true;
 
         private double driveReduction = 1.0 / 6.75;
         private double angleReduction = 1.0 / 21.4;
@@ -85,7 +127,7 @@ public final class SwerveConfig {
             return this;
         }
 
-        public Builder trackWidth(double v) {
+        public Builder setTrackWidth(double v) {
             trackWidthMeters = v;
             return this;
         }
@@ -130,6 +172,10 @@ public final class SwerveConfig {
             return this;
         }
 
+        public Builder setAngleInversion(boolean f) {
+            isAngleMotorInverted = f;
+            return this;
+        }
 
         public SwerveConfig build() {
             return new SwerveConfig(this);

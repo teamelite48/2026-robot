@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
-import frc.robot.components.swerve.lib.SwerveConfig;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -95,11 +94,16 @@ public class DriveSubsystem extends SubsystemBase{
         backLeft = new SwerveModule(SWERVE_CONFIG, backLeftDrive, backLeftAngle);
         backRight = new SwerveModule(SWERVE_CONFIG, backRightDrive, backRightAngle);
 
+        frontLeft.init();
+        frontRight.init();
+        backLeft.init();
+        backRight.init();
+
         kinematics = new SwerveDriveKinematics(
-            new Translation2d(SWERVE_CONFIG.trackWidthMeters / 2.0, SWERVE_CONFIG.wheelbaseMeters / 2.0),
-            new Translation2d(SWERVE_CONFIG.trackWidthMeters / 2.0, -SWERVE_CONFIG.wheelbaseMeters / 2.0),
-            new Translation2d(-SWERVE_CONFIG.trackWidthMeters / 2.0, SWERVE_CONFIG.wheelbaseMeters / 2.0),
-            new Translation2d(-SWERVE_CONFIG.trackWidthMeters / 2.0, -SWERVE_CONFIG.wheelbaseMeters / 2.0)
+            new Translation2d(SWERVE_CONFIG.getTrackWidthMeters() / 2.0, SWERVE_CONFIG.getWheelBaseMeters() / 2.0),
+            new Translation2d(SWERVE_CONFIG.getTrackWidthMeters() / 2.0, -SWERVE_CONFIG.getWheelBaseMeters() / 2.0),
+            new Translation2d(-SWERVE_CONFIG.getTrackWidthMeters() / 2.0, SWERVE_CONFIG.getWheelBaseMeters() / 2.0),
+            new Translation2d(-SWERVE_CONFIG.getTrackWidthMeters() / 2.0, -SWERVE_CONFIG.getWheelBaseMeters() / 2.0)
         );
 
         odometry = new SwerveDriveOdometry(
@@ -155,24 +159,24 @@ public class DriveSubsystem extends SubsystemBase{
 
     public void periodic() {
         updateOdometry();
-        frontLeft.init();
-        frontRight.init();
-        backLeft.init();
-        backRight.init();
     }
 
     public void drive(double x, double y, double rotation) {
 
-        double speedModifier = swerveConfig.maxGearSpeed;
+        double speedModifier = SWERVE_CONFIG.getMaxGearSpeed();
 
         if (gear == Gear.Low) {
-            speedModifier = swerveConfig.lowGearSpeed;
+            speedModifier = SWERVE_CONFIG.getLowGearSpeed();
         }
 
+        var vx = -yLimiter.calculate(y * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond();
+        var vy = -xLimiter.calculate(x * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond();
+        System.out.println("vx="+ vx + "\tvy="+vy);
+
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            -yLimiter.calculate(y * speedModifier) * swerveConfig.maxMetersPerSecond,
-            -xLimiter.calculate(x * speedModifier) * swerveConfig.maxMetersPerSecond,
-            -rotationLimiter.calculate(rotation * speedModifier) * swerveConfig.maxAngularMetersPerSecond,
+            vx,
+            vy,
+            -rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
         );
 
@@ -182,9 +186,9 @@ public class DriveSubsystem extends SubsystemBase{
     public void driveRobotRelative(double x, double y) {
 
         var chassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
-            yLimiter.calculate(y) * swerveConfig.maxMetersPerSecond,
-            xLimiter.calculate(x) * swerveConfig.maxMetersPerSecond,
-            rotationLimiter.calculate(0) * swerveConfig.maxAngularMetersPerSecond,
+            yLimiter.calculate(y) * SWERVE_CONFIG.getMaxMetersPerSecond(),
+            xLimiter.calculate(x) * SWERVE_CONFIG.getMaxMetersPerSecond(),
+            rotationLimiter.calculate(0) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
             Rotation2d.fromDegrees(0.0)
         );
 
@@ -197,18 +201,18 @@ public class DriveSubsystem extends SubsystemBase{
         currY = y;
         currRotation = rotationError;
 
-        double speedModifier = swerveConfig.maxGearSpeed;
+        double speedModifier = SWERVE_CONFIG.maxGearSpeed;
 
         if (gear == Gear.Low) {
-            speedModifier = swerveConfig.lowGearSpeed;
+            speedModifier = SWERVE_CONFIG.lowGearSpeed;
         }
 
         var rotation = 0.0;
 
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            yLimiter.calculate(y * speedModifier) * swerveConfig.maxMetersPerSecond,
-            xLimiter.calculate(x * speedModifier) * swerveConfig.maxMetersPerSecond,
-            rotation * swerveConfig.maxAngularMetersPerSecond,
+            yLimiter.calculate(y * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond(),
+            xLimiter.calculate(x * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond(),
+            rotation * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
             Rotation2d.fromDegrees(gyro.getYaw ().getValueAsDouble())
         );
 
@@ -240,13 +244,13 @@ public class DriveSubsystem extends SubsystemBase{
     }
 
     public double getStrafeSpeed() {
-        return swerveConfig.strafeSpeed;
+        return SWERVE_CONFIG.strafeSpeed;
     }
 
     private SwerveModuleState[] calculateSwerveModuleStates(ChassisSpeeds chassisSpeeds) {
 
         var swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, swerveConfig.maxMetersPerSecond);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SWERVE_CONFIG.getMaxMetersPerSecond());
 
         return swerveModuleStates;
     }

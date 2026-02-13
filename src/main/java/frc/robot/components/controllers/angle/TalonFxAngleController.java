@@ -67,7 +67,8 @@ public class TalonFxAngleController implements AngleController {
 
     public double getAbsoluteAngle() {
         // return normalizeAngle(absoluteEncoder.getAbsolutePosition().getValueAsDouble() * TAU);
-        return normalizeAngle(absoluteEncoder.getPosition());
+        // return normalizeAngle(absoluteEncoder.getPosition());
+        return normalizeAngle(absoluteEncoder.getRawPosition() * TAU);
     }
 
     public boolean isInitialized() {
