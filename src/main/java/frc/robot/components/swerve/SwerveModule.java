@@ -50,7 +50,6 @@ public class SwerveModule {
         angleDifference = desiredAngle - currentAngle; // Recalculate difference
 
         double desiredVelocity = state.speedMetersPerSecond;
-        // double desiredVelocity = 1.0;
 
         // If the difference is greater than 90 deg or less than -90 deg the drive can be inverted so the total
         // movement of the module is less than 90 deg
@@ -63,10 +62,10 @@ public class SwerveModule {
         // Put the target angle back into the range [0, 2pi)
         desiredAngle = normalizeAngle(desiredAngle);
 
-        DriverStation.reportWarning(
-            String.format("DriveCmd exec: dA=%.3f dV=%.3f aD=%.3f", desiredAngle, desiredVelocity, angleDifference),
-            false
-        );
+        // DriverStation.reportWarning(
+        //     String.format("DriveCmd exec: dA=%.3f dV=%.3f aD=%.3f", desiredAngle, desiredVelocity, angleDifference),
+        //     false
+        // );
 
         driveController.setVelocity(desiredVelocity);
         angleController.setAngle(desiredAngle);

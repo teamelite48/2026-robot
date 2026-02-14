@@ -117,6 +117,6 @@ public class Kraken implements Motor {
 
     @Override
     public void setInitialPosition(double position) {
-        // does nothing
+        talonFx.setPosition(calculateRotations(position, config.positionConversionFactor));
     }
 }
