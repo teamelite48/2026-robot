@@ -25,11 +25,11 @@ public class Kraken implements Motor {
         positionDutyCycle = new PositionDutyCycle(0).withSlot(0).withEnableFOC(config.enableFOC);
         dutyCycleOut = new DutyCycleOut(0.0).withEnableFOC(config.enableFOC);
 
-        if (motorConfig.canivoreBus == null) {
+        if (motorConfig.canBus == null) {
             talonFx = new TalonFX(motorConfig.canBusId);
         }
         else {
-            talonFx = new TalonFX(motorConfig.canBusId, motorConfig.canivoreBus);
+            talonFx = new TalonFX(motorConfig.canBusId, motorConfig.canBus);
         }
 
         var talonFxConfig = new TalonFXConfiguration();
@@ -112,10 +112,6 @@ public class Kraken implements Motor {
         talonFx.stopMotor();
     }
 
-    private static double calculateRotations(double units, double positionConversionFactor) {
-        return  units / positionConversionFactor;
-    }
-
     @Override
     public void setInitialPosition() {
         // does nothing
@@ -124,5 +120,9 @@ public class Kraken implements Motor {
     @Override
     public void setInitialPosition(double position) {
         talonFx.setPosition(calculateRotations(position, config.positionConversionFactor));
+    }
+
+    private static double calculateRotations(double units, double positionConversionFactor) {
+        return  units / positionConversionFactor;
     }
 }

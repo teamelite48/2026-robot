@@ -1,9 +1,13 @@
 package frc.robot.subsystems.turret;
 
+import com.ctre.phoenix6.CANBus;
+
 import frc.robot.components.motors.lib.MotorConfig;
 import frc.robot.lib.PIDParameters;
 
 public class TurretConfig {
+
+    public static final CANBus CANIVORE = new CANBus("canivore");
 
     public static final double inputDeadzone = 0.2;
 
@@ -28,7 +32,7 @@ public class TurretConfig {
 
     public static MotorConfig getMotorConfig() {
 
-        var config = new MotorConfig(20);
+        var config = new MotorConfig(16, CANIVORE);
 
         config.isInverted = true;
         //config.positionConversionFactor = (1.0/90.0) * 360.0;
@@ -37,7 +41,7 @@ public class TurretConfig {
         config.pidParameters = new PIDParameters(0.035, 0.0005, 0.0);
         config.forwardLimit = encoderLimit;
         config.reverseLimit = -encoderLimit;
-        
+
         return config;
     }
 }

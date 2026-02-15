@@ -1,9 +1,10 @@
 package frc.robot.components.motors.lib;
 
+import com.ctre.phoenix6.CANBus;
 import frc.robot.lib.PIDParameters;
 
 public class MotorConfig {
-    public String canivoreBus;
+    public CANBus canBus = null;  // Used for canivore
     public int canBusId;
     public boolean isInverted = false;
     public boolean isBrakeModeEnabled = false;
@@ -20,12 +21,11 @@ public class MotorConfig {
     public PIDParameters pidParameters = null;
 
     public MotorConfig(int canBusId) {
-        this.canivoreBus = null;
         this.canBusId = canBusId;
     }
 
-    public MotorConfig(int canBusId, String canivore) {
-        this.canivoreBus = canivore;
+    public MotorConfig(int canBusId, CANBus bus) {
+        this.canBus = bus;
         this.canBusId = canBusId;
     }
 }
