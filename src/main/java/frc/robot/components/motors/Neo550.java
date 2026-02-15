@@ -83,7 +83,7 @@ public class Neo550 implements Motor {
           (config.maxReverseSpeed != 0) ? config.maxReverseSpeed : 0.0
         );
 
-        sparkMaxConfig.closedLoop.maxMotion.maxVelocity(maxVelocity);
+        sparkMaxConfig.closedLoop.maxMotion.cruiseVelocity(maxVelocity);
       }
 
       sparkMaxConfig.softLimit.apply(softLimitConfig);
@@ -102,6 +102,7 @@ public class Neo550 implements Motor {
 
   public void setPosition(double position) {
     pidController.setReference(position, SparkMax.ControlType.kPosition);
+    // sparkMax.setSetpoint(position, SparkMax.ControlType.kPosition);  // 2027 replacement of setReference
   }
 
   public void setInitialPosition() {
