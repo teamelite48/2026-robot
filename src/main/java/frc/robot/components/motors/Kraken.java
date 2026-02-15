@@ -1,6 +1,7 @@
 package frc.robot.components.motors;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -14,11 +15,15 @@ public class Kraken implements Motor {
     final TalonFX talonFx;
     final MotorConfig config;
 
-    final PositionDutyCycle positionDutyCycle = new PositionDutyCycle(0).withSlot(0);
+    final DutyCycleOut dutyCycleOut;
+    final PositionDutyCycle positionDutyCycle;
 
     public Kraken(MotorConfig motorConfig) {
 
         this.config = motorConfig;
+
+        positionDutyCycle = new PositionDutyCycle(0).withSlot(0).withEnableFOC(config.enableFOC);
+        dutyCycleOut = new DutyCycleOut(0.0).withEnableFOC(config.enableFOC);
 
         if (motorConfig.canivoreBus == null) {
             talonFx = new TalonFX(motorConfig.canBusId);
@@ -95,7 +100,8 @@ public class Kraken implements Motor {
     }
 
     public void setSpeed(double speed) {
-        talonFx.set(speed);
+        // talonFx.set(speed);  // This way ignores FOC config
+        talonFx.setControl(dutyCycleOut.withOutput(speed));
     }
 
     public void setVoltage(double volts) {
