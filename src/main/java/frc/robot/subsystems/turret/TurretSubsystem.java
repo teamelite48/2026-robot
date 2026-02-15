@@ -28,17 +28,18 @@ public class TurretSubsystem extends SubsystemBase {
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
 
-    long lastSimulationPeriodicMillis = 0;
+    // long lastSimulationPeriodicMillis = 0;
     boolean isTurretEnabled = true;
 
     public TurretSubsystem() {
         var config = getMotorConfig();
 
         motor = new Neo550(config);
+        // TODO: Remove pidController after fixing moveToDegrees. PID should be set in Motor config only
         pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
 
         // initDashboard();
-        
+
         ledMode.setNumber(3);
         camMode.setNumber(1);
     }
@@ -47,26 +48,26 @@ public class TurretSubsystem extends SubsystemBase {
     public void periodic() {
 
         if (isAutoAimOn) {
-        ledMode.setNumber(3);
-        camMode.setNumber(0);
-        autoAim();
+            ledMode.setNumber(3);
+            camMode.setNumber(0);
+            autoAim();
         }
         else {
-        ledMode.setNumber(1);
-        camMode.setNumber(1);
+            ledMode.setNumber(1);
+            camMode.setNumber(1);
         }
     }
 
-    public void simulationPeriodic() {
+    // public void simulationPeriodic() {
 
-        long millisSinceLastPeriodic = System.currentTimeMillis() - lastSimulationPeriodicMillis;
-        double elapsedSeconds = (millisSinceLastPeriodic / 1000.0);
-        double rotationsSinceLastPeriodic = motor.getPosition() * elapsedSeconds * TurretConfig.nominalMotorRotationsPerSecond;
+    //     long millisSinceLastPeriodic = System.currentTimeMillis() - lastSimulationPeriodicMillis;
+    //     double elapsedSeconds = (millisSinceLastPeriodic / 1000.0);
+    //     double rotationsSinceLastPeriodic = motor.getPosition() * elapsedSeconds * TurretConfig.nominalMotorRotationsPerSecond;
 
-        motor.setPosition(motor.getPosition() + rotationsSinceLastPeriodic);
+    //     motor.setPosition(motor.getPosition() + rotationsSinceLastPeriodic);
 
-        lastSimulationPeriodicMillis = System.currentTimeMillis();
-    }
+    //     lastSimulationPeriodicMillis = System.currentTimeMillis();
+    // }
 
     public void enableTurret() {
         isTurretEnabled = true;
@@ -100,7 +101,8 @@ public class TurretSubsystem extends SubsystemBase {
 
         if(isTargetAcquired() == false) return;
 
-        double error = tx.getDouble(0.0);
+        // double error = tx.getDouble(0.0);
+        double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
     }
 
     public boolean isTargetAcquired(){
@@ -113,6 +115,8 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void moveToDegrees(Double degrees) {
         double motorSpeed = pidController.calculate(getPositionInDegrees(), degrees);
+        // TODO: Use the below method instead and configure positionConversionFactor in MotorConfig
+        // motor.setPosition(degrees);
     }
 
     public void rotateClockwise() {
@@ -151,7 +155,7 @@ public class TurretSubsystem extends SubsystemBase {
             .withPosition(0, 0)
             .withSize(2, 1);
 
-        tab.addDouble("Turret tx", () -> tx.getDouble(0.0))
+        tab.addDouble("Turret tx", () -> RobotContainer.shooterVisionSubsystem.getXOffsetDegrees())
             .withPosition(0, 1)
             .withSize(2, 1);
     }
