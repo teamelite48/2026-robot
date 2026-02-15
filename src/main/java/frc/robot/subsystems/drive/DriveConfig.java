@@ -51,6 +51,7 @@ public class DriveConfig {
         var config = new MotorConfig(FRONT_LEFT_ANGLE_CAN_ID);
         config.isInverted = IS_ANGLE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
+        config.continuousWrap = true;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
         config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
@@ -62,6 +63,7 @@ public class DriveConfig {
         var config = new MotorConfig(FRONT_RIGHT_ANGLE_CAN_ID);
         config.isInverted = IS_ANGLE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
+        config.continuousWrap = true;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
         config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
@@ -73,6 +75,7 @@ public class DriveConfig {
         var config = new MotorConfig(REAR_LEFT_ANGLE_CAN_ID);
         config.isInverted = IS_ANGLE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
+        config.continuousWrap = true;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
         config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
@@ -84,6 +87,7 @@ public class DriveConfig {
         var config = new MotorConfig(REAR_RIGHT_ANGLE_CAN_ID);
         config.isInverted = IS_ANGLE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
+        config.continuousWrap = true;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
         config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;

@@ -34,6 +34,8 @@ public class Kraken implements Motor {
 
         var talonFxConfig = new TalonFXConfiguration();
 
+        talonFxConfig.ClosedLoopGeneral.ContinuousWrap = config.continuousWrap;
+
         talonFxConfig.MotorOutput
             .withInverted(motorConfig.isInverted ? InvertedValue.CounterClockwise_Positive : InvertedValue.Clockwise_Positive);
 

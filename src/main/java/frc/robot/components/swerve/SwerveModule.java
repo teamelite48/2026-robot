@@ -60,7 +60,8 @@ public class SwerveModule {
         }
 
         // Put the target angle back into the range [0, 2pi)
-        desiredAngle = normalizeAngle(desiredAngle);
+        // Removing to push math to the motor configs
+        // desiredAngle = normalizeAngle(desiredAngle);
 
         // DriverStation.reportWarning(
         //     String.format("DriveCmd exec: dA=%.3f dV=%.3f aD=%.3f", desiredAngle, desiredVelocity, angleDifference),

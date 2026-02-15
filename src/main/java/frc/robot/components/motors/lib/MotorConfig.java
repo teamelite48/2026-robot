@@ -9,6 +9,7 @@ public class MotorConfig {
     public boolean isInverted = false;
     public boolean isBrakeModeEnabled = false;
     public boolean enableFOC = true;
+    public boolean continuousWrap = false;
     public double positionConversionFactor = 1.0;
     public double feedForward = 0.0;
     public Integer currentLimit = null;
