@@ -21,6 +21,8 @@ import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem.Gear;
+import frc.robot.subsystems.intake.IntakeCommands;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.led.LedSubsystem;
 import frc.robot.subsystems.turret.TurretCommands;
 import frc.robot.subsystems.turret.TurretSubsystem;
@@ -38,6 +40,7 @@ public class RobotContainer {
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   public static ClimberSubsystem climberSubsytem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+  public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -47,7 +50,7 @@ public class RobotContainer {
   //public static boolean isWristFlippable = false;
 
   public static CameraServer camera;
-  
+
 
   public RobotContainer() {
 
@@ -68,7 +71,7 @@ public class RobotContainer {
   public static boolean getIsAimAssistEnabled() {
     return isAimAssistEnabled;
   }
- 
+
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
@@ -84,28 +87,35 @@ public class RobotContainer {
 
   }
 
-  
+
 
   private void bindCopilotControls() {
 
-    
+
   }
 
   private void bindTestControls() {
     testController.left
       .whileTrue(TurretCommands.RotateTurretCounterClockwise())
       .onFalse(TurretCommands.stop());
+
     testController.right
       .whileTrue(TurretCommands.RotateTurretClockwise())
       .onFalse(TurretCommands.stop());
-    
+
     testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
+
+    testController.square
+      .whileTrue(IntakeCommands.extend());
+
+    testController.circle
+      .whileTrue(IntakeCommands.retract());
   }
 
   public static SendableChooser<Command> initAutoChooser() {
 
     NamedCommands.registerCommand("Seek Target", DriveCommands.seekTarget());
-    
+
     var autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 

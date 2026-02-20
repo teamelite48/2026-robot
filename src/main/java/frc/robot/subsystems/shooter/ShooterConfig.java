@@ -1,0 +1,54 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems.shooter;
+
+import com.ctre.phoenix6.CANBus;
+
+import frc.robot.components.motors.lib.MotorConfig;
+import frc.robot.lib.PIDParameters;
+
+public class ShooterConfig {
+
+    public static final CANBus CANIVORE = new CANBus("canivore");
+
+    public static final double EXTEND_SPEED = 1.0;
+    public static final double RETRACT_SPEED = -0.50;
+    public static final double INTAKE_SPEED = 1.0;
+    public static final double EXTEND_LIMIT = 1225.244;
+    public static final double HOME_POSITION = 0.0;
+    public static final double RETRACT_LIMIT = -48000; //-150.0;
+
+    public static MotorConfig getShooterRightConfig() {
+
+        var config = new MotorConfig(19, CANIVORE);
+
+        config.isInverted = true;
+        config.isBrakeModeEnabled = true;
+
+        return config;
+    }
+    public static MotorConfig getShooterLeftConfig() {
+
+        var config = new MotorConfig(18, CANIVORE);
+
+        config.isInverted = true;
+        config.isBrakeModeEnabled = true;
+
+        return config;
+    }
+
+    public static MotorConfig getShooterFeedConfig() {
+
+        var config = new MotorConfig(15);
+
+        config.isInverted = true;
+        // config.positionConversionFactor = (30.0 / 16.0) * 9.0 * (54.0 / 28.0); //32.545;
+        // config.initialPosition = HOME_POSITION;
+        config.pidParameters = new PIDParameters(0.1, 0.0, 0.0);
+        config.isBrakeModeEnabled = true;
+
+        return config;
+    }
+}
