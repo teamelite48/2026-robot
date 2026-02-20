@@ -7,7 +7,7 @@ package frc.robot.components.swerve;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.components.controllers.angle.lib.AngleController;
@@ -36,26 +36,32 @@ public class SwerveModule {
 
     public void setState(SwerveModuleState state) {
 
-        double desiredAngle = normalizeAngle(state.angle.getRadians());
-        double currentAngle = angleController.getCurrentAngle();
-        double angleDifference = desiredAngle - currentAngle;
+        // double desiredAngleRadians = normalizeAngle(state.angle.getRadians());
+        double desiredAngleRadians = state.angle.getRadians();
+        double currentAngleRadians = angleController.getCurrentAngle();
+
+        // Calculate the difference for the 180-degree optimization
+        // double angleDifference = desiredAngleRadians - currentAngleRadians;
+        double angleDifference = MathUtil.angleModulus(desiredAngleRadians - currentAngleRadians);
 
         // Change the target angle so the difference is in the range [-pi, pi) instead of [0, 2pi)
-        if (angleDifference >= PI) {
-            desiredAngle -= TAU;
-        } else if (angleDifference < -PI) {
-            desiredAngle += TAU;
-        }
-
-        angleDifference = desiredAngle - currentAngle; // Recalculate difference
+        // Removing in favor for TalonFx's ContinuousWrap setting for Angle Controllers.
+        // If using another motor, start there first or add check here to run this if uncommenting
+        // if (angleDifference >= PI) {
+        //     desiredAngle -= TAU;
+        // } else if (angleDifference < -PI) {
+        //     desiredAngle += TAU;
+        // }
+        // angleDifference = desiredAngleRadians - currentAngleRadians; // Recalculate difference
 
         double desiredVelocity = state.speedMetersPerSecond;
 
         // If the difference is greater than 90 deg or less than -90 deg the drive can be inverted so the total
         // movement of the module is less than 90 deg
-        if (angleDifference > PI / 2.0 || angleDifference < -PI / 2.0) {
+        // if (angleDifference > PI / 2.0 || angleDifference < -PI / 2.0) {
+        if (Math.abs(angleDifference) > (Math.PI / 2.0)) {
             // Only need to add 180 deg here because the target angle will be put back into the range [0, 2pi)
-            desiredAngle += PI;
+            desiredAngleRadians += PI;
             desiredVelocity *= -1.0;
         }
 
@@ -69,7 +75,7 @@ public class SwerveModule {
         // );
 
         driveController.setVelocity(desiredVelocity);
-        angleController.setAngle(desiredAngle);
+        angleController.setAngle(desiredAngleRadians);
     }
 
     public SwerveModulePosition getPosition() {
