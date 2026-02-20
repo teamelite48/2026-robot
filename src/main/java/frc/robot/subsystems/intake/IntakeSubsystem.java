@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
 
     var configRight = getIntakeRightConfig();
-    var configDeploy = getIntakeRightConfig();
+    var configDeploy = getIntakeDeployConfig();
 
     rightMotor = new Kraken(configRight);
     deployMotor = new Kraken(configDeploy);

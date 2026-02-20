@@ -8,7 +8,7 @@ public class MotorConfig {
     public int canBusId;
     public boolean isInverted = false;
     public boolean isBrakeModeEnabled = false;
-    public boolean enableFOC = true;
+    public boolean enableFOC = true;  // Can only enable if we have Phoenix Pro License
     public boolean continuousWrap = false;
     public double positionConversionFactor = 1.0;
     public double feedForward = 0.0;
