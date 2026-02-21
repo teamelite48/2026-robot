@@ -171,7 +171,7 @@ public class DriveSubsystem extends SubsystemBase{
 
         var vx = -yLimiter.calculate(y * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond();
         var vy = -xLimiter.calculate(x * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond();
-        System.out.println("vx="+ vx + "\tvy="+vy);
+        // System.out.println("vx="+ vx + "\tvy="+vy);
 
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             vx,

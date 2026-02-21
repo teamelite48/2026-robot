@@ -43,10 +43,10 @@ public class TalonFxAngleController implements AngleController {
 
         motor.setInitialPosition(absoluteAngle);
 
-        // Set internal target to match so the motor doesn't jump back to 0
         this.targetAngle = absoluteAngle;
 
         // setAngle(absoluteAngle);
+        setAngle(0.0);
         isInitialized = true;
 
         // if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
