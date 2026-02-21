@@ -33,6 +33,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     if (getPosition() >= IntakeConfig.EXTEND_LIMIT) {
       // System.out.println("Not Extending");
+      deployMotor.stop();
     }
     else {
       deployMotor.setSpeed(EXTEND_SPEED);
@@ -41,10 +42,11 @@ public class IntakeSubsystem extends SubsystemBase {
     startIntake();
   }
 
-public void retract() {
+  public void retract() {
 
     if (getPosition() <= IntakeConfig.RETRACT_LIMIT) {
       stopIntake();
+      deployMotor.stop();
     }
     else {
       deployMotor.setSpeed(RETRACT_SPEED);
@@ -68,7 +70,15 @@ public void retract() {
     var tab = Shuffleboard.getTab("Intake");
 
     tab.addDouble("Deploy Position", () -> getPosition())
-    .withPosition(0, 0)
-    .withSize(2, 1);
+      .withPosition(0, 0)
+      .withSize(2, 1);
+
+    tab.addDouble("Target Extend", () -> EXTEND_LIMIT)
+      .withPosition(0, 1)
+      .withSize(2, 1);
+
+    tab.addDouble("Target Retract", () -> RETRACT_LIMIT)
+      .withPosition(0, 2)
+      .withSize(2, 1);
   }
 }
