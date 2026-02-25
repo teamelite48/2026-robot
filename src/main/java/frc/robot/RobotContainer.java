@@ -106,10 +106,20 @@ public class RobotContainer {
     testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
 
     testController.square
-      .whileTrue(IntakeCommands.extend());
+      .whileTrue(IntakeCommands.extend())
+      .onFalse(IntakeCommands.stop());
 
     testController.circle
-      .whileTrue(IntakeCommands.retract());
+      .whileTrue(IntakeCommands.retract())
+      .onFalse(IntakeCommands.stop());
+
+    testController.up
+      .onTrue(ClimberCommands.extend())
+      .onFalse(ClimberCommands.stop());
+
+    testController.down
+      .onTrue(ClimberCommands.retract())
+      .onFalse(ClimberCommands.stop());
   }
 
   public static SendableChooser<Command> initAutoChooser() {
