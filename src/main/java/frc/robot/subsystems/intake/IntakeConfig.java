@@ -23,7 +23,6 @@ public class IntakeConfig {
     public static MotorConfig getIntakeRightConfig() {
 
         var config = new MotorConfig(11, CANIVORE);
-        // var config = new MotorConfig(11);
 
         config.isInverted = true;
         config.isBrakeModeEnabled = true;

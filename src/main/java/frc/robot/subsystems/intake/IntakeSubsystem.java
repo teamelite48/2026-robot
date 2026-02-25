@@ -32,12 +32,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public void extend() {
 
     if (getPosition() >= IntakeConfig.EXTEND_LIMIT) {
-      // System.out.println("Not Extending");
       deployMotor.stop();
     }
     else {
       deployMotor.setSpeed(EXTEND_SPEED);
-      // System.out.println("Extending");
     }
     startIntake();
   }
@@ -50,7 +48,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     else {
       deployMotor.setSpeed(RETRACT_SPEED);
-      // System.out.println("Retracting");
     }
   }
 
@@ -60,6 +57,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void startIntake() {
     rightMotor.setSpeed(INTAKE_SPEED);
+  }
+
+  public void startOuttake() {
+    rightMotor.setSpeed(-INTAKE_SPEED);
   }
 
   public void stopIntake() {
