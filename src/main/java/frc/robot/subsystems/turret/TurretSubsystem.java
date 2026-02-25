@@ -1,14 +1,13 @@
 package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotContainer;
-import frc.robot.components.motors.Neo550;
+import frc.robot.components.motors.Minion;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
@@ -34,29 +33,15 @@ public class TurretSubsystem extends SubsystemBase {
     public TurretSubsystem() {
         var config = getMotorConfig();
 
-        motor = new Neo550(config);
+        motor = new Minion(config);
         // TODO: Remove pidController after fixing moveToDegrees. PID should be set in Motor config only
         pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
 
         // initDashboard();
-
-        ledMode.setNumber(3);
-        camMode.setNumber(1);
     }
 
     @Override
-    public void periodic() {
-
-        if (isAutoAimOn) {
-            ledMode.setNumber(3);
-            camMode.setNumber(0);
-            autoAim();
-        }
-        else {
-            ledMode.setNumber(1);
-            camMode.setNumber(1);
-        }
-    }
+    public void periodic() {}
 
     // public void simulationPeriodic() {
 
