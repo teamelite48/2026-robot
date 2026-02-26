@@ -53,9 +53,12 @@ public class Minion implements Motor {
             );
 
         if (motorConfig.currentLimit != null) {
-            talonConfig.CurrentLimits
-                .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(motorConfig.currentLimit);
+            // talonConfig.CurrentLimits
+            //     .withSupplyCurrentLimitEnable(true)
+            //     .withSupplyCurrentLimit(motorConfig.currentLimit);
+            double currentAmps = motorConfig.currentLimit;
+            talonConfig.CurrentLimits.StatorCurrentLimit = currentAmps;  // Amps
+            talonConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         }
 
         if (motorConfig.pidParameters != null) {

@@ -7,7 +7,7 @@ public class ClimberConfig {
 
     public static final double EXTEND_SPEED = 0.5;
     public static final double RETRACT_SPEED = -0.50;
-    public static final double EXTEND_LIMIT = 20.0;
+    public static final double EXTEND_LIMIT = 2.0;
     public static final double HOME_POSITION = 0.0;
     public static final double RETRACT_LIMIT = 0.0;
     public static final double MANUAL_MODIFIER = 0.5;
@@ -19,8 +19,9 @@ public class ClimberConfig {
 
         var config = new MotorConfig(17);
 
+        config.currentLimit = 60;
         config.isInverted = true;
-        config.positionConversionFactor = 1.0;
+        config.positionConversionFactor = 1.0; //1.0 / (4.0 * 4.0 * 3.0);
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
         config.reverseLimit = HOME_POSITION;
