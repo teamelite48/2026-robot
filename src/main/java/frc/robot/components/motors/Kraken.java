@@ -3,9 +3,11 @@ package frc.robot.components.motors;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.Angle;
@@ -106,6 +108,10 @@ public class Kraken implements Motor {
         return rotorVel.refresh().getValueAsDouble() * config.positionConversionFactor;
     }
 
+    // public int getCanId() {
+    //     return talonFx.getDeviceID();
+    // }
+
     public void setPosition(double position) {
         var rotations = calculateRotations(position, config.positionConversionFactor);
 
@@ -134,6 +140,10 @@ public class Kraken implements Motor {
     public void stop() {
         talonFx.stopMotor();
     }
+
+    // public void setFollower(TalonFX followerMotor) {
+    //     followerMotor.setControl(new Follower(talonFx.getDeviceID(), MotorAlignmentValue.Opposed));
+    // }
 
     @Override
     public void setInitialPosition() {

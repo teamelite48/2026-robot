@@ -59,7 +59,7 @@ public class ShooterConfig {
 
         var config = new MotorConfig(18, CANIVORE);
 
-        config.isInverted = true;
+        config.isInverted = false;
         config.isBrakeModeEnabled = true;
         config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
 

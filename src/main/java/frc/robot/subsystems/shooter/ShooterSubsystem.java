@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.motors.Kraken;
@@ -12,10 +13,15 @@ import frc.robot.lib.LinearInterpolator;
 
 import static frc.robot.subsystems.shooter.ShooterConfig.*;
 
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+
 public class ShooterSubsystem extends SubsystemBase {
 
   final Motor leftMotor;
   final Motor rightMotor;
+
+  // final SimpleMotorFeedforward rearFeedForward = ShooterConfig.rearMotorFeedForward;
 
   boolean isShooterOn = false;
   double targetRPM = MEDIUM_RPM;
@@ -23,8 +29,6 @@ public class ShooterSubsystem extends SubsystemBase {
   double distanceToTargetInFeet = 0.0;
 
   // LinearInterpolator distanceToRPMInterpolator = new LinearInterpolator(DISTANCE_TO_RPM_MAP);
-
-
 
   public ShooterSubsystem() {
     var configLeft = getShooterLeftConfig();
@@ -58,8 +62,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private void setLeftMotor(double targetRPM) {
     // double frontCurrentRPM = -1 * (leftMotor.getSensorCollection().getIntegratedSensorVelocity() * 600) / 2048;
-
     // leftMotor.setVoltage(leftFeedForward.calculate(targetRPM / 60) + leftPIDController.calculate(leftCurrentRPM, targetRPM));
+
+    // rightMotor.setControl(new Follower(leftMotor.getCanId(), MotorAlignmentValue.Opposed));
   }
 
   private void setRightMotor(double targetRPM) {
