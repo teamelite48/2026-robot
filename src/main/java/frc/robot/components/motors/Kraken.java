@@ -155,6 +155,18 @@ public class Kraken implements Motor {
         talonFx.setPosition(calculateRotations(position, config.positionConversionFactor));
     }
 
+    @Override
+    public void follow(Motor leader, boolean oppose) {
+        // @param oppose: Whether the follower should be inverted relative to the leader.
+        if (leader instanceof Kraken leaderKraken) {
+            int id = leaderKraken.talonFx.getDeviceID();
+            talonFx.setControl(new Follower(id, oppose
+                ? MotorAlignmentValue.Opposed
+                : MotorAlignmentValue.Aligned)
+            );
+        }
+    }
+
     private static double calculateRotations(double units, double positionConversionFactor) {
         return  units / positionConversionFactor;
     }

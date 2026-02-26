@@ -106,11 +106,16 @@ public class Neo550 implements Motor {
   }
 
   public void setInitialPosition() {
-      relativeEncoder.setPosition(config.initialPosition);
+    relativeEncoder.setPosition(config.initialPosition);
   }
 
   public void setInitialPosition(double position) {
-      relativeEncoder.setPosition(position);
+    relativeEncoder.setPosition(position);
+  }
+
+  @Override
+  public void follow(Motor leader, boolean oppose) {
+    // Do Nothing
   }
 
   public void setSpeed(double speed) {

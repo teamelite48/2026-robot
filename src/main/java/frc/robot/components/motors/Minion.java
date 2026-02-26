@@ -157,6 +157,11 @@ public class Minion implements Motor {
         talon.setPosition(position);
     }
 
+    @Override
+    public void follow(Motor leader, boolean oppose) {
+        // Do Nothing
+    }
+
     private static double calculateRotations(double units, double conversion) {
         return units / conversion;
     }
