@@ -8,7 +8,9 @@ import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.components.motors.lib.Motor;
@@ -38,6 +40,16 @@ public class Minion implements Motor {
 
         var talonConfig = new TalonFXSConfiguration();
 
+        talonConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+
+        // Define what port to use for sensors since they are external
+        // May want Fused option here to use Pro features we have available; check with Travis
+        talonConfig.ExternalFeedback.withExternalFeedbackSensorSource(ExternalFeedbackSensorSourceValue.Commutation);
+
+        // Configure Gear Ratios
+        // SensorToMechanismRatio = Motor Rotations / Mechanism Units
+        talonConfig.ExternalFeedback.SensorToMechanismRatio = config.positionConversionFactor;
+
         talonConfig.MotorOutput
             .withInverted(
                 motorConfig.isInverted
@@ -53,12 +65,25 @@ public class Minion implements Motor {
             );
 
         if (motorConfig.currentLimit != null) {
-            // talonConfig.CurrentLimits
-            //     .withSupplyCurrentLimitEnable(true)
-            //     .withSupplyCurrentLimit(motorConfig.currentLimit);
             double currentAmps = motorConfig.currentLimit;
-            talonConfig.CurrentLimits.StatorCurrentLimit = currentAmps;  // Amps
-            talonConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+
+            talonConfig.CurrentLimits
+                .withStatorCurrentLimit(currentAmps)
+                .withStatorCurrentLimitEnable(true)
+                .withSupplyCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(40); // Safety default
+        }
+
+        if (motorConfig.forwardLimit != null) {
+            talonConfig.SoftwareLimitSwitch
+                .withForwardSoftLimitEnable(true)
+                .withForwardSoftLimitThreshold(motorConfig.forwardLimit);
+        }
+
+        if (motorConfig.reverseLimit != null) {
+            talonConfig.SoftwareLimitSwitch
+                .withReverseSoftLimitEnable(true)
+                .withReverseSoftLimitThreshold(motorConfig.reverseLimit);
         }
 
         if (motorConfig.pidParameters != null) {
@@ -81,21 +106,26 @@ public class Minion implements Motor {
 
     @Override
     public double getPosition() {
-        return talon.getPosition().getValueAsDouble() * config.positionConversionFactor;
+        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
+        // return talon.getPosition().getValueAsDouble() * config.positionConversionFactor;
+        return talon.getPosition().getValueAsDouble();
     }
 
     @Override
     public double getVelocity() {
-        return talon.getVelocity().getValueAsDouble() * config.positionConversionFactor;
+        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
+        // return talon.getVelocity().getValueAsDouble() * config.positionConversionFactor;
+        return talon.getVelocity().getValueAsDouble();
     }
 
     @Override
     public void setPosition(double position) {
-        var rotations = calculateRotations(position, config.positionConversionFactor);
+        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
+        // var rotations = calculateRotations(position, config.positionConversionFactor);
 
         talon.setControl(
             positionDutyCycle
-                .withPosition(rotations)
+                .withPosition(position)
                 .withFeedForward(config.feedForward)
         );
     }
@@ -122,7 +152,9 @@ public class Minion implements Motor {
 
     @Override
     public void setInitialPosition(double position) {
-        talon.setPosition(calculateRotations(position, config.positionConversionFactor));
+        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
+        // talon.setPosition(calculateRotations(position, config.positionConversionFactor));
+        talon.setPosition(position);
     }
 
     private static double calculateRotations(double units, double conversion) {
