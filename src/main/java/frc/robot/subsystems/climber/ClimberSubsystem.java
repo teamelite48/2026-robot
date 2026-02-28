@@ -16,6 +16,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     double targetHeight;
     double currentHeight;
+    double inchesPerRotation;
 
     public ClimberSubsystem() {
 
@@ -27,11 +28,13 @@ public class ClimberSubsystem extends SubsystemBase {
         targetHeight = config.initialPosition;
         currentHeight = config.initialPosition;
 
+        inchesPerRotation = (36.0 * 5.0) / 25.4;
+
         initDashboard();
     }
 
     public void periodic() {
-        currentHeight = motor.getPosition();
+        currentHeight = getPositionInches();
         double speed = pidController.calculate(currentHeight, targetHeight);
         speed = EliteMath.clamp(speed, RETRACT_SPEED, EXTEND_SPEED);
 
@@ -71,7 +74,13 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public double getPosition() {
+        // Pulley motor rotations
         return motor.getPosition();
+    }
+
+    public double getPositionInches() {
+        // Inches per pulley rotation
+        return motor.getPosition() * inchesPerRotation;
     }
 
     public double getTargetHeightInches() {
@@ -80,6 +89,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void stop() {
         motor.stop();
+        targetHeight = currentHeight;
     }
 
     public void initDashboard() {
@@ -89,8 +99,12 @@ public class ClimberSubsystem extends SubsystemBase {
         .withPosition(0, 0)
         .withSize(2, 1);
 
+        tab.addDouble("Position Inches", () -> getPositionInches())
+        .withPosition(2, 0)
+        .withSize(2, 1);
+
         tab.addDouble("Target Height", () -> targetHeight)
-            .withPosition(2, 0)
+            .withPosition(4, 0)
             .withSize(2, 1);
     }
 }
