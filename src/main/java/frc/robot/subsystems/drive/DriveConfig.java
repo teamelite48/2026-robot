@@ -136,6 +136,7 @@ public class DriveConfig {
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
+        config.enableFOC = true;
         return config;
     }
 
@@ -146,6 +147,7 @@ public class DriveConfig {
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
+        config.enableFOC = true;
         return config;
     }
 
@@ -156,6 +158,7 @@ public class DriveConfig {
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
+        config.enableFOC = true;
         return config;
     }
 
@@ -166,6 +169,7 @@ public class DriveConfig {
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
+        config.enableFOC = true;
         return config;
     }
 }
