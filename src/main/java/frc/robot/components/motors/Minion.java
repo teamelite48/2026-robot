@@ -43,7 +43,6 @@ public class Minion implements Motor {
         talonConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
 
         // Define what port to use for sensors since they are external
-        // May want Fused option here to use Pro features we have available; check with Travis
         talonConfig.ExternalFeedback.withExternalFeedbackSensorSource(ExternalFeedbackSensorSourceValue.Commutation);
 
         // Configure Gear Ratios
@@ -106,23 +105,16 @@ public class Minion implements Motor {
 
     @Override
     public double getPosition() {
-        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
-        // return talon.getPosition().getValueAsDouble() * config.positionConversionFactor;
         return talon.getPosition().getValueAsDouble();
     }
 
     @Override
     public double getVelocity() {
-        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
-        // return talon.getVelocity().getValueAsDouble() * config.positionConversionFactor;
         return talon.getVelocity().getValueAsDouble();
     }
 
     @Override
     public void setPosition(double position) {
-        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
-        // var rotations = calculateRotations(position, config.positionConversionFactor);
-
         talon.setControl(
             positionDutyCycle
                 .withPosition(position)
@@ -152,8 +144,6 @@ public class Minion implements Motor {
 
     @Override
     public void setInitialPosition(double position) {
-        // SensorToMechanismRatio takes positionConversionFactor into account, this would double it
-        // talon.setPosition(calculateRotations(position, config.positionConversionFactor));
         talon.setPosition(position);
     }
 
