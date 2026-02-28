@@ -114,11 +114,11 @@ public class RobotContainer {
       .onFalse(IntakeCommands.stop());
 
     testController.up
-      .onTrue(ClimberCommands.extend())
+      .whileTrue(ClimberCommands.extend())
       .onFalse(ClimberCommands.stop());
 
     testController.down
-      .onTrue(ClimberCommands.retract())
+      .whileTrue(ClimberCommands.retract())
       .onFalse(ClimberCommands.stop());
   }
 

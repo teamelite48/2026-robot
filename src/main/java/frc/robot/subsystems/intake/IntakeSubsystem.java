@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.intake;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.motors.Kraken;
@@ -12,15 +13,18 @@ import static frc.robot.subsystems.intake.IntakeConfig.*;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  final Motor rightMotor;
+  final Motor intakeMotor;
   final Motor deployMotor;
+  // final PIDController pidController;
 
   public IntakeSubsystem() {
 
     var configRight = getIntakeRightConfig();
     var configDeploy = getIntakeDeployConfig();
 
-    rightMotor = new Kraken(configRight);
+    // pidController= new PIDController(configDeploy.pidParameters.P, configDeploy.pidParameters.I, configDeploy.pidParameters.D);
+
+    intakeMotor = new Kraken(configRight);
     deployMotor = new Kraken(configDeploy);
 
     initDashboard();
@@ -48,6 +52,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     else {
       deployMotor.setSpeed(RETRACT_SPEED);
+      startIntake();
     }
   }
 
@@ -56,15 +61,15 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void startIntake() {
-    rightMotor.setSpeed(INTAKE_SPEED);
+    intakeMotor.setSpeed(INTAKE_SPEED);
   }
 
   public void startOuttake() {
-    rightMotor.setSpeed(-INTAKE_SPEED);
+    intakeMotor.setSpeed(-INTAKE_SPEED);
   }
 
   public void stopIntake() {
-    rightMotor.stop();
+    intakeMotor.stop();
   }
 
   public void initDashboard() {

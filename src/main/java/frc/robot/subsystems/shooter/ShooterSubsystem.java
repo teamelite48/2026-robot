@@ -34,8 +34,10 @@ public class ShooterSubsystem extends SubsystemBase {
     var configLeft = getShooterLeftConfig();
     var configRight = getShooterRightConfig();
 
-    leftMotor = new Kraken(configLeft);
+    leftMotor = new Kraken(configLeft);  // leader motor
     rightMotor = new Kraken(configRight);
+
+    rightMotor.follow(leftMotor, true);
   }
 
   @Override
