@@ -18,6 +18,8 @@ import frc.robot.commands.Robot.RobotCommands;
 import frc.robot.controls.DualShock4Controller;
 import frc.robot.subsystems.climber.ClimberCommands;
 import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.subsystems.deploy.DeployCommands;
+import frc.robot.subsystems.deploy.DeploySubsystem;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem.Gear;
@@ -41,6 +43,7 @@ public class RobotContainer {
   public static ClimberSubsystem climberSubsytem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public static DeploySubsystem deploySubsystem = new DeploySubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -106,12 +109,18 @@ public class RobotContainer {
     testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
 
     testController.square
-      .whileTrue(IntakeCommands.extend())
-      .onFalse(IntakeCommands.stop());
+      .whileTrue(Commands.parallel(
+        DeployCommands.extend(),
+        IntakeCommands.intake()))
+      .onFalse(DeployCommands.stop());
 
     testController.circle
-      .whileTrue(IntakeCommands.retract())
-      .onFalse(IntakeCommands.stop());
+      .whileTrue(Commands.parallel(
+        DeployCommands.retract(),
+        IntakeCommands.intake()))
+      .onFalse(Commands.parallel(
+        DeployCommands.stop(),
+        IntakeCommands.stop()));
 
     testController.up
       .whileTrue(ClimberCommands.extend())

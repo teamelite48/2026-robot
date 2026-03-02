@@ -11,15 +11,15 @@ import frc.robot.RobotContainer;
 public class IntakeCommands {
     static final IntakeSubsystem intakeSubsystem = RobotContainer.intakeSubsystem;
 
-    public static Command extend() {
-        return Commands.run(() -> intakeSubsystem.extend(), intakeSubsystem);
+    public static Command intake() {
+        return Commands.run(() -> intakeSubsystem.startIntake(), intakeSubsystem);
     }
 
-    public static Command retract() {
-        return Commands.run(() -> intakeSubsystem.retract(), intakeSubsystem);
+    public static Command outtake() {
+        return Commands.run(() -> intakeSubsystem.startOuttake(), intakeSubsystem);
     }
 
     public static Command stop() {
-        return Commands.run(() -> intakeSubsystem.stopIntake(), intakeSubsystem);
+        return Commands.run(() -> intakeSubsystem.stop(), intakeSubsystem);
     }
 }
