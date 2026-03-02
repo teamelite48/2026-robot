@@ -45,8 +45,8 @@ public class TalonFxAngleController implements AngleController {
 
         this.targetAngle = absoluteAngle;
 
-        // setAngle(absoluteAngle);
-        setAngle(0.0);
+        setAngle(absoluteAngle);
+        // setAngle(0.0);
         isInitialized = true;
 
         // if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
