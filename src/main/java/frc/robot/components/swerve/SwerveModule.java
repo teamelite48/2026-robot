@@ -52,48 +52,66 @@ public class SwerveModule {
     // angleController.setAngle(desired);
     // }
 
+    // public void setState(SwerveModuleState state) {
+
+    //     // double desiredAngleRadians = normalizeAngle(state.angle.getRadians());
+    //     double desiredAngleRadians = state.angle.getRadians();
+    //     double currentAngleRadians = angleController.getCurrentAngle();
+
+    //     // Calculate the difference for the 180-degree optimization
+    //     // double angleDifference = desiredAngleRadians - currentAngleRadians;
+    //     double angleDifference = MathUtil.angleModulus(desiredAngleRadians - currentAngleRadians);
+
+    //     // Change the target angle so the difference is in the range [-pi, pi) instead of [0, 2pi)
+    //     // Removing in favor for TalonFx's ContinuousWrap setting for Angle Controllers.
+    //     // If using another motor, start there first or add check here to run this if uncommenting
+    //     // if (angleDifference >= PI) {
+    //     //     desiredAngle -= TAU;
+    //     // } else if (angleDifference < -PI) {
+    //     //     desiredAngle += TAU;
+    //     // }
+    //     // angleDifference = desiredAngleRadians - currentAngleRadians; // Recalculate difference
+
+    //     double desiredVelocity = state.speedMetersPerSecond;
+
+    //     // If the difference is greater than 90 deg or less than -90 deg the drive can be inverted so the total
+    //     // movement of the module is less than 90 deg
+    //     // if (angleDifference > PI / 2.0 || angleDifference < -PI / 2.0) {
+    //     if (Math.abs(angleDifference) > (Math.PI / 2.0)) {
+    //         // Only need to add 180 deg here because the target angle will be put back into the range [0, 2pi)
+    //         desiredAngleRadians += PI;
+    //         desiredVelocity *= -1.0;
+    //     }
+
+    //     // Put the target angle back into the range [0, 2pi)
+    //     // Removing to push math to the motor configs
+    //     // desiredAngle = normalizeAngle(desiredAngle);
+
+    //     // DriverStation.reportWarning(
+    //     //     String.format("DriveCmd exec: dA=%.3f dV=%.3f aD=%.3f", desiredAngle, desiredVelocity, angleDifference),
+    //     //     false
+    //     // );
+
+    //     driveController.setVelocity(desiredVelocity);
+    //     angleController.setAngle(desiredAngleRadians);
+    // }
+
     public void setState(SwerveModuleState state) {
 
-        // double desiredAngleRadians = normalizeAngle(state.angle.getRadians());
-        double desiredAngleRadians = state.angle.getRadians();
-        double currentAngleRadians = angleController.getCurrentAngle();
+        double desired = normalizeAngle(state.angle.getRadians()); // [0, 2pi)
+        double current = angleController.getCurrentAngle();        // [0, 2pi)
 
-        // Calculate the difference for the 180-degree optimization
-        // double angleDifference = desiredAngleRadians - currentAngleRadians;
-        double angleDifference = MathUtil.angleModulus(desiredAngleRadians - currentAngleRadians);
+        double diff = MathUtil.angleModulus(desired - current);    // [-pi, pi)
 
-        // Change the target angle so the difference is in the range [-pi, pi) instead of [0, 2pi)
-        // Removing in favor for TalonFx's ContinuousWrap setting for Angle Controllers.
-        // If using another motor, start there first or add check here to run this if uncommenting
-        // if (angleDifference >= PI) {
-        //     desiredAngle -= TAU;
-        // } else if (angleDifference < -PI) {
-        //     desiredAngle += TAU;
-        // }
-        // angleDifference = desiredAngleRadians - currentAngleRadians; // Recalculate difference
+        double velocity = state.speedMetersPerSecond;
 
-        double desiredVelocity = state.speedMetersPerSecond;
-
-        // If the difference is greater than 90 deg or less than -90 deg the drive can be inverted so the total
-        // movement of the module is less than 90 deg
-        // if (angleDifference > PI / 2.0 || angleDifference < -PI / 2.0) {
-        if (Math.abs(angleDifference) > (Math.PI / 2.0)) {
-            // Only need to add 180 deg here because the target angle will be put back into the range [0, 2pi)
-            desiredAngleRadians += PI;
-            desiredVelocity *= -1.0;
+        if (Math.abs(diff) > (Math.PI / 2.0)) {
+            desired = normalizeAngle(desired + Math.PI);
+            velocity *= -1.0;
         }
 
-        // Put the target angle back into the range [0, 2pi)
-        // Removing to push math to the motor configs
-        // desiredAngle = normalizeAngle(desiredAngle);
-
-        // DriverStation.reportWarning(
-        //     String.format("DriveCmd exec: dA=%.3f dV=%.3f aD=%.3f", desiredAngle, desiredVelocity, angleDifference),
-        //     false
-        // );
-
-        driveController.setVelocity(desiredVelocity);
-        angleController.setAngle(desiredAngleRadians);
+        driveController.setVelocity(velocity);
+        angleController.setAngle(desired);
     }
 
     public SwerveModulePosition getPosition() {

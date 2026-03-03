@@ -116,7 +116,7 @@ public class DriveSubsystem extends SubsystemBase{
                 backRight.getPosition()
         });
 
-        zeroGyro();
+        invertGyro(); //This sets proper orientation of robot for some reason idk. Trevor. DO NOT CHANGE! 3/3/26
         configAutobuilder();
         setHighGear();
         initDashboard();
