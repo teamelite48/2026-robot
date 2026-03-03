@@ -131,7 +131,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigLeftFrontDrive() {
         var config = new MotorConfig(FRONT_LEFT_DRIVE_CAN_ID);
-        config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
@@ -142,7 +142,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigRightFrontDrive() {
         var config = new MotorConfig(FRONT_RIGHT_DRIVE_CAN_ID);
-        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
@@ -153,7 +153,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigLeftRearDrive() {
         var config = new MotorConfig(REAR_LEFT_DRIVE_CAN_ID);
-        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
@@ -164,7 +164,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigRightRearDrive() {
         var config = new MotorConfig(REAR_RIGHT_DRIVE_CAN_ID);
-        config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
         config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();

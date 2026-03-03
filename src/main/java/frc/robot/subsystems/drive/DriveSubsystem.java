@@ -116,7 +116,7 @@ public class DriveSubsystem extends SubsystemBase{
                 backRight.getPosition()
         });
 
-        invertGyro(); //This sets proper orientation of robot for some reason idk. Trevor. DO NOT CHANGE! 3/3/26
+        zeroGyro(); //This sets proper orientation of robot for some reason idk. Trevor. DO NOT CHANGE! 3/3/26
         configAutobuilder();
         setHighGear();
         initDashboard();
@@ -176,7 +176,7 @@ public class DriveSubsystem extends SubsystemBase{
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             vx,
             vy,
-            -rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
+            rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
         );
 
