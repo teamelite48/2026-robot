@@ -82,11 +82,11 @@ public class RobotContainer {
   private void bindPilotControls() {
     pilotController.ps.onTrue(new InstantCommand(() -> driveSubsystem.zeroGyro(), driveSubsystem));
 
-    // pilotController.touchpad
-    //   .onTrue(Commands.either(
-    //     Commands.runOnce(() -> driveSubsystem.setHighGear(), driveSubsystem),
-    //     Commands.runOnce(() -> driveSubsystem.setLowGear(), driveSubsystem),
-    //     () -> driveSubsystem.getGear() == Gear.Low));
+     pilotController.touchpad
+       .onTrue(Commands.either(
+         Commands.runOnce(() -> driveSubsystem.setHighGear(), driveSubsystem),
+         Commands.runOnce(() -> driveSubsystem.setLowGear(), driveSubsystem),
+         () -> driveSubsystem.getGear() == Gear.Low));
 
   }
 
