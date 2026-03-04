@@ -94,7 +94,6 @@ public class RobotContainer {
 
   private void bindCopilotControls() {
 
-
   }
 
   private void bindTestControls() {
@@ -109,18 +108,26 @@ public class RobotContainer {
     testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
 
     testController.square
-      .whileTrue(Commands.parallel(
+      .onTrue(Commands.parallel(
         DeployCommands.extend(),
         IntakeCommands.intake()))
       .onFalse(DeployCommands.stop());
 
     testController.circle
-      .whileTrue(Commands.parallel(
+      .onTrue(Commands.parallel(
         DeployCommands.retract(),
         IntakeCommands.intake()))
       .onFalse(Commands.parallel(
         DeployCommands.stop(),
         IntakeCommands.stop()));
+
+    // Bounces behavior (angry PID)
+    testController.triangle
+      .onTrue(DeployCommands.moveHome())
+      // .onFalse(Commands.parallel(
+      //   DeployCommands.stop(),
+      //   IntakeCommands.stop()))
+      ;
 
     testController.up
       .whileTrue(ClimberCommands.extend())

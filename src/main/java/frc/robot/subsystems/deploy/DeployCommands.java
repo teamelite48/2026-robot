@@ -12,11 +12,15 @@ public class DeployCommands {
     static final DeploySubsystem deploySubsystem = RobotContainer.deploySubsystem;
 
     public static Command extend() {
-        return Commands.run(() -> deploySubsystem.extend(), deploySubsystem);
+        return Commands.run(() -> deploySubsystem.fullExtend(), deploySubsystem);
     }
 
     public static Command retract() {
-        return Commands.run(() -> deploySubsystem.retract(), deploySubsystem);
+        return Commands.run(() -> deploySubsystem.fullRetract(), deploySubsystem);
+    }
+
+    public static Command moveHome() {
+        return Commands.run(() -> deploySubsystem.setPosition(DeployConfig.HOME_POSITION), deploySubsystem);
     }
 
     public static Command stop() {

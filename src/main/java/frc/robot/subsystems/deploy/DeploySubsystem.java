@@ -26,7 +26,8 @@ public class DeploySubsystem extends SubsystemBase {
   private double targetPosition;
   private double currentPosition;
   private double manualSpeed = 0;
-  private ControlMode currentMode = ControlMode.POSITION;
+  private double outputSpeed = 0;
+  private ControlMode currentMode = ControlMode.POSITION;  // TODO: remove this for default set position behavior
 
   public DeploySubsystem() {
 
@@ -43,12 +44,12 @@ public class DeploySubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     currentPosition = getPosition();
-    double outputSpeed = 0;
 
     if (currentMode == ControlMode.POSITION) {
       outputSpeed = pidController.calculate(currentPosition, targetPosition);
       outputSpeed = EliteMath.clamp(outputSpeed, RETRACT_SPEED, EXTEND_SPEED);
-    } else {
+    }
+    else {
       outputSpeed = manualSpeed;
     }
 
@@ -74,14 +75,17 @@ public class DeploySubsystem extends SubsystemBase {
     return deployMotor.getPosition();
   }
 
-  public void extend() {
+  public void setPosition(double position) {
     currentMode = ControlMode.POSITION;
-    targetPosition = EXTEND_LIMIT;
+    targetPosition = position;
   }
 
-  public void retract() {
-    currentMode = ControlMode.POSITION;
-    targetPosition = RETRACT_LIMIT;
+  public void fullExtend() {
+    setPosition(EXTEND_LIMIT);
+  }
+
+  public void fullRetract() {
+    setPosition(RETRACT_LIMIT);
   }
 
   public void stop() {

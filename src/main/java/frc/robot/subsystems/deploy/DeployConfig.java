@@ -11,7 +11,7 @@ public class DeployConfig {
 
     public static final double EXTEND_SPEED = 0.25;
     public static final double RETRACT_SPEED = -0.3;
-    public static final double EXTEND_LIMIT = 513.52;
+    public static final double EXTEND_LIMIT = 505.0;
     public static final double MID_POSITION = 341.67;
     public static final double RETRACT_LIMIT = 0.0;
     public static final double HOME_POSITION = RETRACT_LIMIT + 2.0;
@@ -25,8 +25,9 @@ public class DeployConfig {
         config.reverseLimit = HOME_POSITION;
         config.positionConversionFactor = (30.0 / 16.0) * 9.0 * (54.0 / 28.0); //32.545;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(0.9, 0.0, 0.0);
+        config.pidParameters = new PIDParameters(0.5, 0.01, 0.0);
         config.isBrakeModeEnabled = true;
+        config.currentLimit = 60;
 
         return config;
     }

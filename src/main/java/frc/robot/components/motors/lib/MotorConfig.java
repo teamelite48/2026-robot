@@ -12,7 +12,7 @@ public class MotorConfig {
     public boolean continuousWrap = false;
     public double positionConversionFactor = 1.0;
     public double feedForward = 0.0;
-    public Integer currentLimit = null;
+    public Integer currentLimit = null;  // default to 40 for all Krakens
     public Double forwardLimit = null;
     public Double reverseLimit = null;
     public Double initialPosition = null;
