@@ -30,12 +30,12 @@ public class ShooterFeedSubsystem extends SubsystemBase {
   @Override
   public void periodic() {}
 
-  public void up(){
-    motor.setSpeed(UP_SPEED);
+  public void feedTowardsShooter(){
+    motor.setSpeed(FEED_SPEED);
   }
 
-  public void down(){
-    motor.setSpeed(DOWN_SPEED);
+  public void feedAwayFromShooter(){
+    motor.setSpeed(-FEED_SPEED);
   }
 
   public void stop(){

@@ -4,151 +4,114 @@
 
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.components.motors.Kraken;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.lib.LinearInterpolator;
+import frc.robot.subsystems.led.LedSubsystem.LedMode;
 
 import static frc.robot.subsystems.shooter.ShooterConfig.*;
 
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import java.util.function.Supplier;
 
 public class ShooterSubsystem extends SubsystemBase {
 
   final Motor leftMotor;
   final Motor rightMotor;
 
-  // final SimpleMotorFeedforward rearFeedForward = ShooterConfig.rearMotorFeedForward;
-
   boolean isShooterOn = false;
-  double targetRPM = MEDIUM_RPM;
+  boolean isOnSpeed = false;
+  double lastOnSpeedRpm = 0.0;
+
   boolean isRangeBasedRPMOn = false;
-  double distanceToTargetInFeet = 0.0;
 
-  // LinearInterpolator distanceToRPMInterpolator = new LinearInterpolator(DISTANCE_TO_RPM_MAP);
+  LinearInterpolator feetToRpmInterpolator = new LinearInterpolator(FEET_TO_RPM_MAP);
+  Supplier<Double> feetFromTargetSupplier;
 
-  public ShooterSubsystem() {
+  public ShooterSubsystem(Supplier<Double> feetFromTargetSupplier) {
+
+    this.feetFromTargetSupplier = feetFromTargetSupplier;
+
     var configLeft = getShooterLeftConfig();
     var configRight = getShooterRightConfig();
 
-    leftMotor = new Kraken(configLeft);  // leader motor
+    leftMotor = new Kraken(configLeft);  // Leader motor
     rightMotor = new Kraken(configRight);
 
     rightMotor.follow(leftMotor, true);
+
+    initDashboard();
   }
 
   @Override
   public void periodic() {
-    // double angleToGoalInDegrees = ShooterConfig.limelightAngleInDegrees + (ty.getDouble(0.0));
-    // double angleToGoalInRadians = Math.toRadians(angleToGoalInDegrees);
 
-    // distanceToTargetInFeet = Math.min(ShooterConfig.limelightToVisionTargetInFeet / Math.tan(angleToGoalInRadians), ShooterConfig.maxDistanceInFeet);
+    var currentOnSpeedRpm = RobotContainer.isAimAssistEnabled
+      ? feetToRpmInterpolator.calculate(feetFromTargetSupplier.get())
+      : ON_SPEED_RPM;
 
-    if (isShooterOn == false) {
-      leftMotor.setSpeed(0.0);
-      rightMotor.setSpeed(0.0);
+    if (Math.abs(currentOnSpeedRpm - lastOnSpeedRpm) > 5.0) {
+      isOnSpeed = false;
     }
-    else {
 
-      if(isRangeBasedRPMOn){
-        // targetRPM = distanceToRPMInterpolator.calculate(distanceToTargetInFeet);
-      }
-
-      setLeftMotor(targetRPM);
-      setRightMotor(targetRPM * 2.5);
+    if (isOnSpeed == false && getLeftRpm() > currentOnSpeedRpm) {
+      isOnSpeed = true;
+      RobotContainer.ledSubsystem.setLedMode(LedMode.Green);
     }
-  }
+    else if (getLeftRpm() < IDLE_RPM && RobotState.isTeleop()){
+      RobotContainer.ledSubsystem.setLedMode(LedMode.Red);
+    }
 
-  private void setLeftMotor(double targetRPM) {
-    // double frontCurrentRPM = -1 * (leftMotor.getSensorCollection().getIntegratedSensorVelocity() * 600) / 2048;
-    // leftMotor.setVoltage(leftFeedForward.calculate(targetRPM / 60) + leftPIDController.calculate(leftCurrentRPM, targetRPM));
-
-    // rightMotor.setControl(new Follower(leftMotor.getCanId(), MotorAlignmentValue.Opposed));
-  }
-
-  private void setRightMotor(double targetRPM) {
-    // double rearCurrentRPM = -1 * (rightMotor.getSensorCollection().getIntegratedSensorVelocity() * 600) / 2048;
-
-    // rightMotor.setVoltage(rightFeedForward.calculate(targetRPM / 60) + rightPIDController.calculate(rightCurrentRPM, targetRPM));
-
-    // SmartDashboard.putNumber("Current Rear RPM", rearCurrentRPM * -1);
-  }
-
-  public void toggleShooter() {
-    isShooterOn = !isShooterOn;
-  }
-
-  public void shooterOn() {
-    isShooterOn = true;
-  }
-
-  public void shooterOff() {
-    isRangeBasedRPMOn = false;
-    isShooterOn = false;
-  }
-
-  public void setLowSpeed() {
-    isRangeBasedRPMOn = false;
-    targetRPM = LOW_RPM;
-  }
-
-  public void setMediumSpeed() {
-    isRangeBasedRPMOn = false;
-    targetRPM = MEDIUM_RPM;
-  }
-
-  public void turnRangeBasedRPMOn() {
-    isRangeBasedRPMOn = true;
-  }
-
-  public void turnRangeBasedRPMOff() {
-    isRangeBasedRPMOn = false;
+    lastOnSpeedRpm = currentOnSpeedRpm;
   }
 
   public boolean isShooterOn() {
       return isShooterOn;
   }
 
-  public void bumpRpmUp() {
-    targetRPM += RPM_BUMP;
+  public void setSpeed(double speed) {
+    isOnSpeed = false;
+    leftMotor.setSpeed(speed);
   }
 
-  public void bumpRpmDown() {
-    targetRPM -= RPM_BUMP;
+  public void stop() {
+    this.isShooterOn = false;
+    this.isOnSpeed = false;
+    leftMotor.stop();
   }
 
-  public double getTargetRpm() {
-    return targetRPM;
+  public boolean getIsOnSpeed() {
+    return isOnSpeed;
   }
 
-  public double getDistanceToTarget() {
-    return distanceToTargetInFeet;
+  private double getLeftRpm() {
+    return leftMotor.getVelocity() * 60.0;
+  }
+
+  private double getRightRpm() {
+    return rightMotor.getVelocity() * 60.0;
   }
 
   public void initDashboard() {
     var tab = Shuffleboard.getTab("Shooter");
 
-    tab.addDouble("Target RPM", () -> getTargetRpm())
+    tab.addBoolean("Shooter Enabled", () -> isShooterOn)
       .withPosition(0, 0)
-      .withSize(2, 1);
-
-    tab.addBoolean("Shooter On", () -> isShooterOn)
-      .withPosition(2, 0)
       .withSize(1, 1);
 
-    tab.addDouble("Distance to Target", () -> getDistanceToTarget())
+    tab.addDouble("Current RPM Left", () -> getLeftRpm())
+      .withPosition(1, 0)
+      .withSize(2, 1);
+
+    tab.addDouble("Current RPM Right", () -> getRightRpm())
       .withPosition(3, 0)
       .withSize(2, 1);
 
-    tab.addDouble("Current RPM Left", () -> getTargetRpm())
+    tab.addBoolean("On Speed", () -> getIsOnSpeed())
       .withPosition(0, 1)
-      .withSize(2, 1);
-
-    tab.addDouble("Current RPM Right", () -> getTargetRpm())
-      .withPosition(2, 1)
-      .withSize(2, 1);
+      .withSize(1, 1);
   }
 }
