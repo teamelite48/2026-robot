@@ -23,7 +23,7 @@ public class DeployConfig {
         config.isInverted = false;
         config.forwardLimit = EXTEND_LIMIT;
         config.reverseLimit = HOME_POSITION;
-        config.positionConversionFactor = (30.0 / 16.0) * 27.0 * (54.0 / 28.0); //32.545; Changed 9.0 to 27.0 to reflect the new MAXPlanetary reduction
+        config.positionConversionFactor = (30.0 / 16.0) * 27.0 * (54.0 / 28.0); //97.634 - Changed 9.0 to 27.0 to reflect the new MAXPlanetary reduction
         config.initialPosition = HOME_POSITION;
         config.pidParameters = new PIDParameters(0.5, 0.01, 0.0);
         config.isBrakeModeEnabled = true;
