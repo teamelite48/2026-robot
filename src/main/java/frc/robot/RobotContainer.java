@@ -15,6 +15,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.RobotConfig.GamePiece;
 import frc.robot.RobotConfig.VisionTrackingMode;
 import frc.robot.commands.Robot.RobotCommands;
+import frc.robot.commands.Shooter.ShootCommand;
 import frc.robot.controls.DualShock4Controller;
 import frc.robot.subsystems.climber.ClimberCommands;
 import frc.robot.subsystems.climber.ClimberSubsystem;
@@ -26,6 +27,8 @@ import frc.robot.subsystems.drive.DriveSubsystem.Gear;
 import frc.robot.subsystems.intake.IntakeCommands;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.led.LedSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
 import frc.robot.subsystems.turret.TurretCommands;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
@@ -44,10 +47,14 @@ public class RobotContainer {
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
+  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> shooterVisionSubsystem.getFeetFromTarget());
+  public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
   public static boolean isAimAssistEnabled = true;
+  public static boolean isShooting = false;
+  public static boolean isAutonomous = false;
   //public static GamePiece gamePieceMode = GamePiece.Coral;
   public static VisionTrackingMode visionTrackingMode = VisionTrackingMode.Rear;
   //public static boolean isWristFlippable = false;
@@ -88,9 +95,9 @@ public class RobotContainer {
          Commands.runOnce(() -> driveSubsystem.setLowGear(), driveSubsystem),
          () -> driveSubsystem.getGear() == Gear.Low));
 
+    pilotController.l2
+      .whileTrue(new ShootCommand());
   }
-
-
 
   private void bindCopilotControls() {
 

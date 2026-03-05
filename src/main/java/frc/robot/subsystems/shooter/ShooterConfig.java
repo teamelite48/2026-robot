@@ -15,34 +15,37 @@ public class ShooterConfig {
 
     public static final CANBus CANIVORE = new CANBus("canivore");
 
-    public static final double LOW_RPM = 0.5;
-    public static final double MEDIUM_RPM = 1.0;
-    public static final double RPM_BUMP = 1.0;
+    // public static final double LOW_RPM = 0.5;
+    // public static final double MEDIUM_RPM = 1.0;
+    // public static final double RPM_BUMP = 1.0;
 
-    public static final HashMap<Integer, Integer> DISTANCE_TO_RPM_MAP = new HashMap<Integer, Integer>() {{
-        put(0, 1100);
-        put(1, 1100);
-        put(2, 1100);
-        put(3, 1100);
-        put(4, 1100);
-        put(5, 1100);
-        put(6, 1100);
-        put(7, 1700);
-        put(8, 1800);
-        put(9, 1900);
-        put(10, 2000);
-        put(11, 2050);
-        put(12, 2100);
-        put(13, 2175);
-        put(14, 2250);
-        put(15, 2350);
-        put(16, 2450);
-        put(17, 2550);
-        put(18, 2850);
-        put(19, 3500);
-        put(20, 4100);
-        put(21, 4400);
-        put(22, 4750);
+    public static final double IDLE_RPM = 0.2;
+    public static final double ON_SPEED_RPM = 1.0;
+
+    public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
+        put(0, 1100.0);
+        put(1, 1100.0);
+        put(2, 1100.0);
+        put(3, 1100.0);
+        put(4, 1100.0);
+        put(5, 1100.0);
+        put(6, 1100.0);
+        put(7, 1700.0);
+        put(8, 1800.0);
+        put(9, 1900.0);
+        put(10, 2000.0);
+        put(11, 2050.0);
+        put(12, 2100.0);
+        put(13, 2175.0);
+        put(14, 2250.0);
+        put(15, 2350.0);
+        put(16, 2450.0);
+        put(17, 2550.0);
+        put(18, 2850.0);
+        put(19, 3500.0);
+        put(20, 4100.0);
+        put(21, 4400.0);
+        put(22, 4750.0);
     }};
 
     public static MotorConfig getShooterRightConfig() {
@@ -50,7 +53,9 @@ public class ShooterConfig {
         var config = new MotorConfig(19, CANIVORE);
 
         config.isInverted = true;
-        config.isBrakeModeEnabled = true;
+        config.isBrakeModeEnabled = false;
+        config.currentLimit = 40;
+        // config.positionConversionFactor = 0.0;  // TODO need to get this from Alex/Adam
         config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
 
         return config;
@@ -60,7 +65,9 @@ public class ShooterConfig {
         var config = new MotorConfig(18, CANIVORE);
 
         config.isInverted = false;
-        config.isBrakeModeEnabled = true;
+        config.isBrakeModeEnabled = false;
+        config.currentLimit = 40;
+        // config.positionConversionFactor = 0.0;  // TODO need to get this from Alex/Adam
         config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
 
         return config;
