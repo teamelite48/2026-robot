@@ -7,7 +7,6 @@ package frc.robot.components.swerve;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.components.controllers.angle.lib.AngleController;
@@ -96,22 +95,42 @@ public class SwerveModule {
     //     angleController.setAngle(desiredAngleRadians);
     // }
 
+    // public void setState(SwerveModuleState state) {
+
+    //     double desired = normalizeAngle(state.angle.getRadians()); // [0, 2pi)
+    //     double current = angleController.getCurrentAngle();        // [0, 2pi)
+
+    //     double diff = MathUtil.angleModulus(desired - current);    // [-pi, pi)
+
+    //     double velocity = state.speedMetersPerSecond;
+
+    //     if (Math.abs(diff) > (Math.PI / 2.0)) {
+    //         desired = normalizeAngle(desired + Math.PI);
+    //         velocity *= -1.0;
+    //     }
+
+    //     driveController.setVelocity(velocity);
+    //     angleController.setAngle(desired);
+    // }
+
     public void setState(SwerveModuleState state) {
 
-        double desired = normalizeAngle(state.angle.getRadians()); // [0, 2pi)
-        double current = angleController.getCurrentAngle();        // [0, 2pi)
+        Rotation2d currentAngle =
+            Rotation2d.fromRadians(angleController.getCurrentAngle());
 
-        double diff = MathUtil.angleModulus(desired - current);    // [-pi, pi)
+        // WPILib instance optimize
+        state.optimize(currentAngle);
 
-        double velocity = state.speedMetersPerSecond;
-
-        if (Math.abs(diff) > (Math.PI / 2.0)) {
-            desired = normalizeAngle(desired + Math.PI);
-            velocity *= -1.0;
+        // Prevent steering jitter when nearly stopped
+        if (Math.abs(state.speedMetersPerSecond) < 0.05) {
+            driveController.setVelocity(0.0);
+            return;
         }
 
-        driveController.setVelocity(velocity);
-        angleController.setAngle(desired);
+        driveController.setVelocity(state.speedMetersPerSecond);
+
+        // Your convention: 0 → 2π
+        angleController.setAngle(normalizeAngle(state.angle.getRadians()));
     }
 
     public SwerveModulePosition getPosition() {

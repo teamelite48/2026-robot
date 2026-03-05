@@ -176,7 +176,7 @@ public class DriveSubsystem extends SubsystemBase{
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             vx,
             vy,
-            rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
+            -rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
         );
 

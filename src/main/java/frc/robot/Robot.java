@@ -52,17 +52,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    // RobotContainer.ledSubsystem.setLedMode(RobotContainer.gamePieceMode.ledMode);
-
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-      RobotContainer.driveSubsystem.invertGyro();
-    }
-  }
 
   @Override
   public void teleopPeriodic() {}
