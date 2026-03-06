@@ -52,10 +52,10 @@ public class ShooterConfig {
 
         var config = new MotorConfig(19, CANIVORE);
 
-        config.isInverted = true;
+        config.isInverted = false;
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
-        // config.positionConversionFactor = 0.0;  // TODO need to get this from Alex/Adam
+        config.positionConversionFactor = (1.0 / 1.0);
         config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
 
         return config;
@@ -64,10 +64,10 @@ public class ShooterConfig {
 
         var config = new MotorConfig(18, CANIVORE);
 
-        config.isInverted = false;
+        config.isInverted = true;
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
-        // config.positionConversionFactor = 0.0;  // TODO need to get this from Alex/Adam
+        config.positionConversionFactor = (1.0 / 1.0);
         config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
 
         return config;

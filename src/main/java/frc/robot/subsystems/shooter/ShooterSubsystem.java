@@ -43,6 +43,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     rightMotor.follow(leftMotor, true);
 
+    // leftMotor.setSpeed(IDLE_RPM);
+
     initDashboard();
   }
 

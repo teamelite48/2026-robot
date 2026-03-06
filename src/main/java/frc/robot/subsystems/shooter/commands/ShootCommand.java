@@ -9,6 +9,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooterFeed.ShooterFeedConfig;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem.VisionTarget;
 
@@ -16,6 +17,7 @@ public class ShootCommand extends Command {
 
   ShooterFeedSubsystem shooterFeedSubsystem = RobotContainer.shooterFeedSubsystem;
   ShooterSubsystem shooterSubsystem = RobotContainer.shooterSubsystem;
+  TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
   VisionSubsystem shooterVisionSubsystem = RobotContainer.shooterVisionSubsystem;
 
   long onSpeedMillis;
@@ -57,13 +59,14 @@ public class ShootCommand extends Command {
     RobotContainer.isShooting = false;
     shooterFeedSubsystem.stop();
     shooterVisionSubsystem.stopTracking();
+    shooterSubsystem.idle();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     if (RobotContainer.isAutonomous && onSpeedMillis != 0) {
-      return System.currentTimeMillis() - onSpeedMillis > ShooterFeedConfig.TIME_TO_SHOOT_MILLIS;
+      // return System.currentTimeMillis() - onSpeedMillis > ShooterFeedConfig.TIME_TO_SHOOT_MILLIS;
     }
     return false;
   }
@@ -72,7 +75,7 @@ public class ShootCommand extends Command {
     return !noFeedAssist()
       && RobotContainer.isAimAssistEnabled
       && shooterSubsystem.getIsOnSpeed()
-      && (RobotContainer.isAutonomous || shooterVisionSubsystem.hasTarget());
+      && shooterVisionSubsystem.hasTarget();
   }
 
   private boolean noFeedAssist() {
