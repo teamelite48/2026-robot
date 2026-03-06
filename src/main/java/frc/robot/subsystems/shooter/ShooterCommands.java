@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.subsystems.shooter.ShooterConfig.IDLE_RPM;
+import static frc.robot.subsystems.shooter.ShooterConfig.IDLE_MOTOR_POWER;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -19,6 +19,6 @@ public class ShooterCommands {
     }
 
     public static Command idleShooter() {
-        return Commands.run(() -> shooterSubsystem.setSpeed(IDLE_RPM), shooterSubsystem);
+        return Commands.run(() -> shooterSubsystem.setSpeed(IDLE_MOTOR_POWER), shooterSubsystem);
     }
 }

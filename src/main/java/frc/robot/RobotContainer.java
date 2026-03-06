@@ -27,8 +27,11 @@ import frc.robot.subsystems.drive.DriveSubsystem.Gear;
 import frc.robot.subsystems.intake.IntakeCommands;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.led.LedSubsystem;
+import frc.robot.subsystems.shooter.ShooterCommands;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
+import frc.robot.subsystems.spindexer.SpindexerCommands;
+import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretCommands;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
@@ -43,12 +46,13 @@ public class RobotContainer {
   // public static VisionSubsystem collectorVisionSubsystem = new VisionSubsystem("limelight-collector");
   public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-shooter");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
-  public static ClimberSubsystem climberSubsytem = new ClimberSubsystem();
+  public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> shooterVisionSubsystem.getFeetFromTarget());
   public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
+  public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -87,19 +91,102 @@ public class RobotContainer {
   }
 
   private void bindPilotControls() {
+
+    pilotController.triangle
+      .whileTrue(ClimberCommands.extend());
+
+    pilotController.square
+      .onTrue(DeployCommands.extend());
+
+    pilotController.cross
+      .whileTrue(ClimberCommands.retract());
+
+    pilotController.circle
+      .onTrue(DeployCommands.retract());
+
+    pilotController.l1
+      .whileTrue(IntakeCommands.intake());
+
+    pilotController.l2
+      .onTrue(ShooterCommands.idleShooter());
+
+    pilotController.r1
+      .whileTrue(IntakeCommands.intake());
+
+    pilotController.r2
+      .whileTrue(SpindexerCommands.FeedTowardsFeed());
+
+    pilotController.left
+      .whileTrue(DriveCommands.strafeLeft());
+
+    pilotController.right
+      .whileTrue(DriveCommands.strafeRight());
+
+    pilotController.share
+      .onTrue(ShooterCommands.stop());
+
+    // pilotController.options
+    //   .onTrue(toggleAutoAim());
+
     pilotController.ps.onTrue(new InstantCommand(() -> driveSubsystem.zeroGyro(), driveSubsystem));
 
      pilotController.touchpad
-       .onTrue(Commands.either(
-         Commands.runOnce(() -> driveSubsystem.setHighGear(), driveSubsystem),
-         Commands.runOnce(() -> driveSubsystem.setLowGear(), driveSubsystem),
-         () -> driveSubsystem.getGear() == Gear.Low));
+      .onTrue(Commands.either(
+        Commands.runOnce(() -> driveSubsystem.setHighGear(), driveSubsystem),
+        Commands.runOnce(() -> driveSubsystem.setLowGear(), driveSubsystem),
+        () -> driveSubsystem.getGear() == Gear.Low));
 
-    pilotController.l2
-      .whileTrue(new ShootCommand());
   }
 
   private void bindCopilotControls() {
+
+    // copilotController.triangle
+    //   .whileTrue();
+
+    // copilotController.square
+    //   .onTrue();
+
+    // copilotController.cross
+    //   .whileTrue();
+
+    copilotController.circle
+      .onTrue(ShooterCommands.stop());
+
+    copilotController.l1
+      .onTrue(new ShootCommand());
+
+    // copilotController.l2
+    //   .whileTrue();
+
+    copilotController.r1
+      .whileTrue(SpindexerCommands.FeedTowardsFeed());
+
+    // copilotController.r2
+    //   .whileTrue();
+
+    copilotController.up
+      .whileTrue(ClimberCommands.extend());
+
+    copilotController.down
+      .whileTrue(ClimberCommands.retract());
+
+    // copilotController.left
+    //   .whileTrue();
+
+    // copilotController.right
+    //   .whileTrue();
+
+    // copilotController.share
+    //   .onTrue();
+
+    // copilotController.options
+    //   .onTrue(toggleAutoAim());
+
+    // copilotController.ps
+    //   .onTrue();
+
+    //  copilotController.touchpad
+    //   .onTrue();
 
   }
 

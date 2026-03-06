@@ -118,7 +118,7 @@ public class SwerveModule {
         Rotation2d currentAngle =
             Rotation2d.fromRadians(angleController.getCurrentAngle());
 
-        // WPILib instance optimize
+        // Optimize the state to minimize module rotation
         state.optimize(currentAngle);
 
         // Prevent steering jitter when nearly stopped
@@ -129,7 +129,7 @@ public class SwerveModule {
 
         driveController.setVelocity(state.speedMetersPerSecond);
 
-        // Your convention: 0 → 2π
+        // Your system expects angles in [0, 2π)
         angleController.setAngle(normalizeAngle(state.angle.getRadians()));
     }
 

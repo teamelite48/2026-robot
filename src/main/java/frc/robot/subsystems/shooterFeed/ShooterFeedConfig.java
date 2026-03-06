@@ -10,7 +10,7 @@ public class ShooterFeedConfig {
     public static final double FEED_SPEED = 0.5;
 
     public static final boolean BALL_SENSED = false;
-    public static final int BALL_COOLDOWN_TIMER = 100;
+    //public static final int BALL_COOLDOWN_TIMER = 100;
     public static final long TIME_TO_SHOOT_MILLIS = 250;
 
     public static MotorConfig getShooterFeedConfig() {

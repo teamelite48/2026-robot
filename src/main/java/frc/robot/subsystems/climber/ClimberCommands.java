@@ -6,7 +6,7 @@ import frc.robot.RobotContainer;
 
 public class ClimberCommands {
 
-  static final ClimberSubsystem climberSubsystem = RobotContainer.climberSubsytem;
+  static final ClimberSubsystem climberSubsystem = RobotContainer.climberSubsystem;
 
   public static Command extend() {
       return Commands.run(() -> climberSubsystem.extend(), climberSubsystem);

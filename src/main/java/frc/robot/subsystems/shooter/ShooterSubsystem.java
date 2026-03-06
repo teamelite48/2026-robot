@@ -43,7 +43,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     rightMotor.follow(leftMotor, true);
 
-    // leftMotor.setSpeed(IDLE_RPM);
+    // leftMotor.setSpeed(IDLE_MOTOR_POWER);
 
     initDashboard();
   }
@@ -63,7 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
       isOnSpeed = true;
       RobotContainer.ledSubsystem.setLedMode(LedMode.Green);
     }
-    else if (getLeftRpm() < IDLE_RPM && RobotState.isTeleop()){
+    else if (getLeftRpm() < IDLE_MOTOR_POWER && RobotState.isTeleop()){
       RobotContainer.ledSubsystem.setLedMode(LedMode.Red);
     }
 

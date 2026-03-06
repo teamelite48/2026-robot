@@ -74,18 +74,25 @@ public class DualShock4Controller {
         return normalizeVector(x, y);
     }
 
+    // public Translation2d normalizeVector(double x, double y) {
+
+    //     double r = Math.sqrt(x*x + y*y);
+
+    //     double maxComponent = Math.max(Math.abs(x), Math.abs(y));
+
+    //     if (maxComponent > 0) {
+    //         x *= r / maxComponent;
+    //         y *= r / maxComponent;
+    //     }
+
+    //     return new Translation2d(x, y);
+    // }
+
     public Translation2d normalizeVector(double x, double y) {
+        double mappedX = x * Math.sqrt(1.0 - (y * y) / 2.0);
+        double mappedY = y * Math.sqrt(1.0 - (x * x) / 2.0);
 
-        double r = Math.sqrt(x*x + y*y);
-
-        double maxComponent = Math.max(Math.abs(x), Math.abs(y));
-
-        if (maxComponent > 0) {
-            x *= r / maxComponent;
-            y *= r / maxComponent;
-        }
-
-        return new Translation2d(x, y);
+        return new Translation2d(mappedX, mappedY);
     }
 
     public double getDeadBand() {
