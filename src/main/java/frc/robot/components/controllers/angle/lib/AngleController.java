@@ -12,4 +12,5 @@ public interface AngleController {
     double getAbsoluteAngle();
     void setAngle(double angle);
     boolean isInitialized();
+    double getRawCurrentAngle();
 }

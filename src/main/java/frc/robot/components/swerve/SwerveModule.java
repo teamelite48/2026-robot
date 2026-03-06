@@ -4,6 +4,7 @@
 
 package frc.robot.components.swerve;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -35,102 +36,65 @@ public class SwerveModule {
 
     // public void setState(SwerveModuleState state) {
 
-    // double desired = normalizeAngle(state.angle.getRadians());   // [0, 2pi)
-    // double current = angleController.getCurrentAngle();          // [0, 2pi)
-
-    // double diff = MathUtil.angleModulus(desired - current);      // [-pi, pi)
-
-    // double velocity = state.speedMetersPerSecond;
-
-    // if (Math.abs(diff) > (Math.PI / 2.0)) {
-    //     desired = normalizeAngle(desired + Math.PI);
-    //     velocity *= -1.0;
-    // }
-
-    // driveController.setVelocity(velocity);
-    // angleController.setAngle(desired);
-    // }
-
-    // public void setState(SwerveModuleState state) {
-
-    //     // double desiredAngleRadians = normalizeAngle(state.angle.getRadians());
-    //     double desiredAngleRadians = state.angle.getRadians();
-    //     double currentAngleRadians = angleController.getCurrentAngle();
-
-    //     // Calculate the difference for the 180-degree optimization
-    //     // double angleDifference = desiredAngleRadians - currentAngleRadians;
-    //     double angleDifference = MathUtil.angleModulus(desiredAngleRadians - currentAngleRadians);
+    //     double desiredAngle = normalizeAngle(state.angle.getRadians());
+    //     double currentAngle = angleController.getRawCurrentAngle();
+    //     double angleDifference = desiredAngle - currentAngle;
 
     //     // Change the target angle so the difference is in the range [-pi, pi) instead of [0, 2pi)
-    //     // Removing in favor for TalonFx's ContinuousWrap setting for Angle Controllers.
-    //     // If using another motor, start there first or add check here to run this if uncommenting
-    //     // if (angleDifference >= PI) {
-    //     //     desiredAngle -= TAU;
-    //     // } else if (angleDifference < -PI) {
-    //     //     desiredAngle += TAU;
-    //     // }
-    //     // angleDifference = desiredAngleRadians - currentAngleRadians; // Recalculate difference
+    //     if (angleDifference >= PI) {
+    //         desiredAngle -= TAU;
+    //     } else if (angleDifference < -PI) {
+    //         desiredAngle += TAU;
+    //     }
+
+    //     angleDifference = desiredAngle - currentAngle; // Recalculate difference
 
     //     double desiredVelocity = state.speedMetersPerSecond;
 
     //     // If the difference is greater than 90 deg or less than -90 deg the drive can be inverted so the total
     //     // movement of the module is less than 90 deg
-    //     // if (angleDifference > PI / 2.0 || angleDifference < -PI / 2.0) {
-    //     if (Math.abs(angleDifference) > (Math.PI / 2.0)) {
+    //     if (angleDifference > PI / 2.0 || angleDifference < -PI / 2.0) {
     //         // Only need to add 180 deg here because the target angle will be put back into the range [0, 2pi)
-    //         desiredAngleRadians += PI;
+    //         desiredAngle += PI;
     //         desiredVelocity *= -1.0;
     //     }
 
     //     // Put the target angle back into the range [0, 2pi)
-    //     // Removing to push math to the motor configs
-    //     // desiredAngle = normalizeAngle(desiredAngle);
-
-    //     // DriverStation.reportWarning(
-    //     //     String.format("DriveCmd exec: dA=%.3f dV=%.3f aD=%.3f", desiredAngle, desiredVelocity, angleDifference),
-    //     //     false
-    //     // );
+    //     desiredAngle = normalizeAngle(desiredAngle);
 
     //     driveController.setVelocity(desiredVelocity);
-    //     angleController.setAngle(desiredAngleRadians);
-    // }
-
-    // public void setState(SwerveModuleState state) {
-
-    //     double desired = normalizeAngle(state.angle.getRadians()); // [0, 2pi)
-    //     double current = angleController.getCurrentAngle();        // [0, 2pi)
-
-    //     double diff = MathUtil.angleModulus(desired - current);    // [-pi, pi)
-
-    //     double velocity = state.speedMetersPerSecond;
-
-    //     if (Math.abs(diff) > (Math.PI / 2.0)) {
-    //         desired = normalizeAngle(desired + Math.PI);
-    //         velocity *= -1.0;
-    //     }
-
-    //     driveController.setVelocity(velocity);
-    //     angleController.setAngle(desired);
+    //     angleController.setAngle(desiredAngle);
     // }
 
     public void setState(SwerveModuleState state) {
+        double currentAngle = angleController.getRawCurrentAngle(); // ideally raw/continuous if possible
+        double desiredAngle = state.angle.getRadians();
+        double desiredVelocity = state.speedMetersPerSecond;
 
-        Rotation2d currentAngle =
-            Rotation2d.fromRadians(angleController.getCurrentAngle());
+        // Shortest signed difference in [-pi, pi)
+        double angleDifference = MathUtil.angleModulus(desiredAngle - currentAngle);
 
-        // Optimize the state to minimize module rotation
-        state.optimize(currentAngle);
+        // Build a continuous target near the current angle
+        double targetAngle = currentAngle + angleDifference;
 
-        // Prevent steering jitter when nearly stopped
-        if (Math.abs(state.speedMetersPerSecond) < 0.05) {
+        // If more than 90 degrees away, flip drive and rotate target by 180
+        if (Math.abs(angleDifference) > Math.PI / 2.0) {
+            desiredVelocity *= -1.0;
+
+            if (angleDifference > 0.0) {
+                targetAngle -= Math.PI;
+            } else {
+                targetAngle += Math.PI;
+            }
+        }
+
+        if (Math.abs(desiredVelocity) < 0.05) {
             driveController.setVelocity(0.0);
             return;
         }
 
-        driveController.setVelocity(state.speedMetersPerSecond);
-
-        // Your system expects angles in [0, 2π)
-        angleController.setAngle(normalizeAngle(state.angle.getRadians()));
+        driveController.setVelocity(desiredVelocity);
+        angleController.setAngle(targetAngle);   // IMPORTANT: no normalize here
     }
 
     public SwerveModulePosition getPosition() {
