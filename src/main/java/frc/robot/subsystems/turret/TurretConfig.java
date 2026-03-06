@@ -35,7 +35,7 @@ public class TurretConfig {
         var config = new MotorConfig(16, CANIVORE);
 
         config.isInverted = true;
-        //config.positionConversionFactor = (1.0/90.0) * 360.0;
+        config.positionConversionFactor = (1.0 / 9.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
         config.pidParameters = new PIDParameters(0.035, 0.0005, 0.0);
