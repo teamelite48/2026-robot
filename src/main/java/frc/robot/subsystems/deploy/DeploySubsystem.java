@@ -45,13 +45,13 @@ public class DeploySubsystem extends SubsystemBase {
   public void periodic() {
     currentPosition = getPosition();
 
-    if (currentMode == ControlMode.POSITION) {
+    // if (currentMode == ControlMode.POSITION) {
       outputSpeed = pidController.calculate(currentPosition, targetPosition);
       outputSpeed = EliteMath.clamp(outputSpeed, RETRACT_SPEED, EXTEND_SPEED);
-    }
-    else {
-      outputSpeed = manualSpeed;
-    }
+    // }
+    // else {
+    //   outputSpeed = manualSpeed;
+    // }
 
     // --- SHARED SAFETY LIMITS ---
     // Prevent moving past EXTEND_LIMIT
@@ -67,7 +67,7 @@ public class DeploySubsystem extends SubsystemBase {
   }
 
   public void manualDrive(double speed) {
-    currentMode = ControlMode.MANUAL;
+    // currentMode = ControlMode.MANUAL;
     this.manualSpeed = speed;
   }
 
@@ -76,7 +76,7 @@ public class DeploySubsystem extends SubsystemBase {
   }
 
   public void setPosition(double position) {
-    currentMode = ControlMode.POSITION;
+    // currentMode = ControlMode.POSITION;
     targetPosition = position;
   }
 
@@ -88,15 +88,23 @@ public class DeploySubsystem extends SubsystemBase {
     setPosition(RETRACT_LIMIT);
   }
 
+  public void extend() {
+    deployMotor.setSpeed(EXTEND_SPEED);
+  }
+
+  public void retract() {
+    deployMotor.setSpeed(-EXTEND_SPEED);
+  }
+
   public void stop() {
-    currentMode = ControlMode.POSITION;
-    manualSpeed = 0;
+    // currentMode = ControlMode.POSITION;
+    // manualSpeed = 0;
     targetPosition = getPosition(); // Lock it where it is
     deployMotor.stop();
   }
 
   public void initDashboard() {
-    var tab = Shuffleboard.getTab("Intake");
+    var tab = Shuffleboard.getTab("Deploy");
 
     tab.addDouble("Deploy Position", () -> getPosition())
       .withPosition(0, 0)
@@ -106,15 +114,15 @@ public class DeploySubsystem extends SubsystemBase {
       .withPosition(2, 0)
       .withSize(2, 1);
 
-    tab.addDouble("Extend Limit", () -> EXTEND_LIMIT)
-      .withPosition(0, 1)
-      .withSize(2, 1);
+    // tab.addDouble("Extend Limit", () -> EXTEND_LIMIT)
+    //   .withPosition(0, 1)
+    //   .withSize(2, 1);
 
-    tab.addDouble("Retract Limit", () -> RETRACT_LIMIT)
-      .withPosition(2, 2)
-      .withSize(2, 1);
+    // tab.addDouble("Retract Limit", () -> RETRACT_LIMIT)
+    //   .withPosition(2, 2)
+    //   .withSize(2, 1);
 
-    tab.addString("Control Mode", () -> currentMode.toString())
-      .withPosition(4, 1);
+    // tab.addString("Control Mode", () -> currentMode.toString())
+    //   .withPosition(4, 1);
   }
 }
