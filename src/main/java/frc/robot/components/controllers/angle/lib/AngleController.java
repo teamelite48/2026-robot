@@ -13,4 +13,5 @@ public interface AngleController {
     void setAngle(double angle);
     boolean isInitialized();
     double getRawCurrentAngle();
+    double getTargetAngleWrappedDegrees();
 }

@@ -143,7 +143,7 @@ public class SwerveModule {
         layout.addDouble("Target Velocity", () -> driveController.getTargetVelocity());
         layout.addDouble("Current Velocity", () -> driveController.getCurrentVelocity());
 
-        layout.addDouble("Target Angle", () -> Math.toDegrees(angleController.getTargetAngle())).withPosition(0, 0);
+        layout.addDouble("Target Angle", () -> angleController.getTargetAngleWrappedDegrees()).withPosition(0, 0);
 
         layout.addDouble("Current Angle", () -> Math.toDegrees(angleController.getCurrentAngle())).withPosition(0, 1);
 

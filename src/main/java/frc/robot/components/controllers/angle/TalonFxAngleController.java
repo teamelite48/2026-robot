@@ -84,4 +84,8 @@ public class TalonFxAngleController implements AngleController {
     public double getRawCurrentAngle() {
         return motor.getPosition();
     }
+
+    public double getTargetAngleWrappedDegrees() {
+        return Math.toDegrees(normalizeAngle(targetAngle));
+    }
 }
