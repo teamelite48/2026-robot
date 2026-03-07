@@ -2,12 +2,15 @@ package frc.robot.subsystems.turret;
 
 import com.ctre.phoenix6.CANBus;
 
+import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.lib.MotorConfig;
 import frc.robot.lib.PIDParameters;
 
 public class TurretConfig {
 
     public static final CANBus CANIVORE = new CANBus("canivore");
+
+    public static final double TURRET_ENCODER_OFFSET_DEGREES = 0.0;
 
     public static final double inputDeadzone = 0.2;
 
@@ -42,6 +45,14 @@ public class TurretConfig {
         config.forwardLimit = encoderLimit;
         config.reverseLimit = -encoderLimit;
 
+        return config;
+    }
+
+    public static AbsoluteEncoderConfig getAbsEncoderConfigTurret() {
+        var config = new AbsoluteEncoderConfig(10);
+        config.positionConversionFactor = 360.0;
+        config.offset = TURRET_ENCODER_OFFSET_DEGREES;
+        config.isInverted = true;
         return config;
     }
 }

@@ -1,8 +1,11 @@
 package frc.robot.subsystems.turret;
 
+import static frc.robot.subsystems.turret.TurretConfig.HOME_POSITION;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.turret.commands.MoveTurretToDegrees;
 
 public class TurretCommands {
 
@@ -17,6 +20,10 @@ public class TurretCommands {
 
   public static Command RotateTurretCounterClockwise() {
     return Commands.run(() -> turretSubsystem.rotateCounterClockwise(), turretSubsystem);
+  }
+
+  public static Command moveToSafeState() {
+    return new MoveTurretToDegrees(HOME_POSITION);
   }
 
   public static Command stop() {

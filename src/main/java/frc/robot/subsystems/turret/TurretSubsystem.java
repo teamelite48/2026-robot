@@ -7,6 +7,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotContainer;
+import frc.robot.components.encoders.absolute.CanCoder;
+import frc.robot.components.encoders.absolute.lib.AbsoluteEncoder;
+import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.Minion;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.subsystems.vision.VisionSubsystem;
@@ -15,8 +18,10 @@ import static frc.robot.subsystems.turret.TurretConfig.*;
 
 public class TurretSubsystem extends SubsystemBase {
 
-    final Motor motor;
-    final PIDController pidController;
+    private final Motor motor;
+    private final PIDController pidController;
+    private final CanCoder absoluteEncoder;
+    private final AbsoluteEncoderConfig absoluteEncoderConfig;
 
     final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     final NetworkTableEntry tx = table.getEntry("tx");
@@ -31,13 +36,18 @@ public class TurretSubsystem extends SubsystemBase {
     boolean isTurretEnabled = true;
 
     public TurretSubsystem() {
+
         var config = getMotorConfig();
+        this.absoluteEncoderConfig = getAbsEncoderConfigTurret();
 
         motor = new Minion(config);
         // TODO: Remove pidController after fixing moveToDegrees. PID should be set in Motor config only
         pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
+        this.absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
-        // initDashboard();
+        motor.setInitialPosition(getAbsoluteAngle());
+
+        initDashboard();
     }
 
     @Override
@@ -101,7 +111,7 @@ public class TurretSubsystem extends SubsystemBase {
     public void moveToDegrees(Double degrees) {
         double motorSpeed = pidController.calculate(getPositionInDegrees(), degrees);
         // TODO: Use the below method instead and configure positionConversionFactor in MotorConfig
-        // motor.setPosition(degrees);
+        motor.setPosition(degrees);
     }
 
     public void rotateClockwise() {
@@ -116,6 +126,10 @@ public class TurretSubsystem extends SubsystemBase {
 
     public double getPositionInDegrees() {
         return motor.getPosition() * TurretConfig.degreesPerMotorRotation + TurretConfig.degreesAtCenter;
+    }
+
+    public double getAbsoluteAngle() {
+        return absoluteEncoder.getPosition();
     }
 
   public void setMotor(double speed) {
@@ -142,6 +156,10 @@ public class TurretSubsystem extends SubsystemBase {
 
         tab.addDouble("Turret tx", () -> RobotContainer.shooterVisionSubsystem.getXOffsetDegrees())
             .withPosition(0, 1)
+            .withSize(2, 1);
+
+        tab.addDouble("Absolute Degrees", () -> getAbsoluteAngle())
+            .withPosition(0, 2)
             .withSize(2, 1);
     }
 }
