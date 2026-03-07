@@ -15,17 +15,16 @@ public class DeployCommands {
         return Commands.run(() -> deploySubsystem.fullExtend(), deploySubsystem);
     }
 
-    public static Command retract() {
+    // Never full retract unless turret is in safe place
+    public static Command fullRetract() {
         return Commands.run(() -> deploySubsystem.fullRetract(), deploySubsystem);
     }
 
-    public static Command moveHome() {
+    public static Command setToHome() {
         return Commands.run(() -> deploySubsystem.setPosition(DeployConfig.HOME_POSITION), deploySubsystem);
     }
 
     public static Command stop() {
         return Commands.run(() -> deploySubsystem.stop(), deploySubsystem);
     }
-
-    // TODO: Add commands for switching modes & manual setPosition
 }

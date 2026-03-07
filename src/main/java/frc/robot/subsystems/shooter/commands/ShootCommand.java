@@ -4,11 +4,13 @@
 
 package frc.robot.subsystems.shooter.commands;
 
+import static frc.robot.subsystems.shooter.ShooterConfig.ON_SPEED_RPM;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.shooterFeed.ShooterFeedConfig;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
+import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem.VisionTarget;
@@ -17,6 +19,7 @@ public class ShootCommand extends Command {
 
   ShooterFeedSubsystem shooterFeedSubsystem = RobotContainer.shooterFeedSubsystem;
   ShooterSubsystem shooterSubsystem = RobotContainer.shooterSubsystem;
+  SpindexerSubsystem spindexerSubsystem = RobotContainer.spindexerSubsystem;
   TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
   VisionSubsystem shooterVisionSubsystem = RobotContainer.shooterVisionSubsystem;
 
@@ -46,10 +49,14 @@ public class ShootCommand extends Command {
         onSpeedMillis = System.currentTimeMillis();
       }
 
+      shooterSubsystem.setSpeed(ON_SPEED_RPM);
       shooterFeedSubsystem.feedTowardsShooter();
+      spindexerSubsystem.feedTowardsShooterFeed();
     }
     else if (noFeedAssist()) {
+      shooterSubsystem.setSpeed(ON_SPEED_RPM);
       shooterFeedSubsystem.feedTowardsShooter();
+      spindexerSubsystem.feedTowardsShooterFeed();
     }
   }
 
@@ -59,7 +66,8 @@ public class ShootCommand extends Command {
     RobotContainer.isShooting = false;
     shooterFeedSubsystem.stop();
     shooterVisionSubsystem.stopTracking();
-    shooterSubsystem.idle();
+    shooterSubsystem.idleShooter();
+    spindexerSubsystem.stop();
   }
 
   // Returns true when the command should end.

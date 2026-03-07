@@ -29,11 +29,13 @@ import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.led.LedSubsystem;
 import frc.robot.subsystems.shooter.ShooterCommands;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.shooterFeed.ShooterFeedCommands;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerCommands;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretCommands;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.subsystems.vision.VisionCommands;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class RobotContainer {
@@ -93,7 +95,12 @@ public class RobotContainer {
   private void bindPilotControls() {
 
     pilotController.triangle
-      .whileTrue(ClimberCommands.extend());
+      .whileTrue(Commands.sequence(
+        // VisionCommands.turnOffVision(),
+        TurretCommands.moveToSafeState(),
+        DeployCommands.fullRetract(),
+        ClimberCommands.extend()
+      ));
 
     pilotController.square
       .onTrue(DeployCommands.extend());
@@ -102,7 +109,7 @@ public class RobotContainer {
       .whileTrue(ClimberCommands.retract());
 
     pilotController.circle
-      .onTrue(DeployCommands.retract());
+      .onTrue(DeployCommands.setToHome());
 
     pilotController.l1
       .whileTrue(IntakeCommands.intake());
@@ -111,10 +118,15 @@ public class RobotContainer {
       .onTrue(ShooterCommands.idleShooter());
 
     pilotController.r1
-      .whileTrue(IntakeCommands.intake());
+      .whileTrue(IntakeCommands.outtake());
 
     pilotController.r2
-      .whileTrue(SpindexerCommands.FeedTowardsFeed());
+      .whileTrue(Commands.parallel(
+        SpindexerCommands.FeedTowardsFeed(),
+        ShooterFeedCommands.FeedTowardsShooter()))
+      .onFalse(Commands.parallel(
+        SpindexerCommands.stop(),
+        ShooterFeedCommands.stop()));
 
     pilotController.left
       .whileTrue(DriveCommands.strafeLeft());
@@ -123,7 +135,7 @@ public class RobotContainer {
       .whileTrue(DriveCommands.strafeRight());
 
     pilotController.share
-      .onTrue(ShooterCommands.stop());
+      .onTrue(ShooterCommands.idleShooter());
 
     // pilotController.options
     //   .onTrue(toggleAutoAim());
@@ -150,10 +162,10 @@ public class RobotContainer {
     //   .whileTrue();
 
     copilotController.circle
-      .onTrue(ShooterCommands.stop());
+      .onTrue(ShooterCommands.idleShooter());
 
     copilotController.l1
-      .onTrue(new ShootCommand());
+      .whileTrue(new ShootCommand());
 
     // copilotController.l2
     //   .whileTrue();
@@ -209,7 +221,7 @@ public class RobotContainer {
 
     testController.circle
       .onTrue(Commands.parallel(
-        DeployCommands.retract(),
+        DeployCommands.setToHome(),
         IntakeCommands.intake()))
       .onFalse(Commands.parallel(
         DeployCommands.stop(),
@@ -217,7 +229,7 @@ public class RobotContainer {
 
     // Bounces behavior (angry PID)
     testController.triangle
-      .onTrue(DeployCommands.moveHome())
+      .onTrue(DeployCommands.setToHome())
       // .onFalse(Commands.parallel(
       //   DeployCommands.stop(),
       //   IntakeCommands.stop()))
@@ -230,6 +242,9 @@ public class RobotContainer {
     testController.down
       .whileTrue(ClimberCommands.retract())
       .onFalse(ClimberCommands.stop());
+
+      testController.share
+      .onTrue(ShooterCommands.stop());
   }
 
   public static SendableChooser<Command> initAutoChooser() {

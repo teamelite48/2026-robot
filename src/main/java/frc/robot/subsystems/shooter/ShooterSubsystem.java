@@ -79,6 +79,10 @@ public class ShooterSubsystem extends SubsystemBase {
     leftMotor.setSpeed(speed);
   }
 
+  public void idleShooter() {
+    setSpeed(IDLE_MOTOR_POWER);
+  }
+
   public void stop() {
     this.isShooterOn = false;
     this.isOnSpeed = false;
@@ -90,7 +94,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private double getLeftRpm() {
-    return leftMotor.getVelocity() * 60.0;
+    return leftMotor.getVelocity() * 60.0;  // Convert Motor Rotations to RPM
   }
 
   private double getRightRpm() {
