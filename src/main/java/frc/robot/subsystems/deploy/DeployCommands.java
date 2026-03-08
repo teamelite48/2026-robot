@@ -12,6 +12,14 @@ public class DeployCommands {
     static final DeploySubsystem deploySubsystem = RobotContainer.deploySubsystem;
 
     public static Command extend() {
+        return Commands.run(() -> deploySubsystem.extend(), deploySubsystem);
+    }
+
+    public static Command retract() {
+        return Commands.run(() -> deploySubsystem.retract(), deploySubsystem);
+    }
+
+    public static Command fullExtend() {
         return Commands.run(() -> deploySubsystem.fullExtend(), deploySubsystem);
     }
 

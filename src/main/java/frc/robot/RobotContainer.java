@@ -103,7 +103,7 @@ public class RobotContainer {
       ));
 
     pilotController.square
-      .onTrue(DeployCommands.extend());
+      .onTrue(DeployCommands.fullExtend());
 
     pilotController.cross
       .whileTrue(ClimberCommands.retract());
@@ -215,7 +215,7 @@ public class RobotContainer {
 
     testController.square
       .onTrue(Commands.parallel(
-        DeployCommands.extend(),
+        DeployCommands.fullExtend(),
         IntakeCommands.intake()))
       .onFalse(DeployCommands.stop());
 
@@ -234,6 +234,14 @@ public class RobotContainer {
       //   DeployCommands.stop(),
       //   IntakeCommands.stop()))
       ;
+
+    testController.l1
+      .whileTrue(DeployCommands.retract())
+      .onFalse(DeployCommands.stop());
+
+    testController.r1
+      .whileTrue(DeployCommands.extend())
+      .onFalse(DeployCommands.stop());
 
     testController.up
       .whileTrue(ClimberCommands.extend())
