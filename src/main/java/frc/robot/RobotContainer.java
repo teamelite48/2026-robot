@@ -58,7 +58,7 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser;
 
-  public static boolean isAimAssistEnabled = true;
+  public static boolean isAimAssistEnabled = false;
   public static boolean isShooting = false;
   public static boolean isAutonomous = false;
   //public static GamePiece gamePieceMode = GamePiece.Coral;

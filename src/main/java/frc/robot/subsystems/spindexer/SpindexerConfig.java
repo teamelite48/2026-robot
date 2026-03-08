@@ -11,7 +11,7 @@ public class SpindexerConfig {
 
     public static final CANBus CANIVORE = new CANBus("canivore");
 
-    public static final double FEED_SPEED = 0.5;
+    public static final double FEED_SPEED = 0.3;
     public static final double REVERSE_SPEED = -FEED_SPEED;
 
     public static MotorConfig getSpindexerConfig() {

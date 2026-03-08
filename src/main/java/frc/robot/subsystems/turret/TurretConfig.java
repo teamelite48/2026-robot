@@ -27,11 +27,14 @@ public class TurretConfig {
     public static final double encoderLimit = (float) (90 / degreesPerMotorRotation);
     public static final double nominalMotorRotationsPerSecond = 11000 / 60.0;
 
+    public static final double CCW_LIMIT = 90;
+    public static final double CW_LIMIT = -CCW_LIMIT;
+
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
 
     public static final double HOME_POSITION = 0.0;
-
+    //TODO: Find home/starting position of turret for start of match configuration
 
     public static MotorConfig getMotorConfig() {
 
@@ -51,7 +54,7 @@ public class TurretConfig {
     public static AbsoluteEncoderConfig getAbsEncoderConfigTurret() {
         var config = new AbsoluteEncoderConfig(10);
         config.positionConversionFactor = 360.0;
-        config.offset = TURRET_ENCODER_OFFSET_DEGREES;
+        // config.offset = TURRET_ENCODER_OFFSET_DEGREES;
         config.isInverted = true;
         return config;
     }

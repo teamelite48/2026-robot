@@ -19,8 +19,8 @@ public class ShooterConfig {
     // public static final double MEDIUM_RPM = 1.0;
     // public static final double RPM_BUMP = 1.0;
 
-    public static final double IDLE_MOTOR_POWER = 0.2;
-    public static final double ON_SPEED_RPM = 1.0;
+    public static final double IDLE_MOTOR_POWER = 0.1;
+    public static final double ON_SPEED_RPM = 0.3;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
         put(0, 1100.0);
