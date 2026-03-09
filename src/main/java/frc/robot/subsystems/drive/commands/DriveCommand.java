@@ -37,10 +37,10 @@ public class DriveCommand extends Command {
 
     var translation = translationSupplier.get();
 
-    DriverStation.reportWarning(
-      String.format("DriveCmd exec: tx=%.3f ty=%.3f rot=%.3f", translation.getX(), translation.getY(), rotationSupplier.get().getX()),
-      false
-    );
+    // DriverStation.reportWarning(
+    //   String.format("DriveCmd exec: tx=%.3f ty=%.3f rot=%.3f", translation.getX(), translation.getY(), rotationSupplier.get().getX()),
+    //   false
+    // );
 
     driveSubsystem.drive(
       translation.getX(),
