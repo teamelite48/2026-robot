@@ -4,9 +4,13 @@
 
 package frc.robot.subsystems.shooterFeed;
 
+import com.ctre.phoenix6.CANBus;
+
 import frc.robot.components.motors.lib.MotorConfig;
 
 public class ShooterFeedConfig {
+    public static final CANBus CANIVORE = new CANBus("canivore");
+
     public static final double FEED_SPEED = 0.3;
 
     public static final boolean BALL_SENSED_VALUE = false;
@@ -15,11 +19,12 @@ public class ShooterFeedConfig {
 
     public static MotorConfig getShooterFeedConfig() {
 
-        var config = new MotorConfig(15);
+        var config = new MotorConfig(15, CANIVORE);
 
         // config.isInverted = true;
         config.isBrakeModeEnabled = true;
         config.currentLimit = 40;
+        config.positionConversionFactor = (1.0 / 1.0);
 
         return config;
     }
