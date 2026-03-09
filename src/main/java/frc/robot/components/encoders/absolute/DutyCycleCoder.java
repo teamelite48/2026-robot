@@ -13,7 +13,7 @@ public class DutyCycleCoder implements AbsoluteEncoder {
   public DutyCycleCoder(AbsoluteEncoderConfig encoderConfig) {
     this.config = encoderConfig;
 
-    digitalEncoder = new DutyCycleEncoder(config.id);
+    digitalEncoder = new DutyCycleEncoder(config.canBusId);
     digitalEncoder.setInverted(config.isInverted);
 
   }

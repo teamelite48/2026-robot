@@ -20,7 +20,12 @@ public class CanCoder implements AbsoluteEncoder {
   public CanCoder(AbsoluteEncoderConfig encoderConfig) {
     this.config = encoderConfig;
 
-    encoder = new CANcoder(config.id);
+    if (encoderConfig.canBus == null) {
+      encoder = new CANcoder(config.canBusId);
+    }
+    else {
+      encoder = new CANcoder(config.canBusId, config.canBus);
+    }
 
     var canCoderConfig = new CANcoderConfiguration();
 
