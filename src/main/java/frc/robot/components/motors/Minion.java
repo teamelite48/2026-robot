@@ -6,6 +6,7 @@ package frc.robot.components.motors;
 
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
@@ -23,6 +24,7 @@ public class Minion implements Motor {
 
     final DutyCycleOut dutyCycleOut;
     final PositionDutyCycle positionDutyCycle;
+    final MotionMagicDutyCycle motionMagicDutyCycle;
 
     public Minion(MotorConfig motorConfig) {
 
@@ -91,6 +93,22 @@ public class Minion implements Motor {
             talonConfig.Slot0.kD = motorConfig.pidParameters.D;
         }
 
+        motionMagicDutyCycle = new MotionMagicDutyCycle(0)
+            .withSlot(0)
+            .withEnableFOC(config.enableFOC);
+
+        if (config.motionMagicCruiseVelocity != null) {
+            talonConfig.MotionMagic.MotionMagicCruiseVelocity = config.motionMagicCruiseVelocity;
+        }
+
+        if(config.motionMagicAcceleration != null){
+            talonConfig.MotionMagic.MotionMagicAcceleration = config.motionMagicAcceleration;
+        }
+
+        if(config.motionMagicJerk != null){
+            talonConfig.MotionMagic.MotionMagicJerk = config.motionMagicJerk;
+        }
+
         talon.getConfigurator().apply(talonConfig);
 
         if (motorConfig.initialPosition != null) {
@@ -150,6 +168,14 @@ public class Minion implements Motor {
     @Override
     public void follow(Motor leader, boolean oppose) {
         // Do Nothing
+    }
+
+    public void setMotionMagicPosition(double position) {
+        talon.setControl(
+            motionMagicDutyCycle
+                .withPosition(position)
+                .withFeedForward(config.feedForward)
+        );
     }
 
     private static double calculateRotations(double units, double conversion) {

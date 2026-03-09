@@ -19,6 +19,9 @@ public class MotorConfig {
     public Double maxForwardSpeed = null;
     public Double maxReverseSpeed = null;
     public Double velocityConversionFactor = null;
+    public Double motionMagicCruiseVelocity = null;
+    public Double motionMagicAcceleration = null;
+    public Double motionMagicJerk = null;
     public PIDParameters pidParameters = null;
 
     public MotorConfig(int canBusId) {

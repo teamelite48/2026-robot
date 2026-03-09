@@ -19,9 +19,10 @@ import static frc.robot.subsystems.turret.TurretConfig.*;
 public class TurretSubsystem extends SubsystemBase {
 
     private final Motor motor;
-    private final PIDController pidController;
+    // private final PIDController pidController;
     private final CanCoder absoluteEncoder;
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
+    private double targetDegrees;
 
     final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     final NetworkTableEntry tx = table.getEntry("tx");
@@ -42,16 +43,28 @@ public class TurretSubsystem extends SubsystemBase {
 
         motor = new Minion(config);
         // TODO: Remove pidController after fixing moveToDegrees. PID should be set in Motor config only
-        pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
+        // pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
         this.absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
         motor.setInitialPosition(getAbsoluteAngle());
+        targetDegrees = clampTarget(getPositionInDegrees());
 
         initDashboard();
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+        if (!isTurretEnabled) return;
+
+        if (isAutoAimOn) {
+            autoAim();
+        }
+
+        // motor.setPosition(clampTarget(targetDegrees));
+        motor.setMotionMagicPosition(
+            (clampTarget(targetDegrees) - TurretConfig.degreesAtCenter) / TurretConfig.degreesPerMotorRotation
+        );
+    }
 
     // public void simulationPeriodic() {
 
@@ -98,6 +111,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         // double error = tx.getDouble(0.0);
         double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
+        targetDegrees = clampTarget(getPositionInDegrees() - error);
     }
 
     public boolean isTargetAcquired(){
@@ -109,19 +123,23 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void moveToDegrees(Double degrees) {
-        double motorSpeed = pidController.calculate(getPositionInDegrees(), degrees);
+        // double motorSpeed = pidController.calculate(getPositionInDegrees(), degrees);
         // TODO: Use the below method instead and configure positionConversionFactor in MotorConfig
-        motor.setPosition(degrees);
+        // motor.setPosition(degrees);
+        turnAutoAimOff();
+        targetDegrees = clampTarget(degrees);
     }
 
     public void rotateClockwise() {
         turnAutoAimOff();
-        setMotor(TurretConfig.clockwiseSpeed);
+        // setMotor(TurretConfig.clockwiseSpeed);
+        targetDegrees = clampTarget(targetDegrees + 2);
     }
 
     public void rotateCounterClockwise() {
         turnAutoAimOff();
-        setMotor(TurretConfig.counterClockwiseSpeed);
+        // setMotor(TurretConfig.counterClockwiseSpeed);
+        targetDegrees = clampTarget(targetDegrees - 2);
     }
 
     public double getPositionInDegrees() {
@@ -132,17 +150,25 @@ public class TurretSubsystem extends SubsystemBase {
         return absoluteEncoder.getPosition();
     }
 
-  public void setMotor(double speed) {
+    public double getTargetDegrees() {
+        return targetDegrees;
+    }
+
+    public void setMotor(double speed) {
         if (isTurretEnabled == false) {
             stop();
             return;
         }
 
         motor.setSpeed(speed);
-  }
+    }
 
-  public void initDashboard() {
-    var tab = Shuffleboard.getTab("Turret");
+    private double clampTarget(double degrees) {
+        return Math.max(CCW_LIMIT, Math.min(CW_LIMIT, degrees));
+    }
+
+    public void initDashboard() {
+        var tab = Shuffleboard.getTab("Turret");
 
         // SmartDashboard.putNumber("Turret Degrees", getPositionInDegrees());
         // SmartDashboard.putNumber("Turret tx", tx.getDouble(0.0));
@@ -161,5 +187,13 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addDouble("Absolute Degrees", () -> getAbsoluteAngle())
             .withPosition(0, 2)
             .withSize(2, 1);
+
+        tab.addDouble("Target Degrees", () -> getTargetDegrees())
+            .withPosition(2, 2)
+            .withSize(2, 1);
+
+        tab.addBoolean("Turret Enabled", () -> isTurretEnabled)
+            .withPosition(4, 2)
+            .withSize(1, 1);
     }
 }

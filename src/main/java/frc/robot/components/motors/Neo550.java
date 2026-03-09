@@ -126,6 +126,8 @@ public class Neo550 implements Motor {
     sparkMax.setVoltage(d);
   }
 
+  public void setMotionMagicPosition(double position) {}
+
   public void stop() {
     sparkMax.stopMotor();
   }

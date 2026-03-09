@@ -137,6 +137,8 @@ public class Kraken implements Motor {
         talonFx.setVoltage(volts);
     }
 
+    public void setMotionMagicPosition(double position) {}
+
     public void stop() {
         talonFx.stopMotor();
     }

@@ -28,7 +28,7 @@ public class TurretConfig {
     public static final double nominalMotorRotationsPerSecond = 11000 / 60.0;
 
     public static final double CCW_LIMIT = 90;
-    public static final double CW_LIMIT = -CCW_LIMIT;
+    public static final double CW_LIMIT = 270;
 
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
@@ -47,6 +47,10 @@ public class TurretConfig {
         config.pidParameters = new PIDParameters(0.035, 0.0005, 0.0);
         config.forwardLimit = encoderLimit;
         config.reverseLimit = -encoderLimit;
+        config.currentLimit = 40;
+        config.motionMagicCruiseVelocity = 2.5;  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 6.0;    // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 40.0;           // change if overshooting
 
         return config;
     }
