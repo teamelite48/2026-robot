@@ -18,6 +18,8 @@ public class ShooterFeedSubsystem extends SubsystemBase {
   final Motor motor;
   final DigitalInput ballSensor = new DigitalInput(DioPort.BallSensor);
 
+  boolean isBallSensed = false;
+
   public ShooterFeedSubsystem() {
 
     var config = getShooterFeedConfig();
@@ -43,7 +45,7 @@ public class ShooterFeedSubsystem extends SubsystemBase {
   }
 
   public boolean getBallSensorValue() {
-    return ballSensor.get();
+    return !ballSensor.get();
   }
 
   public void initDashboard() {

@@ -203,6 +203,7 @@ public class RobotContainer {
   }
 
   private void bindTestControls() {
+
     testController.left
       .whileTrue(TurretCommands.RotateTurretCounterClockwise())
       .onFalse(TurretCommands.stop());
@@ -211,21 +212,27 @@ public class RobotContainer {
       .whileTrue(TurretCommands.RotateTurretClockwise())
       .onFalse(TurretCommands.stop());
 
-    testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
-
     testController.square
-      .onTrue(Commands.parallel(
-        DeployCommands.fullExtend(),
-        IntakeCommands.intake()))
-      .onFalse(DeployCommands.stop());
+      .onTrue(ShooterCommands.startShooter());
 
     testController.circle
-      .onTrue(Commands.parallel(
-        DeployCommands.setToHome(),
-        IntakeCommands.intake()))
-      .onFalse(Commands.parallel(
-        DeployCommands.stop(),
-        IntakeCommands.stop()));
+      .onTrue(ShooterCommands.stop());
+
+    // testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
+
+    // testController.square
+    //   .onTrue(Commands.parallel(
+    //     DeployCommands.fullExtend(),
+    //     IntakeCommands.intake()))
+    //   .onFalse(DeployCommands.stop());
+
+    // testController.circle
+    //   .onTrue(Commands.parallel(
+    //     DeployCommands.setToHome(),
+    //     IntakeCommands.intake()))
+    //   .onFalse(Commands.parallel(
+    //     DeployCommands.stop(),
+    //     IntakeCommands.stop()));
 
     // Bounces behavior (angry PID)
     testController.triangle
@@ -243,16 +250,32 @@ public class RobotContainer {
       .whileTrue(DeployCommands.extend())
       .onFalse(DeployCommands.stop());
 
+    testController.l2
+      .whileTrue(SpindexerCommands.FeedAwayFromFeed())
+      .onFalse(SpindexerCommands.stop());
+
+    testController.r2
+      .whileTrue(SpindexerCommands.FeedTowardsFeed())
+      .onFalse(SpindexerCommands.stop());
+
     testController.up
-      .whileTrue(ClimberCommands.extend())
-      .onFalse(ClimberCommands.stop());
+      .whileTrue(ShooterFeedCommands.FeedTowardsShooter())
+      .onFalse(ShooterFeedCommands.stop());
 
     testController.down
-      .whileTrue(ClimberCommands.retract())
-      .onFalse(ClimberCommands.stop());
+      .whileTrue(ShooterFeedCommands.FeedAwayFromShooter())
+      .onFalse(ShooterFeedCommands.stop());
 
-      testController.share
-      .onTrue(ShooterCommands.stop());
+    testController.share
+      .whileTrue(IntakeCommands.intake())
+      .onFalse(IntakeCommands.stop());
+
+    testController.options
+      .whileTrue(IntakeCommands.outtake())
+      .onFalse(IntakeCommands.stop());
+
+    // testController.share
+    //   .onTrue(ShooterCommands.stop());
   }
 
   public static SendableChooser<Command> initAutoChooser() {

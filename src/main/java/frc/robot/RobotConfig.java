@@ -1,10 +1,12 @@
 package frc.robot;
 
+import com.ctre.phoenix6.CANBus;
+
 import frc.robot.subsystems.led.LedSubsystem.LedMode;
 
 public class RobotConfig {
 
-  public static final String CANIVORE_48 = "Canivore48";
+  public static final CANBus CANIVORE_48 = new CANBus("Canivore48");
 
   public enum GamePiece {
     Algae(LedMode.Green),

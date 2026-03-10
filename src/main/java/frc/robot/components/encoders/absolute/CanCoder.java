@@ -42,9 +42,12 @@ public class CanCoder implements AbsoluteEncoder {
     return encoder.getAbsolutePosition().getValueAsDouble() * config.positionConversionFactor;
   }
 
-
   public double getRawPosition() {
     // return encoder.getAbsolutePosition().getValueAsDouble();
     return absPosSignal.refresh().getValueAsDouble();
   }
+
+  //  public StatusSignal<Angle> getAbsolutePosition() {
+  //    return encoder.getAbsolutePosition();
+  // }
 }

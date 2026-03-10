@@ -6,14 +6,11 @@ package frc.robot.subsystems.shooter;
 
 import java.util.HashMap;
 
-import com.ctre.phoenix6.CANBus;
-
+import frc.robot.RobotConfig;
 import frc.robot.components.motors.lib.MotorConfig;
 import frc.robot.lib.PIDParameters;
 
 public class ShooterConfig {
-
-    public static final CANBus CANIVORE = new CANBus("canivore");
 
     // public static final double LOW_RPM = 0.5;
     // public static final double MEDIUM_RPM = 1.0;
@@ -50,7 +47,7 @@ public class ShooterConfig {
 
     public static MotorConfig getShooterRightConfig() {
 
-        var config = new MotorConfig(19, CANIVORE);
+        var config = new MotorConfig(19, RobotConfig.CANIVORE_48);
 
         config.isInverted = false;
         config.isBrakeModeEnabled = false;
@@ -62,13 +59,14 @@ public class ShooterConfig {
     }
     public static MotorConfig getShooterLeftConfig() {
 
-        var config = new MotorConfig(18, CANIVORE);
+        var config = new MotorConfig(18, RobotConfig.CANIVORE_48);
 
         config.isInverted = true;
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
         config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
+        config.enableFOC = false;
 
         return config;
     }

@@ -4,24 +4,23 @@
 
 package frc.robot.subsystems.spindexer;
 
-import com.ctre.phoenix6.CANBus;
+import frc.robot.RobotConfig;
 import frc.robot.components.motors.lib.MotorConfig;
 
 public class SpindexerConfig {
 
-    public static final CANBus CANIVORE = new CANBus("canivore");
-
-    public static final double FEED_SPEED = 0.3;
+    public static final double FEED_SPEED = 0.2;
     public static final double REVERSE_SPEED = -FEED_SPEED;
 
     public static MotorConfig getSpindexerConfig() {
 
-        var config = new MotorConfig(14, CANIVORE);
+        var config = new MotorConfig(14, RobotConfig.CANIVORE_48);
 
         // config.isInverted = true;
-        config.isBrakeModeEnabled = true;
+        config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
         config.positionConversionFactor = (1.0 / 3.0);
+        config.enableFOC = false;
 
         return config;
     }

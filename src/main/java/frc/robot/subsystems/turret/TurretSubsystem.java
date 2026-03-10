@@ -61,9 +61,10 @@ public class TurretSubsystem extends SubsystemBase {
         }
 
         // motor.setPosition(clampTarget(targetDegrees));
-        motor.setMotionMagicPosition(
-            (clampTarget(targetDegrees) - TurretConfig.degreesAtCenter) / TurretConfig.degreesPerMotorRotation
-        );
+
+        // motor.setMotionMagicPosition(
+        //     (clampTarget(targetDegrees) - TurretConfig.degreesAtCenter) / TurretConfig.degreesPerMotorRotation
+        // );
     }
 
     // public void simulationPeriodic() {
@@ -132,18 +133,30 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void rotateClockwise() {
         turnAutoAimOff();
-        // setMotor(TurretConfig.clockwiseSpeed);
-        targetDegrees = clampTarget(targetDegrees + 2);
+
+        // if (getPositionInDegrees() >= 180.0){
+        //     motor.stop();
+        //     return;
+        // }
+
+        setMotor(TurretConfig.clockwiseSpeed);
+        // targetDegrees = clampTarget(targetDegrees + 2);
     }
 
     public void rotateCounterClockwise() {
         turnAutoAimOff();
-        // setMotor(TurretConfig.counterClockwiseSpeed);
-        targetDegrees = clampTarget(targetDegrees - 2);
+
+        // if (getPositionInDegrees() <= 0.0) {
+        //     motor.stop();
+        //     return;
+        // }
+
+        setMotor(TurretConfig.counterClockwiseSpeed);
+        // targetDegrees = clampTarget(targetDegrees - 2);
     }
 
     public double getPositionInDegrees() {
-        return motor.getPosition() * TurretConfig.degreesPerMotorRotation + TurretConfig.degreesAtCenter;
+        return motor.getPosition() * TurretConfig.degreesPerMotorRotation;
     }
 
     public double getAbsoluteAngle() {

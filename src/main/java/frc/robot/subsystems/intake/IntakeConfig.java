@@ -4,22 +4,19 @@
 
 package frc.robot.subsystems.intake;
 
-import com.ctre.phoenix6.CANBus;
-
+import frc.robot.RobotConfig;
 import frc.robot.components.motors.lib.MotorConfig;
 
 public class IntakeConfig {
-
-    public static final CANBus CANIVORE = new CANBus("canivore");
 
     public static final double INTAKE_SPEED = -0.25;
 
     public static MotorConfig getIntakeRightConfig() {
 
-        var config = new MotorConfig(11, CANIVORE);
+        var config = new MotorConfig(11, RobotConfig.CANIVORE_48);
 
         config.isInverted = true;
-        config.isBrakeModeEnabled = true;
+        config.isBrakeModeEnabled = false;
 
         return config;
     }

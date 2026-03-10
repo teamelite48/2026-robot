@@ -26,7 +26,7 @@ public class ShootCommand extends Command {
   long onSpeedMillis;
 
   public ShootCommand() {
-    addRequirements(shooterFeedSubsystem);
+    addRequirements(shooterFeedSubsystem, shooterSubsystem, spindexerSubsystem);
   }
 
   // Called when the command is initially scheduled.
