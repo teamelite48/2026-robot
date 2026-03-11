@@ -235,7 +235,6 @@ public class ShooterSubsystem extends SubsystemBase {
       case IDLE:
         targetRPM = IDLE_RPM;
         leftMotor.setVelocity(targetRPM);
-        // leftMotor.setSpeed(.1);
         break;
 
       case MANUAL:
@@ -277,6 +276,18 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     shooterMode = ShooterMode.MANUAL;
+  }
+
+  public void setLowRPM() {
+    setManualPreset(ShooterPreset.LOW);
+  }
+
+  public void setMediumRPM() {
+    setManualPreset(ShooterPreset.MEDIUM);
+  }
+
+  public void setHighRPM() {
+    setManualPreset(ShooterPreset.HIGH);
   }
 
   public void setManualRPM(double rpm) {
@@ -337,8 +348,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private double getShooterRPM() {
-    // VERIFY THIS:
-    // If your Motor wrapper returns RPS, convert to RPM by multiplying by 60.
     return leftMotor.getVelocity();
   }
 
@@ -357,7 +366,7 @@ public class ShooterSubsystem extends SubsystemBase {
       .withPosition(1, 1)
       .withSize(2, 1);
 
-    tab.addDouble("Current RPM Shooter", this::getShooterRPM)
+    tab.addDouble("Current RPM", this::getShooterRPM)
       .withPosition(1, 2)
       .withSize(2, 1);
 

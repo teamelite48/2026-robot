@@ -1,6 +1,7 @@
 package frc.robot.subsystems.turret;
 
 import static frc.robot.subsystems.turret.TurretConfig.HOME_POSITION;
+import static frc.robot.subsystems.turret.TurretConfig.degreesAtCenter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -24,6 +25,10 @@ public class TurretCommands {
 
   public static Command moveToSafeState() {
     return new MoveTurretToDegrees(HOME_POSITION);
+  }
+
+  public static Command moveToCenter() {
+    return new MoveTurretToDegrees(degreesAtCenter);
   }
 
   public static Command stop() {

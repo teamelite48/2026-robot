@@ -19,4 +19,16 @@ public class ShooterCommands {
     public static Command idleShooter() {
         return Commands.runOnce(() -> shooterSubsystem.setIdle(), shooterSubsystem);
     }
+
+    public static Command lowRPM() {
+        return Commands.runOnce(() -> shooterSubsystem.setLowRPM(), shooterSubsystem);
+    }
+
+    public static Command mediumRPM() {
+        return Commands.runOnce(() -> shooterSubsystem.setMediumRPM(), shooterSubsystem);
+    }
+
+    public static Command highRPM() {
+        return Commands.runOnce(() -> shooterSubsystem.setHighRPM(), shooterSubsystem);
+    }
 }
