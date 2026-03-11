@@ -49,6 +49,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   private boolean isTracking = false;
   private double feetFromTarget;
+  private double distanceFromTargetFeet;
 
   public VisionSubsystem(String limelightName) {
     // limielightName = hostname in Limelight settings
@@ -76,7 +77,7 @@ public class VisionSubsystem extends SubsystemBase {
       return;
     }
 
-    updateFeetFromTarget();
+    updateDistanceToTarget();
   }
 
   public void enableLed(boolean isEnabled) {
@@ -104,7 +105,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public double getFeetFromTarget(){
-    return feetFromTarget;
+    return distanceFromTargetFeet;
   }
 
   public boolean hasTarget() {
@@ -124,12 +125,26 @@ public class VisionSubsystem extends SubsystemBase {
     return -ty.getDouble(0.0);
   }
 
-  private void updateFeetFromTarget() {
+  // private void updateFeetFromTarget() {
 
-    double degreesToApriltag = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
-    double radiansToApriltag = degreesToApriltag * (3.141592653 / 180.0);
+  //   double degreesToApriltag = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
+  //   double radiansToApriltag = degreesToApriltag * (Math.PI / 180.0);
 
-    feetFromTarget = (((target.heightInInches - MOUNT_HEIGHT_INCHES) / Math.tan(radiansToApriltag)) / 12.0);
+  //   feetFromTarget = (((target.heightInInches - MOUNT_HEIGHT_INCHES) / Math.tan(radiansToApriltag)) / 12.0);
+  // }
+
+  private void updateDistanceToTarget() {
+    double angleDegrees = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
+    double angleRadians = Math.toRadians(angleDegrees);
+
+    double heightDifferenceInches = target.heightInInches - MOUNT_HEIGHT_INCHES;
+
+    if (Math.abs(Math.sin(angleRadians)) < 1e-6) {
+        return; // avoid divide-by-zero / nonsense result
+    }
+
+    double distanceInches = Math.abs(heightDifferenceInches / Math.sin(angleRadians));
+    distanceFromTargetFeet = distanceInches / 12.0;
   }
 
   private void initDashboard(String tabName) {

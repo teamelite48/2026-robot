@@ -29,9 +29,9 @@ public class ShooterConfig {
     public static final double RPM_BUMP = 200.0;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
-        put(0, 1100.0);
-        put(1, 1100.0);
-        put(2, 1100.0);
+        put(0, 1000.0);
+        put(1, 1000.0);
+        put(2, 1000.0);
         put(3, 1100.0);
         put(4, 1100.0);
         put(5, 1100.0);

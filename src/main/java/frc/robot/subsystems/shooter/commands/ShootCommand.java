@@ -126,9 +126,9 @@ public class ShootCommand extends Command {
 
     shooterSubsystem.useAimAssistOrPreset(preset);
 
-    // if (RobotContainer.isAimAssistEnabled) {
-    //   shooterVisionSubsystem.startTracking(VisionTarget.HubApriltag);
-    // }
+    if (RobotContainer.isAimAssistEnabled) {
+      shooterVisionSubsystem.startTracking(VisionTarget.HubApriltag);
+    }
   }
 
   @Override
@@ -158,7 +158,7 @@ public class ShootCommand extends Command {
     shooterFeedSubsystem.stop();
     spindexerSubsystem.stop();
     shooterSubsystem.setIdle();
-    // shooterVisionSubsystem.stopTracking();
+    shooterVisionSubsystem.stopTracking();
   }
 
   @Override
