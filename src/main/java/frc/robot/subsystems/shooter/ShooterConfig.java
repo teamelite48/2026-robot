@@ -22,11 +22,11 @@ public class ShooterConfig {
     public static final double MEDIUM_RPM = 3000.0;
     public static final double HIGH_RPM = 5000.0;
 
-    public static final double ON_SPEED_TOLERANCE_RPM = 100.0;
+    public static final double ON_SPEED_TOLERANCE_RPM = 150.0;
 
     public static final double IDLE_RPM = 1000.0;
 
-    public static final double RPM_BUMP = 100.0;
+    public static final double RPM_BUMP = 200.0;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
         put(0, 1100.0);
