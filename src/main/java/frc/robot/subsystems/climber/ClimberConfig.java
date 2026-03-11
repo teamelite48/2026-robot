@@ -21,7 +21,7 @@ public class ClimberConfig {
         // double inchesPerRotation = BUFFER_ZONE * Math.PI;
         double gearRatio = 4.0 * 4.0 * 3.0;  // 48:1
 
-        config.currentLimit = 40;
+        config.supplyCurrentLimit = 40;
         config.isInverted = false;  // Positive for a minion is clockwise
         config.positionConversionFactor = gearRatio; //gearRatio / inchesPerRotation;  // Calculated in inches
         config.isBrakeModeEnabled = true;

@@ -72,7 +72,7 @@ public class ShooterConfig {
 
         config.isInverted = true;
         config.isBrakeModeEnabled = false;
-        config.currentLimit = 40;
+        config.supplyCurrentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
         config.pidParameters = new PIDParameters(0.2, 0.0, 0.0, 0.0, 0.0);
         config.enableFOC = false;

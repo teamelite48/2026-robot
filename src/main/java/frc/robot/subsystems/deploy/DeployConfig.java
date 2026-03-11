@@ -27,7 +27,7 @@ public class DeployConfig {
         config.initialPosition = RETRACT_LIMIT;
         config.pidParameters = new PIDParameters(0.0025, 0.0, 0.0, 0.0, 0.0); //0.5, 0.01, 0.0
         config.isBrakeModeEnabled = false;
-        config.currentLimit = 40;
+        config.supplyCurrentLimit = 40;
 
         return config;
     }

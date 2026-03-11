@@ -53,7 +53,7 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -65,7 +65,7 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -77,7 +77,7 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -89,7 +89,7 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -134,7 +134,7 @@ public class DriveConfig {
         config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;
@@ -145,7 +145,7 @@ public class DriveConfig {
         config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;
@@ -156,7 +156,7 @@ public class DriveConfig {
         config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;
@@ -167,7 +167,7 @@ public class DriveConfig {
         config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.currentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;

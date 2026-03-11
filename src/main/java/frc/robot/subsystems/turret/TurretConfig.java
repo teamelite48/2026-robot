@@ -48,7 +48,8 @@ public class TurretConfig {
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
-        config.currentLimit = 100;
+        config.supplyCurrentLimit = 40;
+        config.statorCurrentLimit = 100;
         config.motionMagicCruiseVelocity = 3.5; //2.5  // rotations/sec  (smooth start)
         config.motionMagicAcceleration = 8.0; //6.0   // rotations/sec^2 (smooth stop)
         config.motionMagicJerk = 40.0; //40.0           // change if overshooting

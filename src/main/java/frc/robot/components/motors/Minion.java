@@ -66,15 +66,27 @@ public class Minion implements Motor {
                     : NeutralModeValue.Coast
             );
 
-        if (motorConfig.currentLimit != null) {
-            double currentAmps = motorConfig.currentLimit;
+            if (motorConfig.supplyCurrentLimit != null) {
+                talonConfig.CurrentLimits
+                    .withSupplyCurrentLimitEnable(true)
+                    .withSupplyCurrentLimit(motorConfig.supplyCurrentLimit);
+            }
 
-            talonConfig.CurrentLimits
-                .withStatorCurrentLimit(currentAmps)
-                .withStatorCurrentLimitEnable(true)
-                .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(40); // Safety default
-        }
+            if (motorConfig.statorCurrentLimit != null) {
+                talonConfig.CurrentLimits
+                    .withStatorCurrentLimitEnable(true)
+                    .withStatorCurrentLimit(motorConfig.statorCurrentLimit);
+            }
+
+        // if (motorConfig.currentLimit != null) {
+        //     double currentAmps = motorConfig.currentLimit;
+
+        //     talonConfig.CurrentLimits
+        //         .withStatorCurrentLimit(currentAmps)
+        //         .withStatorCurrentLimitEnable(true)
+        //         .withSupplyCurrentLimitEnable(true)
+        //         .withSupplyCurrentLimit(40); // Safety default
+        // }
 
         if (motorConfig.forwardLimit != null) {
             talonConfig.SoftwareLimitSwitch

@@ -18,7 +18,7 @@ public class SpindexerConfig {
 
         // config.isInverted = true;
         config.isBrakeModeEnabled = false;
-        config.currentLimit = 40;
+        config.supplyCurrentLimit = 40;
         config.positionConversionFactor = (1.0 / 3.0);
         config.enableFOC = false;
 

@@ -21,7 +21,7 @@ public class ShooterFeedConfig {
 
         config.isInverted = true;
         config.isBrakeModeEnabled = true;
-        config.currentLimit = 40;
+        config.supplyCurrentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
         config.enableFOC = false;
 
