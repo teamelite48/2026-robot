@@ -212,13 +212,13 @@ public class RobotContainer {
       .whileTrue(TurretCommands.RotateTurretClockwise())
       .onFalse(TurretCommands.stop());
 
-    testController.square
-      .onTrue(ShooterCommands.idleShooter());
+    // testController.square
+    //   .onTrue(ShooterCommands.idleShooter());
 
-    testController.circle
-      .onTrue(ShooterCommands.stop());
+    // testController.circle
+    //   .onTrue(ShooterCommands.stop());
 
-    testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
+    // testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
 
     // testController.square
     //   .onTrue(Commands.parallel(
@@ -234,21 +234,22 @@ public class RobotContainer {
     //     DeployCommands.stop(),
     //     IntakeCommands.stop()));
 
-    testController.triangle
-      .onTrue(DeployCommands.setToHome())
-      .onFalse(IntakeCommands.stop());
-
-    // testController.square
-    //   .onTrue(new ShootCommand(ShooterConfig.ShooterPreset.LOW));
-
     // testController.triangle
-    //   .onTrue(new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
+    //   .onTrue(DeployCommands.setToHome())
+    //   .onFalse(IntakeCommands.stop());
 
-    // testController.circle
-    //   .onTrue(new ShootCommand(ShooterConfig.ShooterPreset.HIGH));
+    testController.square
+      .onTrue(ShooterCommands.lowRPM());
 
-    // testController.cross
-    //   .onTrue(new InstantCommand(() -> shooterSubsystem.setOff()));
+    testController.triangle
+      .onTrue(ShooterCommands.mediumRPM());
+
+    testController.circle
+      .onTrue(ShooterCommands.highRPM());
+
+    testController.cross
+      .onTrue(new InstantCommand(() -> shooterSubsystem.setOff()));
+      // .onTrue(ShooterCommands.idleShooter());
 
     testController.l1
       .whileTrue(DeployCommands.retract())

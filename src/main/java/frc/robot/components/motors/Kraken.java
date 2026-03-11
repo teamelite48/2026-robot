@@ -94,6 +94,8 @@ public class Kraken implements Motor {
             talonFxConfig.Slot0.kP = motorConfig.pidParameters.P;
             talonFxConfig.Slot0.kI = motorConfig.pidParameters.I;
             talonFxConfig.Slot0.kD = motorConfig.pidParameters.D;
+            talonFxConfig.Slot0.kS = motorConfig.pidParameters.S;
+            talonFxConfig.Slot0.kV = motorConfig.pidParameters.V;
         }
 
         talonFx.getConfigurator().apply(talonFxConfig);
