@@ -252,12 +252,14 @@ public class RobotContainer {
       // .onTrue(ShooterCommands.idleShooter());
 
     testController.l1
-      .whileTrue(DeployCommands.retract())
-      .onFalse(DeployCommands.stop());
+      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpDownRPM()));
+      // .whileTrue(DeployCommands.retract())
+      // .onFalse(DeployCommands.stop());
 
     testController.r1
-      .whileTrue(DeployCommands.extend())
-      .onFalse(DeployCommands.stop());
+      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpUpRPM()));
+      // .whileTrue(DeployCommands.extend())
+      // .onFalse(DeployCommands.stop());
 
     testController.l2
       .whileTrue(SpindexerCommands.FeedAwayFromFeed())
