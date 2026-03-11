@@ -112,7 +112,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public boolean hasTargetWithinParameters() {
-    return Math.abs(getXOffsetDegrees()) < HAS_TARGET_DEGREES_THRESHOLD && ta.getDouble(0.0) > HAS_TARGET_AREA_THRESHOLD;
+    return hasTarget() && Math.abs(getXOffsetDegrees()) < HAS_TARGET_DEGREES_THRESHOLD;
   }
 
   public double getXOffsetDegrees() {

@@ -2,9 +2,6 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotContainer;
 import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
@@ -32,7 +29,6 @@ public class TurretSubsystem extends SubsystemBase {
         this.absoluteEncoderConfig = getAbsEncoderConfigTurret();
 
         motor = new Minion(config);
-        // TODO: Remove pidController after fixing moveToDegrees. PID should be set in Motor config only
         // pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
         this.absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
@@ -55,8 +51,9 @@ public class TurretSubsystem extends SubsystemBase {
         }
 
         double targetRot = clampTarget(targetDegrees) / 360.0;
+        double ffVolts = isNearTarget() ? 0.0 : getMotionMagicFeedForwardVolts();
 
-        motor.setMotionMagicPosition(targetRot);
+        motor.setMotionMagicPosition(targetRot, ffVolts);
     }
 
     public void enableTurret() {
@@ -76,7 +73,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public boolean isTargetAcquired(){
-        return RobotContainer.shooterVisionSubsystem.hasTargetWithinParameters();
+        return RobotContainer.shooterVisionSubsystem.hasTarget();
     }
 
     public void stop() {
@@ -127,6 +124,31 @@ public class TurretSubsystem extends SubsystemBase {
 
     private double clampTarget(double degrees) {
         return Math.max(CCW_LIMIT, Math.min(CW_LIMIT, degrees));
+    }
+
+    private boolean isNearTarget() {
+        return Math.abs(clampTarget(targetDegrees) - getPositionInDegrees()) < FEED_FORWARD_DEGREES_TOLERANCE;
+    }
+
+    private double getMotionMagicFeedForwardVolts() {
+        double currentDeg = getPositionInDegrees();
+        double targetDeg = clampTarget(targetDegrees);
+
+        double sign = Math.signum(targetDeg - currentDeg);
+        if (sign == 0.0) {
+            return 0.0;
+        }
+
+        double ff = 0.0;
+
+        if (currentDeg >= 55.0 && currentDeg <= 80.0) {
+            ff = FEED_FORWARD_VOLTS;
+        }
+        else if (currentDeg >= 125.0 && currentDeg <= 145.0) {
+            ff = FEED_FORWARD_VOLTS;
+        }
+
+        return ff * sign;
     }
 
     public void initDashboard() {

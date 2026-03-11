@@ -132,7 +132,7 @@ public class Kraken implements Motor {
             }
         }
 
-        talonFx.setControl(positionDutyCycle.withPosition(rotations).withFeedForward(config.feedForward));
+        talonFx.setControl(positionDutyCycle.withPosition(rotations).withFeedForward(config.feedForwardVolts));
     }
 
     public void setSpeed(double speed) {
@@ -145,6 +145,8 @@ public class Kraken implements Motor {
     }
 
     public void setMotionMagicPosition(double position) {}
+
+    public void setMotionMagicPosition(double position, double feedForwardVolts) {}
 
     public void stop() {
         talonFx.stopMotor();

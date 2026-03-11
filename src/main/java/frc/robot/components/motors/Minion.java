@@ -6,7 +6,7 @@ package frc.robot.components.motors;
 
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
@@ -25,7 +25,7 @@ public class Minion implements Motor {
 
     final DutyCycleOut dutyCycleOut;
     final PositionDutyCycle positionDutyCycle;
-    final MotionMagicDutyCycle motionMagicDutyCycle;
+    final MotionMagicVoltage motionMagicVoltage;
 
     public Minion(MotorConfig motorConfig) {
 
@@ -94,7 +94,7 @@ public class Minion implements Motor {
             talonConfig.Slot0.kD = motorConfig.pidParameters.D;
         }
 
-        motionMagicDutyCycle = new MotionMagicDutyCycle(0)
+        motionMagicVoltage = new MotionMagicVoltage(0)
             .withSlot(0)
             .withEnableFOC(config.enableFOC);
 
@@ -137,7 +137,7 @@ public class Minion implements Motor {
         talon.setControl(
             positionDutyCycle
                 .withPosition(position)
-                .withFeedForward(config.feedForward)
+                .withFeedForward(config.feedForwardVolts)
         );
     }
 
@@ -178,10 +178,14 @@ public class Minion implements Motor {
     }
 
     public void setMotionMagicPosition(double position) {
+        setMotionMagicPosition(position, 0.0);
+    }
+
+    public void setMotionMagicPosition(double position, double feedFowardVolts) {
         talon.setControl(
-            motionMagicDutyCycle
+            motionMagicVoltage
                 .withPosition(position)
-                .withFeedForward(config.feedForward)
+                .withFeedForward(feedFowardVolts)
         );
     }
 

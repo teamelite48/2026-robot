@@ -6,7 +6,7 @@ public interface Motor {
     public void setPosition(double position);
     public void setSpeed(double speed);
     public void setVoltage(double d);
-    public void setMotionMagicPosition(double position);
+    public void setMotionMagicPosition(double position, double feedForward);
     public void stop();
     public void setInitialPosition();
     public void setInitialPosition(double position);

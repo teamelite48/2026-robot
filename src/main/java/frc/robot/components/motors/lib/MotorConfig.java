@@ -11,7 +11,7 @@ public class MotorConfig {
     public boolean enableFOC = false;  // Can only enable if we have Phoenix Pro License
     public boolean continuousWrap = false;
     public double positionConversionFactor = 1.0;
-    public double feedForward = 0.0;
+    public double feedForwardVolts = 0.0;
     public Integer currentLimit = null;  // default to 40 for all Krakens
     public Double forwardLimit = null;
     public Double reverseLimit = null;
