@@ -53,7 +53,7 @@ public class TurretSubsystem extends SubsystemBase {
             return;
         }
 
-        if (isAutoAimOn) {
+        if (RobotContainer.isAimAssistEnabled) {
             autoAim();
         }
 
