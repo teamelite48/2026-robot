@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -143,6 +144,12 @@ public class Minion implements Motor {
     @Override
     public void setSpeed(double speed) {
         talon.setControl(dutyCycleOut.withOutput(speed));
+    }
+
+    @Override
+    public void setVelocity(double rpm) {
+        double rps = rpm / 60.0;
+        talon.setControl(new VelocityVoltage(rps));
     }
 
     @Override

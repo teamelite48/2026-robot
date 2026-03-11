@@ -7,7 +7,7 @@ import frc.robot.lib.PIDParameters;
 
 public class TurretConfig {
 
-    public static final double TURRET_ENCODER_OFFSET_DEGREES = 238.8;
+    public static final double TURRET_ENCODER_OFFSET_DEGREES = 108.9;
 
     public static final double inputDeadzone = 0.2;
 
@@ -15,22 +15,23 @@ public class TurretConfig {
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
-    public static final double degreesPerMotorRotation = 4;
-
-    // public static final double degreesAtLeft = 0.0;
-    // public static final double degreesAtCenter = 90.0;
-    // public static final double degreesAtRight = 180.0;
-
-    public static final double encoderLimit = (float) (90 / degreesPerMotorRotation);
-    public static final double nominalMotorRotationsPerSecond = 7200.0 / 60.0;
-
     public static final double CCW_LIMIT = 0.0;
     public static final double CW_LIMIT = 180.0;
+
+    public static final double degreesPerMotorRotation = 40;
+
+    public static final double HOME_POSITION = 0.0;
+    public static final double degreesAtLeft = 0.0;
+    public static final double degreesAtCenter = 90.0;
+    public static final double degreesAtRight = 180.0;
+
+    public static final double motorForwardLimit = CW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
+    public static final double motorBackwardsLimit = CCW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
+    public static final double nominalMotorRotationsPerSecond = 7200.0 / 60.0;
 
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
 
-    public static final double HOME_POSITION = 0.0;
     //TODO: Find home/starting position of turret for start of match configuration
 
     public static MotorConfig getMotorConfig() {
@@ -38,13 +39,13 @@ public class TurretConfig {
         var config = new MotorConfig(16, RobotConfig.CANIVORE_48);
 
         config.isInverted = true;
-        config.positionConversionFactor = (1.0 / 9.0); // (1.0/90.0) * 360.0;
+        config.positionConversionFactor = (9.0 / 1.0);//(1.0 / 9.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(0.1, 0.0005, 0.0); //0.035
+        config.pidParameters = new PIDParameters(3.0, 0.0005, 0.0, 0.25); //0.035
         config.enableFOC = false;
-        config.forwardLimit = encoderLimit;
-        config.reverseLimit = -encoderLimit;
+        config.forwardLimit = motorForwardLimit;
+        config.reverseLimit = motorBackwardsLimit;
         config.currentLimit = 100;
         config.motionMagicCruiseVelocity = 2.5;  // rotations/sec  (smooth start)
         config.motionMagicAcceleration = 6.0;    // rotations/sec^2 (smooth stop)
@@ -57,7 +58,7 @@ public class TurretConfig {
         var config = new AbsoluteEncoderConfig(10, RobotConfig.CANIVORE_48);
         config.positionConversionFactor = 360.0;
         config.offset = TURRET_ENCODER_OFFSET_DEGREES;
-        config.isInverted = true;
+        config.isInverted = false;
         return config;
     }
 }

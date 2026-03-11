@@ -5,6 +5,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -14,6 +15,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.components.motors.lib.MotorConfig;
+import frc.robot.subsystems.deploy.DeploySubsystem.ControlMode;
 
 public class Kraken implements Motor {
 
@@ -103,9 +105,14 @@ public class Kraken implements Motor {
         return rotorPos.refresh().getValueAsDouble() * config.positionConversionFactor;
     }
 
+    // public double getVelocity() {
+    //     // return talonFx.getVelocity().getValueAsDouble() * config.positionConversionFactor;
+    //     return rotorVel.refresh().getValueAsDouble() * config.positionConversionFactor;
+    // }
+
+    @Override
     public double getVelocity() {
-        // return talonFx.getVelocity().getValueAsDouble() * config.positionConversionFactor;
-        return rotorVel.refresh().getValueAsDouble() * config.positionConversionFactor;
+        return talonFx.getVelocity().getValueAsDouble() * 60.0;
     }
 
     // public int getCanId() {
@@ -155,6 +162,12 @@ public class Kraken implements Motor {
     @Override
     public void setInitialPosition(double position) {
         talonFx.setPosition(calculateRotations(position, config.positionConversionFactor));
+    }
+
+    @Override
+    public void setVelocity(double rpm) {
+        double rps = rpm / 60.0;
+        talonFx.setControl(new VelocityVoltage(rps));
     }
 
     @Override

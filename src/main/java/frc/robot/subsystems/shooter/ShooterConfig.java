@@ -12,12 +12,21 @@ import frc.robot.lib.PIDParameters;
 
 public class ShooterConfig {
 
-    // public static final double LOW_RPM = 0.5;
-    // public static final double MEDIUM_RPM = 1.0;
-    // public static final double RPM_BUMP = 1.0;
+    public enum ShooterPreset {
+        LOW,
+        MEDIUM,
+        HIGH
+    }
 
-    public static final double IDLE_MOTOR_POWER = 0.1;
-    public static final double ON_SPEED_RPM = 0.3;
+    public static final double LOW_RPM = 1000.0;
+    public static final double MEDIUM_RPM = 3000.0;
+    public static final double HIGH_RPM = 5000.0;
+
+    public static final double ON_SPEED_TOLERANCE_RPM = 100.0;
+
+    public static final double IDLE_RPM = 550.0;
+
+    public static final double RPM_BUMP = 100.0;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
         put(0, 1100.0);
@@ -53,7 +62,7 @@ public class ShooterConfig {
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
-        config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
+        config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0, 0.0);
 
         return config;
     }
@@ -65,7 +74,7 @@ public class ShooterConfig {
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
-        config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0);
+        config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0, 0.0);
         config.enableFOC = false;
 
         return config;

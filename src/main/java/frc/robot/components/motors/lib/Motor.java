@@ -10,5 +10,6 @@ public interface Motor {
     public void stop();
     public void setInitialPosition();
     public void setInitialPosition(double position);
+    public void setVelocity(double rpm);
     public void follow(Motor leader, boolean oppose);
 }

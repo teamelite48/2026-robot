@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
 
@@ -38,6 +39,7 @@ public class VisionSubsystem extends SubsystemBase {
   final NetworkTableEntry tx;
   final NetworkTableEntry ty;
   final NetworkTableEntry ta;
+  final NetworkTableEntry tv;
   final NetworkTableEntry ledMode;
   final NetworkTableEntry pipeline;
   final double[] botpose;
@@ -51,17 +53,18 @@ public class VisionSubsystem extends SubsystemBase {
   public VisionSubsystem(String limelightName) {
     // limielightName = hostname in Limelight settings
     // stopTracking();
-    
+
     final NetworkTable table = NetworkTableInstance.getDefault().getTable(limelightName);
 
     this.tid = table.getEntry("tid");
     this.tx = table.getEntry("tx");
     this.ty = table.getEntry("ty");
     this.ta = table.getEntry("ta");
+    this.tv = table.getEntry("tv");
     this.ledMode = table.getEntry("ledMode");
     this.pipeline = table.getEntry("pipeline");
     this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
-    
+
     enableLed(false);
     initDashboard(limelightName);
   }
@@ -105,6 +108,10 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public boolean hasTarget() {
+    return tv.getDouble(0) == 1 ? true: false;
+  }
+
+  public boolean hasTargetWithinParameters() {
     return Math.abs(getXOffsetDegrees()) < HAS_TARGET_DEGREES_THRESHOLD && ta.getDouble(0.0) > HAS_TARGET_AREA_THRESHOLD;
   }
 

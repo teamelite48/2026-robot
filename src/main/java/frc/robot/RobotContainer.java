@@ -7,15 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import frc.robot.RobotConfig.GamePiece;
-import frc.robot.RobotConfig.VisionTrackingMode;
-import frc.robot.commands.Robot.RobotCommands;
-import frc.robot.commands.Shooter.ShootCommand;
 import frc.robot.controls.DualShock4Controller;
 import frc.robot.subsystems.climber.ClimberCommands;
 import frc.robot.subsystems.climber.ClimberSubsystem;
@@ -28,14 +23,16 @@ import frc.robot.subsystems.intake.IntakeCommands;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.led.LedSubsystem;
 import frc.robot.subsystems.shooter.ShooterCommands;
+import frc.robot.subsystems.shooter.ShooterConfig;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.shooter.commands.ShootCommand;
 import frc.robot.subsystems.shooterFeed.ShooterFeedCommands;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerCommands;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretCommands;
+import frc.robot.subsystems.turret.TurretConfig;
 import frc.robot.subsystems.turret.TurretSubsystem;
-import frc.robot.subsystems.vision.VisionCommands;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class RobotContainer {
@@ -45,8 +42,7 @@ public class RobotContainer {
   DualShock4Controller testController = new DualShock4Controller(2);
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // public static VisionSubsystem collectorVisionSubsystem = new VisionSubsystem("limelight-collector");
-  public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-shooter");
+  public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-turret");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
@@ -61,9 +57,6 @@ public class RobotContainer {
   public static boolean isAimAssistEnabled = false;
   public static boolean isShooting = false;
   public static boolean isAutonomous = false;
-  //public static GamePiece gamePieceMode = GamePiece.Coral;
-  public static VisionTrackingMode visionTrackingMode = VisionTrackingMode.Rear;
-  //public static boolean isWristFlippable = false;
 
   public static CameraServer camera;
 
@@ -164,8 +157,8 @@ public class RobotContainer {
     copilotController.circle
       .onTrue(ShooterCommands.idleShooter());
 
-    copilotController.l1
-      .whileTrue(new ShootCommand());
+    // copilotController.l1
+    //   .whileTrue(new ShootCommand());
 
     // copilotController.l2
     //   .whileTrue();
@@ -213,12 +206,12 @@ public class RobotContainer {
       .onFalse(TurretCommands.stop());
 
     testController.square
-      .onTrue(ShooterCommands.startShooter());
+      .onTrue(ShooterCommands.idleShooter());
 
     testController.circle
       .onTrue(ShooterCommands.stop());
 
-    // testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
+    testController.cross.onTrue(new InstantCommand(() -> RobotContainer.isAimAssistEnabled = !RobotContainer.isAimAssistEnabled));
 
     // testController.square
     //   .onTrue(Commands.parallel(
@@ -241,6 +234,18 @@ public class RobotContainer {
       //   DeployCommands.stop(),
       //   IntakeCommands.stop()))
       ;
+
+    // testController.square
+    //   .onTrue(new ShootCommand(ShooterConfig.ShooterPreset.LOW));
+
+    // testController.triangle
+    //   .onTrue(new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
+
+    // testController.circle
+    //   .onTrue(new ShootCommand(ShooterConfig.ShooterPreset.HIGH));
+
+    // testController.cross
+    //   .onTrue(new InstantCommand(() -> shooterSubsystem.setOff()));
 
     testController.l1
       .whileTrue(DeployCommands.retract())
@@ -274,8 +279,22 @@ public class RobotContainer {
       .whileTrue(IntakeCommands.outtake())
       .onFalse(IntakeCommands.stop());
 
-    // testController.share
+    testController.touchpad
+      .onTrue(new InstantCommand(() -> turretSubsystem.moveToDegrees(TurretConfig.HOME_POSITION), turretSubsystem));
+
+     testController.l3
+      .onTrue(new InstantCommand(() -> turretSubsystem.moveToDegrees(TurretConfig.degreesAtCenter), turretSubsystem));
+
+      // testController.share
     //   .onTrue(ShooterCommands.stop());
+  }
+
+  public static void toggleAimAssist() {
+    isAimAssistEnabled = !isAimAssistEnabled;
+  }
+
+  public static void disableAimAssist() {
+    isAimAssistEnabled = false;
   }
 
   public static SendableChooser<Command> initAutoChooser() {
@@ -291,25 +310,6 @@ public class RobotContainer {
   public void initDashboard() {
     var robotContainerTab = Shuffleboard.getTab("Robot Container");
 
-    // robotContainerTab.addString("Game Piece Mode", () -> gamePieceMode.toString())
-    //   .withPosition(0, 0)
-    //   .withSize(2, 1);
-
-    // robotContainerTab.addString("Vision Tracking Mode", () -> RobotContainer.visionTrackingMode.toString())
-    //   .withPosition(2, 0)
-    //   .withSize(2, 1);
-
-    // robotContainerTab.addString("Current Vision Target", () -> {
-    //   return RobotContainer.visionTrackingMode == VisionTrackingMode.Front
-    //     ? frontVisionSubsystem.getTargetName()
-    //     : rearVisionSubsystem.getTargetName();
-    // })
-    //   .withPosition(2, 1)
-    //   .withSize(2, 1);
-
-    // robotContainerTab.addBoolean("Is Wrist Flippable", () -> RobotContainer.isWristFlippable)
-    //   .withPosition(4, 0)
-    //   .withSize(1, 1);
     robotContainerTab.addBoolean("Aim Assist", () -> RobotContainer.isAimAssistEnabled);
   }
 }

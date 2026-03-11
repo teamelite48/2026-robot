@@ -2,33 +2,23 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotContainer;
 import frc.robot.components.encoders.absolute.CanCoder;
-import frc.robot.components.encoders.absolute.lib.AbsoluteEncoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.Minion;
 import frc.robot.components.motors.lib.Motor;
-import frc.robot.subsystems.vision.VisionSubsystem;
 
 import static frc.robot.subsystems.turret.TurretConfig.*;
 
 public class TurretSubsystem extends SubsystemBase {
 
     private final Motor motor;
-    // private final PIDController pidController;
     private final CanCoder absoluteEncoder;
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
-    private double targetDegrees;
-
-    final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    final NetworkTableEntry tx = table.getEntry("tx");
-    final NetworkTableEntry tv = table.getEntry("tv");
-    final NetworkTableEntry ledMode = table.getEntry("ledMode");
-    final NetworkTableEntry camMode = table.getEntry("camMode");
+    private double targetDegrees = HOME_POSITION;
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
@@ -46,8 +36,12 @@ public class TurretSubsystem extends SubsystemBase {
         // pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
         this.absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
-        motor.setInitialPosition(getAbsoluteAngle());
-        targetDegrees = clampTarget(getPositionInDegrees());
+        double absDegrees = getAbsoluteAngle();
+        motor.setInitialPosition(absDegrees / 360.0);
+        targetDegrees = clampTarget(absDegrees);
+
+        // motor.setInitialPosition(getAbsoluteAngle() / 360.0);
+        // targetDegrees = clampTarget(getPositionInDegrees());
 
         initDashboard();
     }
@@ -60,23 +54,10 @@ public class TurretSubsystem extends SubsystemBase {
             autoAim();
         }
 
-        // motor.setPosition(clampTarget(targetDegrees));
+        double targetRot = clampTarget(targetDegrees) / 360.0;
 
-        // motor.setMotionMagicPosition(
-        //     (clampTarget(targetDegrees) - TurretConfig.degreesAtCenter) / TurretConfig.degreesPerMotorRotation
-        // );
+        motor.setMotionMagicPosition(targetRot);
     }
-
-    // public void simulationPeriodic() {
-
-    //     long millisSinceLastPeriodic = System.currentTimeMillis() - lastSimulationPeriodicMillis;
-    //     double elapsedSeconds = (millisSinceLastPeriodic / 1000.0);
-    //     double rotationsSinceLastPeriodic = motor.getPosition() * elapsedSeconds * TurretConfig.nominalMotorRotationsPerSecond;
-
-    //     motor.setPosition(motor.getPosition() + rotationsSinceLastPeriodic);
-
-    //     lastSimulationPeriodicMillis = System.currentTimeMillis();
-    // }
 
     public void enableTurret() {
         isTurretEnabled = true;
@@ -84,39 +65,18 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void disableTurret() {
         isTurretEnabled = false;
-        turnAutoAimOff();
-    }
-
-    public void enableAutoAim() {
-        isAutoAimEnabled = true;
-    }
-
-    public void disableAutoAim() {
-        isAutoAimEnabled = false;
-        isAutoAimOn = false;
-    }
-
-    public void turnAutoAimOn() {
-        if (isAutoAimEnabled == false) return;
-
-        isAutoAimOn = true;
-    }
-
-    public void turnAutoAimOff() {
-        isAutoAimOn = false;
     }
 
     public void autoAim() {
 
-        if(isTargetAcquired() == false) return;
+        if (isTargetAcquired() == false || RobotContainer.isAimAssistEnabled == false) return;
 
-        // double error = tx.getDouble(0.0);
         double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
         targetDegrees = clampTarget(getPositionInDegrees() - error);
     }
 
     public boolean isTargetAcquired(){
-        return tv.getDouble(0) == 1 ? true: false;
+        return RobotContainer.shooterVisionSubsystem.hasTargetWithinParameters();
     }
 
     public void stop() {
@@ -124,39 +84,28 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void moveToDegrees(Double degrees) {
-        // double motorSpeed = pidController.calculate(getPositionInDegrees(), degrees);
-        // TODO: Use the below method instead and configure positionConversionFactor in MotorConfig
-        // motor.setPosition(degrees);
-        turnAutoAimOff();
         targetDegrees = clampTarget(degrees);
     }
 
+    public void moveToHome() {
+        RobotContainer.disableAimAssist();
+        moveToDegrees(HOME_POSITION);
+    }
+
     public void rotateClockwise() {
-        turnAutoAimOff();
-
-        // if (getPositionInDegrees() >= 180.0){
-        //     motor.stop();
-        //     return;
-        // }
-
+        RobotContainer.disableAimAssist();
         setMotor(TurretConfig.clockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees + 2);
     }
 
     public void rotateCounterClockwise() {
-        turnAutoAimOff();
-
-        // if (getPositionInDegrees() <= 0.0) {
-        //     motor.stop();
-        //     return;
-        // }
-
+        RobotContainer.disableAimAssist();
         setMotor(TurretConfig.counterClockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees - 2);
     }
 
     public double getPositionInDegrees() {
-        return motor.getPosition() * TurretConfig.degreesPerMotorRotation;
+        return motor.getPosition() * 360.0;
     }
 
     public double getAbsoluteAngle() {
@@ -208,5 +157,7 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addBoolean("Turret Enabled", () -> isTurretEnabled)
             .withPosition(4, 2)
             .withSize(1, 1);
+
+        tab.addDouble("Motor Rotations", () -> motor.getPosition());
     }
 }

@@ -22,7 +22,7 @@ public class DriveConfig {
     public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 332.7; //214.10; //34.57;
     public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 132.7; //229.39; //50.18;
 
-    public static final PIDParameters ANGLE_CONTROLLER_PID_PARAMETERS = new PIDParameters(0.2, 0.0, 0);
+    public static final PIDParameters ANGLE_CONTROLLER_PID_PARAMETERS = new PIDParameters(0.2, 0.0, 0, 0.0);
 
     // Can remove if different solution in SwerveModule.java initDashboard()
     public static final int FRONT_LEFT_DRIVE_CAN_ID = 21;

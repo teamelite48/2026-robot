@@ -28,7 +28,7 @@ public class ClimberConfig {
         config.initialPosition = HOME_POSITION;
         config.reverseLimit = HOME_POSITION;
         config.forwardLimit = EXTEND_LIMIT;
-        config.pidParameters = new PIDParameters(0.7, 0.08, 0.0);
+        config.pidParameters = new PIDParameters(0.7, 0.08, 0.0, 0.0);
 
         return config;
     }
