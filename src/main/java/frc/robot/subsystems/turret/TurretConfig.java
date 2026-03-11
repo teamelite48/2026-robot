@@ -7,13 +7,13 @@ import frc.robot.lib.PIDParameters;
 
 public class TurretConfig {
 
-    public static final double TURRET_ENCODER_OFFSET_DEGREES = 108.9;
+    public static final double TURRET_ENCODER_OFFSET_DEGREES = 126.9;
 
     public static final double inputDeadzone = 0.2;
-    public static final double FEED_FORWARD_VOLTS = 0.8;
+    public static final double FEED_FORWARD_VOLTS = 2.0;
     public static final double FEED_FORWARD_DEGREES_TOLERANCE = 2.0;
 
-    public static final double motorMaxOutput = 0.3;
+    public static final double motorMaxOutput = 0.35;
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
@@ -44,14 +44,14 @@ public class TurretConfig {
         config.positionConversionFactor = (9.0 / 1.0);//(1.0 / 9.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(2.0, 0.0005, 0.0, 0.25); //0.035
+        config.pidParameters = new PIDParameters(18.0, 0.0, 0.5, 1.0, 0.12); //0.035
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.currentLimit = 100;
-        config.motionMagicCruiseVelocity = 2.5; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 1.0; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 5.0; //40.0           // change if overshooting
+        config.motionMagicCruiseVelocity = 3.5; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 8.0; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 40.0; //40.0           // change if overshooting
 
         return config;
     }

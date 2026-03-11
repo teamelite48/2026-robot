@@ -169,7 +169,7 @@ public class Kraken implements Motor {
     @Override
     public void setVelocity(double rpm) {
         double rps = rpm / 60.0;
-        talonFx.setControl(new VelocityVoltage(rps));
+        talonFx.setControl(new VelocityVoltage(rps).withSlot(0).withEnableFOC(config.enableFOC));
     }
 
     @Override

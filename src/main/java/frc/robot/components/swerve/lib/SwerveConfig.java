@@ -119,8 +119,8 @@ public final class SwerveConfig {
         private double driveReduction = 1.0 / 6.75;
         private double angleReduction = 1.0 / 21.4;
 
-        private PIDParameters movingPid = new PIDParameters(0.005, 0, 0, 0);
-        private PIDParameters standingPid = new PIDParameters(0.01, 0, 0, 0);
+        private PIDParameters movingPid = new PIDParameters(0.005, 0, 0, 0, 0);
+        private PIDParameters standingPid = new PIDParameters(0.01, 0, 0, 0, 0);
 
         public Builder wheelDiameter(double v) {
             wheelDiameterMeters = v;

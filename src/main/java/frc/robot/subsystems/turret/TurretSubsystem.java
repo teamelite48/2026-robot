@@ -16,12 +16,16 @@ public class TurretSubsystem extends SubsystemBase {
     private final CanCoder absoluteEncoder;
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
     private double targetDegrees = HOME_POSITION;
+    private boolean isManualControl = false;
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
 
     // long lastSimulationPeriodicMillis = 0;
     boolean isTurretEnabled = true;
+
+    private int stuckLoops = 0;
+    private static final int STUCK_LOOP_THRESHOLD = 4; // about 160 ms at 20 ms loop
 
     public TurretSubsystem() {
 
@@ -44,16 +48,32 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (!isTurretEnabled) return;
+        if (!isTurretEnabled) {
+            motor.stop();
+            return;
+        }
 
         if (isAutoAimOn) {
             autoAim();
         }
 
-        double targetRot = clampTarget(targetDegrees) / 360.0;
-        double ffVolts = isNearTarget() ? 0.0 : getMotionMagicFeedForwardVolts();
+        if (isManualControl) {
+            return;
+        }
 
-        motor.setMotionMagicPosition(targetRot, ffVolts);
+        double clampedTargetDegrees = clampTarget(targetDegrees);
+        double currentDegrees = getPositionInDegrees();
+        double errorDegrees = clampedTargetDegrees - currentDegrees;
+        double absError = Math.abs(errorDegrees);
+
+        if (absError <= 3.0) {
+            double targetRotations = clampedTargetDegrees / 360.0;
+            motor.setMotionMagicPosition(targetRotations, 0.0);
+        } else if (absError <= 15.0) {
+            motor.setSpeed(Math.copySign(0.23, errorDegrees));
+        } else {
+            motor.setSpeed(Math.copySign(0.35, errorDegrees));
+        }
     }
 
     public void enableTurret() {
@@ -81,22 +101,26 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void moveToDegrees(Double degrees) {
+        isManualControl = false;
         targetDegrees = clampTarget(degrees);
     }
 
     public void moveToHome() {
         RobotContainer.disableAimAssist();
+        isManualControl = false;
         moveToDegrees(HOME_POSITION);
     }
 
     public void rotateClockwise() {
         RobotContainer.disableAimAssist();
+        isManualControl = true;
         setMotor(TurretConfig.clockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees + 2);
     }
 
     public void rotateCounterClockwise() {
         RobotContainer.disableAimAssist();
+        isManualControl = true;
         setMotor(TurretConfig.counterClockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees - 2);
     }
@@ -141,7 +165,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         double ff = 0.0;
 
-        if (currentDeg >= 55.0 && currentDeg <= 80.0) {
+        if (currentDeg >= 10.0 && currentDeg <= 80.0) {
             ff = FEED_FORWARD_VOLTS;
         }
         else if (currentDeg >= 125.0 && currentDeg <= 145.0) {
@@ -149,6 +173,16 @@ public class TurretSubsystem extends SubsystemBase {
         }
 
         return ff * sign;
+    }
+
+    private boolean isStuckMovingToTarget() {
+        double error = clampTarget(targetDegrees) - getPositionInDegrees();
+
+        if (Math.abs(error) < FEED_FORWARD_DEGREES_TOLERANCE) {
+            return false;
+        }
+
+        return Math.abs(motor.getVelocity()) < 0.01;
     }
 
     public void initDashboard() {

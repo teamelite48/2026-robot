@@ -24,7 +24,7 @@ public class ShooterConfig {
 
     public static final double ON_SPEED_TOLERANCE_RPM = 100.0;
 
-    public static final double IDLE_RPM = 550.0;
+    public static final double IDLE_RPM = 1000.0;
 
     public static final double RPM_BUMP = 100.0;
 
@@ -62,7 +62,7 @@ public class ShooterConfig {
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
-        config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0, 0.0);
+        config.pidParameters = new PIDParameters(0.0005, 0.0, 0.0, 0.0, 0.0);
 
         return config;
     }
@@ -74,7 +74,7 @@ public class ShooterConfig {
         config.isBrakeModeEnabled = false;
         config.currentLimit = 40;
         config.positionConversionFactor = (1.0 / 1.0);
-        config.pidParameters = new PIDParameters(0.00003, 0.0, 0.0, 0.0);
+        config.pidParameters = new PIDParameters(0.2, 0.0, 0.0, 0.0, 0.0);
         config.enableFOC = false;
 
         return config;

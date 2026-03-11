@@ -203,7 +203,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final Supplier<Double> feetFromTargetSupplier;
   private final LinearInterpolator feetToRpmInterpolator = new LinearInterpolator(FEET_TO_RPM_MAP);
 
-  private ShooterMode shooterMode = ShooterMode.IDLE;
+  private ShooterMode shooterMode = ShooterMode.OFF;
   private ShooterConfig.ShooterPreset manualPreset = ShooterConfig.ShooterPreset.MEDIUM;
 
   private double manualTargetRPM = MEDIUM_RPM;
@@ -235,6 +235,7 @@ public class ShooterSubsystem extends SubsystemBase {
       case IDLE:
         targetRPM = IDLE_RPM;
         leftMotor.setVelocity(targetRPM);
+        // leftMotor.setSpeed(.1);
         break;
 
       case MANUAL:

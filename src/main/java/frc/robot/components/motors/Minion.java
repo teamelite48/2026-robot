@@ -92,6 +92,8 @@ public class Minion implements Motor {
             talonConfig.Slot0.kP = motorConfig.pidParameters.P;
             talonConfig.Slot0.kI = motorConfig.pidParameters.I;
             talonConfig.Slot0.kD = motorConfig.pidParameters.D;
+            talonConfig.Slot0.kS = motorConfig.pidParameters.S;
+            talonConfig.Slot0.kV = motorConfig.pidParameters.V;
         }
 
         motionMagicVoltage = new MotionMagicVoltage(0)
@@ -181,11 +183,11 @@ public class Minion implements Motor {
         setMotionMagicPosition(position, 0.0);
     }
 
-    public void setMotionMagicPosition(double position, double feedFowardVolts) {
+    public void setMotionMagicPosition(double position, double feedForwardVolts) {
         talon.setControl(
             motionMagicVoltage
                 .withPosition(position)
-                .withFeedForward(feedFowardVolts)
+                .withFeedForward(feedForwardVolts)
         );
     }
 

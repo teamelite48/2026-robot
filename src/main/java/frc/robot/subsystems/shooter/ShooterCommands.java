@@ -17,6 +17,6 @@ public class ShooterCommands {
     }
 
     public static Command idleShooter() {
-        return Commands.run(() -> shooterSubsystem.isIdling(), shooterSubsystem);
+        return Commands.runOnce(() -> shooterSubsystem.setIdle(), shooterSubsystem);
     }
 }
