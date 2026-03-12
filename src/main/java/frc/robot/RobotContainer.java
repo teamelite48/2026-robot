@@ -300,7 +300,13 @@ public class RobotContainer {
 
   public static void toggleAimAssist() {
     isAimAssistEnabled = !isAimAssistEnabled;
-  }
+    // If we just enabled it, we MUST tell the turret to stop manual mode
+    if (isAimAssistEnabled) {
+        // You'll need a way to reference the subsystem here, or 
+        // better yet, move this logic into a Command.
+        turretSubsystem.isManualControl = false;
+    }
+  } 
 
   public static void disableAimAssist() {
     isAimAssistEnabled = false;
@@ -320,6 +326,8 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Shoot", ShooterCommands.highRPM());
     NamedCommands.registerCommand("Idle Shooter", ShooterCommands.idleShooter());
     NamedCommands.registerCommand("Shooter Off", ShooterCommands.stop());
+    NamedCommands.registerCommand("Spindexer Off", SpindexerCommands.stop());
+    NamedCommands.registerCommand("Shooter Feed Off", ShooterFeedCommands.stop());
     NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 
     var autoChooser = AutoBuilder.buildAutoChooser();

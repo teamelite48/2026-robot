@@ -44,15 +44,15 @@ public class TurretConfig {
         config.positionConversionFactor = (9.0 / 1.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(2.5, 0.0, 0.1, 1.5, 0.1); // 25.0, 0.0, 0.0, 2.0, 0.12
+        config.pidParameters = new PIDParameters(450.0, 0.0, 5.0, 0.7, 0.12); // 25.0, 0.0, 0.0, 2.0, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 100;
-        config.motionMagicCruiseVelocity = 8.0; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 12.0; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 100.0; //40.0           // change if overshooting
+        config.motionMagicCruiseVelocity = 1.5; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 2.5; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 20.0; //40.0           // change if overshooting
 
         return config;
     }

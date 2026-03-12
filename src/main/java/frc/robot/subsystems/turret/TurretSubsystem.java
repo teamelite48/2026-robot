@@ -16,7 +16,7 @@ public class TurretSubsystem extends SubsystemBase {
     private final CanCoder absoluteEncoder;
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
     private double targetDegrees = HOME_POSITION;
-    private boolean isManualControl = true;
+    public boolean isManualControl = true;
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
@@ -44,34 +44,41 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     @Override
+    // public void periodic() {
+    //     // 1. Update targetDegrees if AutoAim is active
+    //     // This updates the 'targetDegrees' variable but doesn't move the motor yet
+    //     if (RobotContainer.isAimAssistEnabled) {
+    //         isManualControl = false;
+    //         autoAim();
+    //     }
+
+    //     // 2. Safety: If a manual button is being held, skip the position control logic
+    //     if (isManualControl) {
+    //         return; 
+    //     }
+
+    //     // 3. Constant Position Holding
+    //     // By calling this every 20ms, the turret will stay locked to 'targetDegrees'
+    //     // even if the target is lost or the robot chassis spins.
+    //     double targetRotations = targetDegrees / 360.0;
+    //     motor.setMotionMagicPosition(targetRotations, 0.0);
+    // }
+
     public void periodic() {
-        // if (!isTurretEnabled) {
-        //     motor.stop();
-        //     return;
-        // }
+        // Only run autoAim if enabled AND we aren't trying to move manually
+        if (RobotContainer.isAimAssistEnabled && !isManualControl) {
+            autoAim();
+        }
 
-        // if (RobotContainer.isAimAssistEnabled) {
-        //     isManualControl = false;
-        //     autoAim();
-        // }
+        // Safety: If manual control is on (like when holding a button), 
+        // we don't want Motion Magic fighting us.
+        if (isManualControl) {
+            return; 
+        }
 
-        // if (isManualControl) {
-        //     return;
-        // }
-
-        // double clampedTargetDegrees = clampTarget(targetDegrees);
-        // double targetRotations = clampedTargetDegrees / 360.0;
-        // double currentDegrees = getPositionInDegrees();
-        // double errorDegrees = clampedTargetDegrees - currentDegrees;
-        // double absError = Math.abs(errorDegrees);
-
-        // if (absError <= 3.0) {
-        //     motor.setMotionMagicPosition(targetRotations, 3.0);
-        // } else if (absError > 3.0 && isStuckMovingToTarget()) {
-        //     motor.setSpeed(Math.copySign(0.5, errorDegrees));
-        // } else {
-        //     motor.setMotionMagicPosition(targetRotations, 3.0);;
-        // }
+        // Execute the move
+        double targetRotations = targetDegrees / 360.0;
+        motor.setMotionMagicPosition(targetRotations, 0.0);
     }
 
     // public void enableTurret() {
@@ -96,6 +103,23 @@ public class TurretSubsystem extends SubsystemBase {
     //     }
     // }
 
+    public void autoAim() {
+        if (isTargetAcquired()) {
+            double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
+            double currentPos = getPositionInDegrees();
+            
+            // Use a temporary variable to see if the math is working
+            double calculatedTarget = currentPos - error;
+            
+            // Update the global target
+            targetDegrees = clampTarget(calculatedTarget);
+            
+            // If this prints the SAME number over and over while tx is 7, 
+            // then clampTarget is the problem!
+            // System.out.println("Target updating to: " + targetDegrees);
+        }
+    }
+
     public boolean isTargetAcquired(){
         return RobotContainer.shooterVisionSubsystem.hasTarget();
     }
@@ -105,25 +129,26 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void moveToDegrees(Double degrees) {
+        RobotContainer.disableAimAssist();
         isManualControl = false;
         targetDegrees = clampTarget(degrees);
     }
 
     public void moveToHome() {
-        // RobotContainer.disableAimAssist();
+        RobotContainer.disableAimAssist();
         isManualControl = false;
         moveToDegrees(HOME_POSITION);
     }
 
     public void rotateClockwise() {
-        // RobotContainer.disableAimAssist();
+        RobotContainer.disableAimAssist();
         isManualControl = true;
         setMotor(TurretConfig.clockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees + 2);
     }
 
     public void rotateCounterClockwise() {
-        // RobotContainer.disableAimAssist();
+        RobotContainer.disableAimAssist();
         isManualControl = true;
         setMotor(TurretConfig.counterClockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees - 2);
@@ -216,5 +241,6 @@ public class TurretSubsystem extends SubsystemBase {
 
         tab.addDouble("Motor Rotations", () -> motor.getPosition());
         tab.addDouble("Motor Velocity", () -> motor.getVelocity());
+        tab.addBoolean("Is Manual Mode Enabled", () -> isManualControl);
     }
 }
