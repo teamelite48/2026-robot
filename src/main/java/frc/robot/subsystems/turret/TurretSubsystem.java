@@ -16,16 +16,13 @@ public class TurretSubsystem extends SubsystemBase {
     private final CanCoder absoluteEncoder;
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
     private double targetDegrees = HOME_POSITION;
-    private boolean isManualControl = false;
+    private boolean isManualControl = true;
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
 
     // long lastSimulationPeriodicMillis = 0;
-    boolean isTurretEnabled = true;
-
-    private int stuckLoops = 0;
-    private static final int STUCK_LOOP_THRESHOLD = 4; // about 160 ms at 20 ms loop
+    // boolean isTurretEnabled = true;
 
     public TurretSubsystem() {
 
@@ -48,12 +45,13 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (!isTurretEnabled) {
-            motor.stop();
-            return;
-        }
+        // if (!isTurretEnabled) {
+        //     motor.stop();
+        //     return;
+        // }
 
         if (RobotContainer.isAimAssistEnabled) {
+            isManualControl = false;
             autoAim();
         }
 
@@ -68,7 +66,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         if (absError <= 3.0) {
             double targetRotations = clampedTargetDegrees / 360.0;
-            motor.setMotionMagicPosition(targetRotations, 0.0);
+            motor.setMotionMagicPosition(targetRotations, 2.0);
         } else if (absError <= 15.0) {
             motor.setSpeed(Math.copySign(0.23, errorDegrees));
         } else {
@@ -76,13 +74,13 @@ public class TurretSubsystem extends SubsystemBase {
         }
     }
 
-    public void enableTurret() {
-        isTurretEnabled = true;
-    }
+    // public void enableTurret() {
+    //     isTurretEnabled = true;
+    // }
 
-    public void disableTurret() {
-        isTurretEnabled = false;
-    }
+    // public void disableTurret() {
+    //     isTurretEnabled = false;
+    // }
 
     public void autoAim() {
 
@@ -138,10 +136,10 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setMotor(double speed) {
-        if (isTurretEnabled == false) {
-            stop();
-            return;
-        }
+        // if (isTurretEnabled == false) {
+        //     stop();
+        //     return;
+        // }
 
         motor.setSpeed(speed);
     }
@@ -209,10 +207,6 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addDouble("Target Degrees", () -> getTargetDegrees())
             .withPosition(2, 2)
             .withSize(2, 1);
-
-        tab.addBoolean("Turret Enabled", () -> isTurretEnabled)
-            .withPosition(4, 2)
-            .withSize(1, 1);
 
         tab.addDouble("Motor Rotations", () -> motor.getPosition());
     }

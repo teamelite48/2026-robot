@@ -46,8 +46,8 @@ public class TurretConfig {
         config.initialPosition = HOME_POSITION;
         config.pidParameters = new PIDParameters(25.0, 0.0, 0.0, 2.0, 0.12); //0.035
         config.enableFOC = false;
-        config.forwardLimit = CW_LIMIT / TurretConfig.degreesPerMotorRotation; // 180 / 40 = 4.5
-        config.reverseLimit = CCW_LIMIT / TurretConfig.degreesPerMotorRotation;
+        config.forwardLimit = motorForwardLimit;
+        config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 100;
         config.motionMagicCruiseVelocity = 6.0; //2.5  // rotations/sec  (smooth start)
