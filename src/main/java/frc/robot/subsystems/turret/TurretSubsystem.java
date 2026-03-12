@@ -50,28 +50,28 @@ public class TurretSubsystem extends SubsystemBase {
         //     return;
         // }
 
-        // if (RobotContainer.isAimAssistEnabled) {
-        //     isManualControl = false;
-        //     autoAim();
-        // }
+        if (RobotContainer.isAimAssistEnabled) {
+            isManualControl = false;
+            autoAim();
+        }
 
-        // if (isManualControl) {
-        //     return;
-        // }
+        if (isManualControl) {
+            return;
+        }
 
-        // double clampedTargetDegrees = clampTarget(targetDegrees);
-        // double currentDegrees = getPositionInDegrees();
-        // double errorDegrees = clampedTargetDegrees - currentDegrees;
-        // double absError = Math.abs(errorDegrees);
+        double clampedTargetDegrees = clampTarget(targetDegrees);
+        double targetRotations = clampedTargetDegrees / 360.0;
+        double currentDegrees = getPositionInDegrees();
+        double errorDegrees = clampedTargetDegrees - currentDegrees;
+        double absError = Math.abs(errorDegrees);
 
-        // if (absError <= 3.0) {
-        //     double targetRotations = clampedTargetDegrees / 360.0;
-        //     motor.setMotionMagicPosition(targetRotations, 2.0);
-        // } else if (absError <= 15.0) {
-        //     motor.setSpeed(Math.copySign(0.23, errorDegrees));
-        // } else {
-        //     motor.setSpeed(Math.copySign(0.35, errorDegrees));
-        // }
+        if (absError <= 3.0) {
+            motor.setMotionMagicPosition(targetRotations, 4.0);
+        } else if (absError > 3.0 && isStuckMovingToTarget()) {
+            motor.setSpeed(Math.copySign(0.5, errorDegrees));
+        } else {
+            motor.setMotionMagicPosition(targetRotations, 3.0);;
+        }
     }
 
     // public void enableTurret() {
@@ -84,10 +84,16 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void autoAim() {
 
-        if (isTargetAcquired() == false || RobotContainer.isAimAssistEnabled == false) return;
+        //if (isTargetAcquired() == false || RobotContainer.isAimAssistEnabled == false) return;
+
+        if (isTargetAcquired() && RobotContainer.isAimAssistEnabled) {
 
         double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
         targetDegrees = clampTarget(getPositionInDegrees() - error);
+        }
+        else {
+            return;
+        }
     }
 
     public boolean isTargetAcquired(){
@@ -209,5 +215,6 @@ public class TurretSubsystem extends SubsystemBase {
             .withSize(2, 1);
 
         tab.addDouble("Motor Rotations", () -> motor.getPosition());
+        tab.addDouble("Motor Velocity", () -> motor.getVelocity());
     }
 }
