@@ -320,7 +320,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend());
     NamedCommands.registerCommand("Intake", IntakeCommands.intake());
-    NamedCommands.registerCommand("Home", Commands.parallel(TurretCommands.moveToSafeState(), DeployCommands.setToHome(), IntakeCommands.stop()));
+    NamedCommands.registerCommand("Intake Off", IntakeCommands.stop());
+    NamedCommands.registerCommand("Home", Commands.parallel(DeployCommands.setToHome(), IntakeCommands.stop()));
     NamedCommands.registerCommand("Aim Assist", new InstantCommand(() -> enableAimAssist()));
     NamedCommands.registerCommand("Shoot", new ShootCommand(ShooterConfig.ShooterPreset.HIGH));
     // NamedCommands.registerCommand("Shoot", ShooterCommands.highRPM());
