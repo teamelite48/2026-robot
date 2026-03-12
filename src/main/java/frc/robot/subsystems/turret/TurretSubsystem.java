@@ -65,18 +65,20 @@ public class TurretSubsystem extends SubsystemBase {
     // }
 
     public void periodic() {
-        // Only run autoAim if enabled AND we aren't trying to move manually
-        if (RobotContainer.isAimAssistEnabled && !isManualControl) {
+        if (RobotContainer.isAimAssistEnabled) {
+            isManualControl = false; // Force manual mode OFF
             autoAim();
         }
 
-        // Safety: If manual control is on (like when holding a button), 
-        // we don't want Motion Magic fighting us.
         if (isManualControl) {
+            // While a manual button is held, we do NOT call setMotionMagic.
+            // The setMotor() calls from your manual methods handle the movement.
             return; 
         }
 
-        // Execute the move
+        // This is the "Active" state. 
+        // If the motor isn't moving here, it means it's still thinking 
+        // it's in the DutyCycle mode from the manual buttons.
         double targetRotations = targetDegrees / 360.0;
         motor.setMotionMagicPosition(targetRotations, 0.0);
     }
@@ -125,7 +127,15 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        motor.stop();
+        // 1. Tell the motor to stop spinning at a percentage
+        motor.stop(); 
+        
+        // 2. IMPORTANT: Update the target to where we are RIGHT NOW
+        // This prevents the turret from "snapping" back to an old target
+        targetDegrees = getPositionInDegrees();
+        
+        // 3. Hand control back to the Motion Magic logic
+        isManualControl = false;
     }
 
     public void moveToDegrees(Double degrees) {

@@ -195,12 +195,21 @@ public class Minion implements Motor {
         setMotionMagicPosition(position, 0.0);
     }
 
-    public void setMotionMagicPosition(double position, double feedForwardVolts) {
+    // public void setMotionMagicPosition(double position, double feedForwardVolts) {
+    //     talon.setControl(
+    //         motionMagicVoltage
+    //             .withPosition(position)
+    //             .withFeedForward(feedForwardVolts)
+    //     );
+    // }
+
+    public void setMotionMagicPosition(double rotations, double ff) {
+        // Re-applying .withSlot(0) here ensures the "clicking" becomes "moving"
         talon.setControl(
-            motionMagicVoltage
-                .withPosition(position)
-                .withFeedForward(feedForwardVolts)
-        );
+                motionMagicVoltage
+                    .withPosition(rotations)
+                    .withFeedForward(ff)
+                    .withSlot(0));
     }
 
     private static double calculateRotations(double units, double conversion) {
