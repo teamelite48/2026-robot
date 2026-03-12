@@ -50,28 +50,28 @@ public class TurretSubsystem extends SubsystemBase {
         //     return;
         // }
 
-        if (RobotContainer.isAimAssistEnabled) {
-            isManualControl = false;
-            autoAim();
-        }
+        // if (RobotContainer.isAimAssistEnabled) {
+        //     isManualControl = false;
+        //     autoAim();
+        // }
 
-        if (isManualControl) {
-            return;
-        }
+        // if (isManualControl) {
+        //     return;
+        // }
 
-        double clampedTargetDegrees = clampTarget(targetDegrees);
-        double currentDegrees = getPositionInDegrees();
-        double errorDegrees = clampedTargetDegrees - currentDegrees;
-        double absError = Math.abs(errorDegrees);
+        // double clampedTargetDegrees = clampTarget(targetDegrees);
+        // double currentDegrees = getPositionInDegrees();
+        // double errorDegrees = clampedTargetDegrees - currentDegrees;
+        // double absError = Math.abs(errorDegrees);
 
-        if (absError <= 3.0) {
-            double targetRotations = clampedTargetDegrees / 360.0;
-            motor.setMotionMagicPosition(targetRotations, 2.0);
-        } else if (absError <= 15.0) {
-            motor.setSpeed(Math.copySign(0.23, errorDegrees));
-        } else {
-            motor.setSpeed(Math.copySign(0.35, errorDegrees));
-        }
+        // if (absError <= 3.0) {
+        //     double targetRotations = clampedTargetDegrees / 360.0;
+        //     motor.setMotionMagicPosition(targetRotations, 2.0);
+        // } else if (absError <= 15.0) {
+        //     motor.setSpeed(Math.copySign(0.23, errorDegrees));
+        // } else {
+        //     motor.setSpeed(Math.copySign(0.35, errorDegrees));
+        // }
     }
 
     // public void enableTurret() {
@@ -104,20 +104,20 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void moveToHome() {
-        RobotContainer.disableAimAssist();
+        // RobotContainer.disableAimAssist();
         isManualControl = false;
         moveToDegrees(HOME_POSITION);
     }
 
     public void rotateClockwise() {
-        RobotContainer.disableAimAssist();
+        // RobotContainer.disableAimAssist();
         isManualControl = true;
         setMotor(TurretConfig.clockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees + 2);
     }
 
     public void rotateCounterClockwise() {
-        RobotContainer.disableAimAssist();
+        // RobotContainer.disableAimAssist();
         isManualControl = true;
         setMotor(TurretConfig.counterClockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees - 2);

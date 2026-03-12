@@ -9,9 +9,9 @@ import frc.robot.lib.PIDParameters;
 
 public class DeployConfig {
 
-    public static final double EXTEND_SPEED = 0.4;
-    public static final double RETRACT_SPEED = -0.4;
-    public static final double EXTEND_LIMIT = 4575.0;
+    public static final double EXTEND_SPEED = 0.6;
+    public static final double RETRACT_SPEED = -0.5;
+    public static final double EXTEND_LIMIT = 4750.0;
     public static final double MID_POSITION = 0.0;
     public static final double RETRACT_LIMIT = 0.0;
     public static final double HOME_POSITION = RETRACT_LIMIT + 900.0;
