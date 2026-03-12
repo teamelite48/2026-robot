@@ -106,10 +106,12 @@ public class RobotContainer {
       .onTrue(DeployCommands.setToHome());
 
     pilotController.l1
-      .whileTrue(Commands.parallel(
-        DeployCommands.fullExtend(),
-        IntakeCommands.intake()
-      ));
+      .whileTrue(IntakeCommands.intake())
+      .onFalse(IntakeCommands.stop());
+      // .whileTrue(Commands.parallel(
+      //   DeployCommands.fullExtend(),
+      //   IntakeCommands.intake()
+      // ));
 
     pilotController.l2
       .onTrue(ShooterCommands.idleShooter());
@@ -135,8 +137,8 @@ public class RobotContainer {
     pilotController.share
       .onTrue(ShooterCommands.idleShooter());
 
-    // pilotController.options
-    //   .onTrue(toggleAutoAim());
+    pilotController.options
+      .onTrue(new InstantCommand(() -> toggleAimAssist()));
 
     pilotController.ps.onTrue(new InstantCommand(() -> driveSubsystem.zeroGyro(), driveSubsystem));
 
@@ -165,14 +167,16 @@ public class RobotContainer {
     copilotController.l1
       .whileTrue(SpindexerCommands.FeedAwayFromFeed());
 
-    // copilotController.l2
-    //   .whileTrue();
+    copilotController.l2
+      .whileTrue(DeployCommands.retract())
+      .onFalse(DeployCommands.stop());
 
     copilotController.r1
       .whileTrue(SpindexerCommands.FeedTowardsFeed());
 
-    // copilotController.r2
-    //   .whileTrue();
+    copilotController.r2
+      .whileTrue(DeployCommands.extend())
+      .onFalse(DeployCommands.stop());
 
     copilotController.up
       .whileTrue(ClimberCommands.extend());

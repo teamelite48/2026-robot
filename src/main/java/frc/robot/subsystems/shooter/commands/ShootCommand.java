@@ -103,7 +103,6 @@ import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
-import frc.robot.subsystems.vision.VisionSubsystem.VisionTarget;
 
 public class ShootCommand extends Command {
 
@@ -126,9 +125,9 @@ public class ShootCommand extends Command {
 
     shooterSubsystem.useAimAssistOrPreset(preset);
 
-    if (RobotContainer.isAimAssistEnabled) {
-      shooterVisionSubsystem.startTracking(VisionTarget.HubApriltag);
-    }
+    // if (RobotContainer.isAimAssistEnabled) {
+    //   shooterVisionSubsystem.startTracking(VisionTarget.HubApriltag);
+    // }
   }
 
   @Override
@@ -158,7 +157,7 @@ public class ShootCommand extends Command {
     shooterFeedSubsystem.stop();
     spindexerSubsystem.stop();
     shooterSubsystem.setIdle();
-    shooterVisionSubsystem.stopTracking();
+    // shooterVisionSubsystem.stopTracking();
   }
 
   @Override

@@ -18,6 +18,7 @@ public class IntakeConfig {
         config.isInverted = true;
         config.isBrakeModeEnabled = false;
         config.supplyCurrentLimit = 40;
+        config.statorCurrentLimit = 40;
 
         return config;
     }

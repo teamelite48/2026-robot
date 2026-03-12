@@ -19,21 +19,21 @@ import java.util.Optional;
 
 public class VisionSubsystem extends SubsystemBase {
 
-  public enum VisionTarget {
+  // public enum VisionTarget {
 
-    HubApriltag(0, HUB_APRILTAG_HEIGHT_INCHES);
-    // LoadStationAprilTag(0, LOAD_STATION_APRILTAG_HEIGHT_INCHES),
-    // BargeAprilTag(0, BARGE_APRILTAG_HEIGHT_INCHES),
-    // ProcessorAprilTag(0, PROCESSOR_APRILTAG_HEIGHT_INCHES);
+  //   HubApriltag(0, HUB_APRILTAG_HEIGHT_INCHES);
+  //   // LoadStationAprilTag(0, LOAD_STATION_APRILTAG_HEIGHT_INCHES),
+  //   // BargeAprilTag(0, BARGE_APRILTAG_HEIGHT_INCHES),
+  //   // ProcessorAprilTag(0, PROCESSOR_APRILTAG_HEIGHT_INCHES);
 
-    public final int pipelineId;
-    public final double heightInInches;
+  //   public final int pipelineId;
+  //   public final double heightInInches;
 
-    private VisionTarget(int pipelineId, double targetInInches) {
-      this.pipelineId = pipelineId;
-      this.heightInInches = targetInInches;
-    }
-  }
+  //   private VisionTarget(int pipelineId, double targetInInches) {
+  //     this.pipelineId = pipelineId;
+  //     this.heightInInches = targetInInches;
+  //   }
+  
 
   final NetworkTableEntry tid;
   final NetworkTableEntry tx;
@@ -44,7 +44,7 @@ public class VisionSubsystem extends SubsystemBase {
   final NetworkTableEntry pipeline;
   final double[] botpose;
 
-  private VisionTarget target;
+  // private VisionTarget target;
   private Optional<Alliance> alliance = Optional.empty();
 
   private boolean isTracking = false;
@@ -73,7 +73,7 @@ public class VisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (isTracking == false) {
+    if (!hasTarget()) {
       return;
     }
 
@@ -93,16 +93,16 @@ public class VisionSubsystem extends SubsystemBase {
     return tid.getInteger(0);
   }
 
-  public void startTracking(VisionTarget target) {
-    this.target = target;
-    isTracking = true;
-    enableLed(true);
-  }
+  // public void startTracking(VisionTarget target) {
+  //   this.target = target;
+  //   isTracking = true;
+  //   enableLed(true);
+  // }
 
-  public void stopTracking() {
-    isTracking = false;
-    enableLed(false);
-  }
+  // public void stopTracking() {
+  //   isTracking = false;
+  //   enableLed(false);
+  // }
 
   public double getFeetFromTarget(){
     return distanceFromTargetFeet;
@@ -130,26 +130,28 @@ public class VisionSubsystem extends SubsystemBase {
   //   double degreesToApriltag = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
   //   double radiansToApriltag = degreesToApriltag * (Math.PI / 180.0);
 
-  //   feetFromTarget = (((target.heightInInches - MOUNT_HEIGHT_INCHES) / Math.tan(radiansToApriltag)) / 12.0);
+  //   feetFromTarget = (((HUB_APRILTAG_HEIGHT_INCHES - MOUNT_HEIGHT_INCHES) / Math.tan(radiansToApriltag)) / 12.0);
   // }
 
   private void updateDistanceToTarget() {
+
     double angleDegrees = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
     double angleRadians = Math.toRadians(angleDegrees);
 
-    double heightDifferenceInches = target.heightInInches - MOUNT_HEIGHT_INCHES;
+    double heightDifferenceInches = HUB_APRILTAG_HEIGHT_INCHES - MOUNT_HEIGHT_INCHES;
 
-    if (Math.abs(Math.sin(angleRadians)) < 1e-6) {
-        return; // avoid divide-by-zero / nonsense result
+    if (Math.abs(Math.tan(angleRadians)) < 1e-6) {
+        return;
     }
 
-    double distanceInches = Math.abs(heightDifferenceInches / Math.sin(angleRadians));
+    double distanceInches = heightDifferenceInches / Math.tan(angleRadians);
+
     distanceFromTargetFeet = distanceInches / 12.0;
   }
 
   private void initDashboard(String tabName) {
 
-    var tab = Shuffleboard.getTab(tabName);
+    var tab = Shuffleboard.getTab("Vision");
 
     tab.addDouble("Target ID", () -> getTargetId())
       .withPosition(0, 0);
@@ -170,17 +172,17 @@ public class VisionSubsystem extends SubsystemBase {
     tab.addBoolean("Tracking Target", () -> isTracking)
       .withPosition(3, 1);
 
-    tab.addString("Vision Target", () -> getTargetName())
-      .withPosition(4, 1);
+    // tab.addString("Vision Target", () -> getTargetName())
+    //   .withPosition(4, 1);
 
     tab.addBoolean("Has Target", () -> hasTarget());
     tab.addString("Alliance", () -> (alliance.isPresent() ? alliance.get() : "Not Present").toString());
     tab.addDoubleArray("botpose", () -> botpose);
   }
 
-  public String getTargetName() {
-    return target == null
-      ? "None"
-      : target.name();
-  }
+  // public String getTargetName() {
+  //   return target == null
+  //     ? "None"
+  //     : target.name();
+  // }
 }

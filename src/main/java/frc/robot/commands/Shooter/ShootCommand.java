@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
-import frc.robot.subsystems.vision.VisionSubsystem.VisionTarget;
 
 public class ShootCommand extends Command {
 
@@ -27,9 +26,9 @@ public class ShootCommand extends Command {
     // RobotContainer.isShooting = true;
     // onSpeedMillis = 0;
 
-    if (RobotContainer.isAimAssistEnabled) {
-      visionSubsystem.startTracking(VisionTarget.HubApriltag);
-    }
+    // if (RobotContainer.isAimAssistEnabled) {
+    //   visionSubsystem.startTracking(VisionTarget.HubApriltag);
+    // }
   }
 
   @Override
@@ -41,7 +40,7 @@ public class ShootCommand extends Command {
   public void end(boolean interrupted) {
     // RobotContainer.isShooting = false;
     turretSubsystem.stop();
-    visionSubsystem.stopTracking();
+    // visionSubsystem.stopTracking();
   }
 
   @Override

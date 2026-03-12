@@ -19,7 +19,7 @@ public class ShooterConfig {
     }
 
     public static final double LOW_RPM = 1000.0;
-    public static final double MEDIUM_RPM = 2750.0;
+    public static final double MEDIUM_RPM = 2500.0;
     public static final double HIGH_RPM = 4500.0;
 
     public static final double ON_SPEED_TOLERANCE_RPM = 200.0;
@@ -61,6 +61,7 @@ public class ShooterConfig {
         config.isInverted = false;
         config.isBrakeModeEnabled = false;
         config.supplyCurrentLimit = 40;
+        config.statorCurrentLimit = 60;
         config.positionConversionFactor = (1.0 / 1.0);
         config.pidParameters = new PIDParameters(0.03, 0.0, 0.0, 0.0, 0.125);
 
@@ -73,6 +74,7 @@ public class ShooterConfig {
         config.isInverted = true;
         config.isBrakeModeEnabled = false;
         config.supplyCurrentLimit = 40;
+        config.statorCurrentLimit = 60;
         config.positionConversionFactor = (1.0 / 1.0);
         config.pidParameters = new PIDParameters(0.03, 0.0, 0.0, 0.0, 0.125);
         config.enableFOC = false;

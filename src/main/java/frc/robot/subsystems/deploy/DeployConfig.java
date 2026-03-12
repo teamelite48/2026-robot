@@ -11,10 +11,10 @@ public class DeployConfig {
 
     public static final double EXTEND_SPEED = 0.4;
     public static final double RETRACT_SPEED = -0.4;
-    public static final double EXTEND_LIMIT = 4500.0;
+    public static final double EXTEND_LIMIT = 4575.0;
     public static final double MID_POSITION = 0.0;
     public static final double RETRACT_LIMIT = 0.0;
-    public static final double HOME_POSITION = RETRACT_LIMIT + 850.0;
+    public static final double HOME_POSITION = RETRACT_LIMIT + 900.0;
 
     public static MotorConfig getIntakeDeployConfig() {
 
@@ -28,6 +28,7 @@ public class DeployConfig {
         config.pidParameters = new PIDParameters(0.0025, 0.0, 0.0, 0.0, 0.0); //0.5, 0.01, 0.0
         config.isBrakeModeEnabled = false;
         config.supplyCurrentLimit = 40;
+        config.statorCurrentLimit = 40;
 
         return config;
     }

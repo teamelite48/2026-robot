@@ -10,7 +10,7 @@ public class TurretConfig {
     public static final double TURRET_ENCODER_OFFSET_DEGREES = 126.9;
 
     public static final double inputDeadzone = 0.2;
-    public static final double FEED_FORWARD_VOLTS = 2.0;
+    public static final double FEED_FORWARD_VOLTS = 4.0;
     public static final double FEED_FORWARD_DEGREES_TOLERANCE = 2.0;
 
     public static final double motorMaxOutput = 0.35;
@@ -20,7 +20,7 @@ public class TurretConfig {
     public static final double CCW_LIMIT = 0.0;
     public static final double CW_LIMIT = 180.0;
 
-    public static final double degreesPerMotorRotation = 40;
+    public static final double degreesPerMotorRotation = 40.0;
 
     public static final double HOME_POSITION = 0.0;
     public static final double degreesAtLeft = 0.0;
@@ -41,18 +41,18 @@ public class TurretConfig {
         var config = new MotorConfig(16, RobotConfig.CANIVORE_48);
 
         config.isInverted = true;
-        config.positionConversionFactor = (9.0 / 1.0);//(1.0 / 9.0); // (1.0/90.0) * 360.0;
+        config.positionConversionFactor = (9.0 / 1.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(18.0, 0.0, 0.5, 1.0, 0.12); //0.035
+        config.pidParameters = new PIDParameters(25.0, 0.0, 0.0, 2.0, 0.12); //0.035
         config.enableFOC = false;
-        config.forwardLimit = motorForwardLimit;
-        config.reverseLimit = motorBackwardsLimit;
+        config.forwardLimit = CW_LIMIT / TurretConfig.degreesPerMotorRotation; // 180 / 40 = 4.5
+        config.reverseLimit = CCW_LIMIT / TurretConfig.degreesPerMotorRotation;
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 100;
-        config.motionMagicCruiseVelocity = 3.5; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicCruiseVelocity = 6.0; //2.5  // rotations/sec  (smooth start)
         config.motionMagicAcceleration = 8.0; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 40.0; //40.0           // change if overshooting
+        config.motionMagicJerk = 30.0; //40.0           // change if overshooting
 
         return config;
     }

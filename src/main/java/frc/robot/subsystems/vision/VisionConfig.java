@@ -2,7 +2,7 @@ package frc.robot.subsystems.vision;
 
 public class VisionConfig {
     public static final double MOUNT_ANGLE_DEGREES = 20.0;
-    public static final double MOUNT_HEIGHT_INCHES = 18.024;
+    public static final double MOUNT_HEIGHT_INCHES = 17.25;
 
     public static final double HUB_APRILTAG_HEIGHT_INCHES = 44.25;
     // public static final double LOAD_STATION_APRILTAG_HEIGHT_INCHES = 58.5;

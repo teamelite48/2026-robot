@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
-import frc.robot.subsystems.vision.VisionSubsystem.VisionTarget;
 import frc.robot.util.CoolDownTimer;
 
 public class SeekTargetCommand extends Command {
@@ -20,7 +19,7 @@ public class SeekTargetCommand extends Command {
 
   @Override
   public void initialize() {
-    visionSubsystem.startTracking(VisionTarget.HubApriltag);
+    // visionSubsystem.startTracking(VisionTarget.HubApriltag);
   }
 
   @Override
@@ -40,7 +39,7 @@ public class SeekTargetCommand extends Command {
       coolDownTimer.start();
     }
 
-    visionSubsystem.stopTracking();
+    // visionSubsystem.stopTracking();
 
     return coolDownTimer.isCool();
   }
