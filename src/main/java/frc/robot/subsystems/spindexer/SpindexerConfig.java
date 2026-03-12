@@ -9,7 +9,7 @@ import frc.robot.components.motors.lib.MotorConfig;
 
 public class SpindexerConfig {
 
-    public static final double FEED_SPEED = 0.2;
+    public static final double FEED_SPEED = 0.25;
     public static final double REVERSE_SPEED = -FEED_SPEED;
 
     public static MotorConfig getSpindexerConfig() {
