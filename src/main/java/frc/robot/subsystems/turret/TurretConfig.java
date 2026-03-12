@@ -10,8 +10,8 @@ public class TurretConfig {
     public static final double TURRET_ENCODER_OFFSET_DEGREES = 126.9;
 
     public static final double inputDeadzone = 0.2;
-    public static final double FEED_FORWARD_VOLTS = 4.0;
-    public static final double FEED_FORWARD_DEGREES_TOLERANCE = 2.0;
+    public static final double FEED_FORWARD_VOLTS = 2.5;
+    public static final double DEGREES_TOLERANCE = 2.0;
 
     public static final double motorMaxOutput = 0.2;
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
@@ -44,15 +44,15 @@ public class TurretConfig {
         config.positionConversionFactor = (9.0 / 1.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(25.0, 0.0, 0.0, 2.0, 0.12); //0.035
+        config.pidParameters = new PIDParameters(2.5, 0.0, 0.1, 1.5, 0.1); // 25.0, 0.0, 0.0, 2.0, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 100;
-        config.motionMagicCruiseVelocity = 6.0; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 8.0; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 30.0; //40.0           // change if overshooting
+        config.motionMagicCruiseVelocity = 8.0; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 12.0; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 100.0; //40.0           // change if overshooting
 
         return config;
     }

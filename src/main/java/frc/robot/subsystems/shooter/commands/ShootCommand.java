@@ -156,7 +156,7 @@ public class ShootCommand extends Command {
     RobotContainer.isShooting = false;
     shooterFeedSubsystem.stop();
     spindexerSubsystem.stop();
-    shooterSubsystem.setIdle();
+    shooterSubsystem.setOff();
     // shooterVisionSubsystem.stopTracking();
   }
 

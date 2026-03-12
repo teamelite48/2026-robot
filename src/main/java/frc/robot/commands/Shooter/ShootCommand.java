@@ -33,7 +33,7 @@ public class ShootCommand extends Command {
 
   @Override
   public void execute() {
-    turretSubsystem.autoAim();
+    // turretSubsystem.autoAim();
   }
 
   @Override

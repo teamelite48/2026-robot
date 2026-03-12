@@ -158,25 +158,24 @@ public class RobotContainer {
     // copilotController.square
     //   .onTrue();
 
-    // copilotController.cross
-    //   .whileTrue();
+    copilotController.cross
+      .onTrue(ShooterCommands.stop());
 
-    copilotController.circle
-      .onTrue(ShooterCommands.idleShooter());
+    // copilotController.circle
+    //   .onTrue(ShooterCommands.idleShooter());
 
-    copilotController.l1
-      .whileTrue(SpindexerCommands.FeedAwayFromFeed());
+    // copilotController.l1
+    //   .whileTrue(SpindexerCommands.FeedAwayFromFeed());
 
-    copilotController.l2
-      .whileTrue(DeployCommands.retract())
-      .onFalse(DeployCommands.stop());
+    // copilotController.l2
+    //   .whileTrue(DeployCommands.retract())
+    //   .onFalse(DeployCommands.stop());
 
-    copilotController.r1
-      .whileTrue(SpindexerCommands.FeedTowardsFeed());
+    // copilotController.r1
+    //   .whileTrue(SpindexerCommands.FeedTowardsFeed());
 
     copilotController.r2
-      .whileTrue(DeployCommands.extend())
-      .onFalse(DeployCommands.stop());
+      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
 
     copilotController.up
       .whileTrue(ClimberCommands.extend());
@@ -195,8 +194,8 @@ public class RobotContainer {
     // copilotController.share
     //   .onTrue();
 
-    // copilotController.options
-    //   .onTrue(toggleAutoAim());
+    copilotController.options
+      .onTrue(new InstantCommand(() -> toggleAimAssist()));
 
     // copilotController.ps
     //   .onTrue();
@@ -317,9 +316,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", IntakeCommands.intake());
     NamedCommands.registerCommand("Home", Commands.parallel(TurretCommands.moveToSafeState(), DeployCommands.setToHome(), IntakeCommands.stop()));
     NamedCommands.registerCommand("Aim Assist", new InstantCommand(() -> enableAimAssist()));
-    // NamedCommands.registerCommand("Shoot", new ShootCommand(ShooterConfig.ShooterPreset.HIGH));
-    NamedCommands.registerCommand("Shoot", ShooterCommands.highRPM());
+    NamedCommands.registerCommand("Shoot", new ShootCommand(ShooterConfig.ShooterPreset.HIGH));
+    // NamedCommands.registerCommand("Shoot", ShooterCommands.highRPM());
     NamedCommands.registerCommand("Idle Shooter", ShooterCommands.idleShooter());
+    NamedCommands.registerCommand("Shooter Off", ShooterCommands.stop());
     NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 
     var autoChooser = AutoBuilder.buildAutoChooser();
