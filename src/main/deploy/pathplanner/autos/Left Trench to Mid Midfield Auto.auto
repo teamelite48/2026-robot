@@ -11,7 +11,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -25,14 +25,14 @@
                 "data": {
                   "name": "Intake"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Midfield to Mid Midfield"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Midfield to Mid Midfield"
           }
         },
         {
@@ -78,28 +78,21 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter Off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spindexer Off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter Feed Off"
-                }
-              }
-            ]
+            "name": "Shooter Off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter Feed Off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Spindexer Off"
           }
         }
       ]
