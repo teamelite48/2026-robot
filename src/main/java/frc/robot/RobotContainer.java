@@ -320,10 +320,10 @@ public class RobotContainer {
 
   public static SendableChooser<Command> initAutoChooser() {
 
-    NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend());
+    NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend().withTimeout(1.5));
     NamedCommands.registerCommand("Intake", IntakeCommands.intake());
-    NamedCommands.registerCommand("Intake Off", IntakeCommands.stop());
-    NamedCommands.registerCommand("Home", Commands.parallel(DeployCommands.setToHome(), IntakeCommands.stop()));
+    NamedCommands.registerCommand("Intake Off", IntakeCommands.stop().withTimeout(0.25));
+    NamedCommands.registerCommand("Stow Intake", DeployCommands.setToHome());
     NamedCommands.registerCommand("Aim Assist", new InstantCommand(() -> enableAimAssist()));
     NamedCommands.registerCommand("Shoot", new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
     // NamedCommands.registerCommand("Shoot", ShooterCommands.highRPM());
