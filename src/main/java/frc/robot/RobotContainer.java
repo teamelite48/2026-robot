@@ -121,7 +121,7 @@ public class RobotContainer {
       .onFalse(IntakeCommands.stop());
 
     pilotController.r2
-      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
+      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
       // .whileTrue(Commands.parallel(
       //   SpindexerCommands.FeedTowardsFeed(),
       //   ShooterFeedCommands.FeedTowardsShooter()))
@@ -177,7 +177,7 @@ public class RobotContainer {
     //   .whileTrue(SpindexerCommands.FeedTowardsFeed());
 
     copilotController.r2
-      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
+      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
 
     copilotController.up
       .whileTrue(ClimberCommands.extend());

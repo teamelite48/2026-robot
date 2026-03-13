@@ -273,6 +273,9 @@ public class ShooterSubsystem extends SubsystemBase {
       case HIGH:
         manualTargetRPM = HIGH_RPM;
         break;
+      case PASS:
+        manualTargetRPM = PASS_RPM;
+        break;
     }
 
     shooterMode = ShooterMode.MANUAL;
