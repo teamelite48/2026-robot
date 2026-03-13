@@ -117,7 +117,8 @@ public class RobotContainer {
       .onTrue(ShooterCommands.idleShooter());
 
     pilotController.r1
-      .whileTrue(IntakeCommands.outtake());
+      .whileTrue(IntakeCommands.outtake())
+      .onFalse(IntakeCommands.stop());
 
     pilotController.r2
       .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));

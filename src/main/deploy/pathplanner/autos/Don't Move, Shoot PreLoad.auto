@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Aim Assist"
+            "name": "Enable Aim Assist"
           }
         },
         {
@@ -45,6 +45,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Basically Don't Move"
           }
         }
       ]
