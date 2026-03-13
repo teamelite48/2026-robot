@@ -224,6 +224,17 @@ public class TurretSubsystem extends SubsystemBase {
         return Math.abs(motor.getVelocity()) < 0.01;
     }
 
+    private boolean isTurretInitialized() {
+        double turretDegrees = getPositionInDegrees();
+        double absAngle = getAbsoluteAngle();
+
+        // Use && to check if both conditions are true
+        boolean turretInRange = (0.0 < turretDegrees) && (turretDegrees < TURRET_INIT_DEGREES);
+        boolean absInRange = (0.0 < absAngle) && (absAngle < TURRET_INIT_DEGREES);
+
+        return turretInRange && absInRange;
+    }
+
     public void initDashboard() {
         var tab = Shuffleboard.getTab("Turret");
 
@@ -252,5 +263,6 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addDouble("Motor Rotations", () -> motor.getPosition());
         tab.addDouble("Motor Velocity", () -> motor.getVelocity());
         tab.addBoolean("Is Manual Mode Enabled", () -> isManualControl);
+        tab.addBoolean("Is Turret Initialized", () -> isTurretInitialized());
     }
 }

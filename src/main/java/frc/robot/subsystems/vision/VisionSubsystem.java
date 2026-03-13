@@ -10,7 +10,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
 
@@ -92,6 +91,20 @@ public class VisionSubsystem extends SubsystemBase {
   public long getTargetId() {
     return tid.getInteger(0);
   }
+
+  // IF LOOKING AT APRILTAGS 9, 10, 25, 26 AND YOUR X OFFSET IS POSITIVE THEN BIAS TURRET RIGHT TO SOME DEGREE
+  // IT'S GONNA TAKE TRIG
+  // FOR NOW
+  // IF X OFFSET IS > 0 THEN AFTER CALCULATION ADD DEGREES
+  // IF DISTANCE IS LESS THAN 8 FEET AWAY THEN ADD 2 DEGREES
+  // IF DISTANCE IS GREATER THAN 8 FEET AWAY THEN ADD 1 DEGREE
+
+  // public void offsetTurret() {
+  //   long idNumber = getTargetId();
+
+
+  //   }
+  // }
 
   // public void startTracking(VisionTarget target) {
   //   this.target = target;
