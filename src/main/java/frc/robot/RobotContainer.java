@@ -165,12 +165,13 @@ public class RobotContainer {
     // copilotController.circle
     //   .onTrue(ShooterCommands.idleShooter());
 
-    // copilotController.l1
-    //   .whileTrue(SpindexerCommands.FeedAwayFromFeed());
+    copilotController.l1
+      .whileTrue(SpindexerCommands.FeedAwayFromFeed())
+      .onFalse(SpindexerCommands.stop());
 
-    // copilotController.l2
-    //   .whileTrue(DeployCommands.retract())
-    //   .onFalse(DeployCommands.stop());
+    copilotController.l2
+      .whileTrue(ShooterFeedCommands.FeedAwayFromShooter())
+      .onFalse(ShooterFeedCommands.stop());
 
     // copilotController.r1
     //   .whileTrue(SpindexerCommands.FeedTowardsFeed());
