@@ -12,6 +12,7 @@ public class TurretConfig {
     public static final double inputDeadzone = 0.2;
     public static final double FEED_FORWARD_VOLTS = 2.0;
     public static final double DEGREES_TOLERANCE = 2.0;
+    public static final double TURRET_INIT_DEGREES = 7.0;
 
     public static final double motorMaxOutput = 0.2;
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
