@@ -15,9 +15,9 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "wait",
                 "data": {
-                  "pathName": "Right Midfield to Mid Midfield"
+                  "waitTime": 2.0
                 }
               },
               {
@@ -36,15 +36,34 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Intake Off"
+            "pathName": "Right Midfield to Mid Midfield"
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Stow Intake"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stow Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Off"
+                }
+              }
+            ]
           }
         },
         {
