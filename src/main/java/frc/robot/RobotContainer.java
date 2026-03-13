@@ -331,7 +331,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shooter Off", ShooterCommands.stop());
     NamedCommands.registerCommand("Spindexer Off", SpindexerCommands.stop());
     NamedCommands.registerCommand("Shooter Feed Off", ShooterFeedCommands.stop());
-    NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
+    NamedCommands.registerCommand("Stop Everything", Commands.parallel(
+      new InstantCommand(() -> shooterSubsystem.setOff()),
+      new InstantCommand(() -> shooterFeedSubsystem.stop()),
+      new InstantCommand(() -> spindexerSubsystem.stop())
+    ));
+    // NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 
     var autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);

@@ -23,28 +23,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter Off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Spindexer Off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shooter Feed Off"
-                }
-              }
-            ]
+            "name": "Stop Everything"
           }
         },
         {
