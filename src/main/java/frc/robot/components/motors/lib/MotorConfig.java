@@ -15,10 +15,10 @@ public class MotorConfig {
     
     public Integer currentLimit = null;
     
-    public Integer supplyCurrentLimit = null;  
-    public Integer supplyCurrentLowerLimit = null;
-    public Integer supplyCurrentLowerTime = null;
-    public Integer statorCurrentLimit = null;
+    public Integer supplyCurrentLimit = 40;  
+    public Integer supplyCurrentLowerLimit = 40;
+    public Integer supplyCurrentLowerTime = 0;
+    public Integer statorCurrentLimit = 120;
     
     public Double forwardLimit = null;
     public Double reverseLimit = null;
