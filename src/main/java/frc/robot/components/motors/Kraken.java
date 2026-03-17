@@ -62,10 +62,14 @@ public class Kraken implements Motor {
                 .withPeakReverseDutyCycle(motorConfig.maxReverseSpeed);
         }
 
+
         if (motorConfig.supplyCurrentLimit != null) {
             talonFxConfig.CurrentLimits
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(motorConfig.supplyCurrentLimit);
+                .withSupplyCurrentLimit(motorConfig.supplyCurrentLimit)
+                .withSupplyCurrentLowerLimit(motorConfig.supplyCurrentLowerLimit)
+                .withSupplyCurrentLowerTime(motorConfig.supplyCurrentLowerTime);
+
         }
 
         if (motorConfig.statorCurrentLimit != null) {

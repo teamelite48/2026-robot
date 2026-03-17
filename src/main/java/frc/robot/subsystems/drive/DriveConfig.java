@@ -53,7 +53,12 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getAngleMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getAngleMotorStatorCurrentLimit();
+
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -65,7 +70,12 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getAngleMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getAngleMotorStatorCurrentLimit();
+
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -77,7 +87,12 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getAngleMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getAngleMotorStatorCurrentLimit();
+
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -89,7 +104,12 @@ public class DriveConfig {
         config.isBrakeModeEnabled = IS_ANGLE_BRAKE_MODE_ENABLED;
         config.continuousWrap = false;
         config.positionConversionFactor = SWERVE_CONFIG.angleRadiansPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorCurrentLimit();
+        
+        config.supplyCurrentLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getAngleMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getAngleMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getAngleMotorStatorCurrentLimit();
+
         // config.initialPosition = 0.0;
         config.pidParameters = ANGLE_CONTROLLER_PID_PARAMETERS;
         return config;
@@ -134,7 +154,12 @@ public class DriveConfig {
         config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getDriveMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getDriveMotorStatorCurrentLimit();
+
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;
@@ -145,7 +170,12 @@ public class DriveConfig {
         config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getDriveMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getDriveMotorStatorCurrentLimit();
+
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;
@@ -156,7 +186,12 @@ public class DriveConfig {
         config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getDriveMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getDriveMotorStatorCurrentLimit();
+
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;
@@ -167,7 +202,12 @@ public class DriveConfig {
         config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
-        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorCurrentLimit();
+
+        config.supplyCurrentLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLimit();
+        config.supplyCurrentLowerLimit = SWERVE_CONFIG.getDriveMotorSupplyCurrentLowerLimit();
+        config.supplyCurrentLowerTime = SWERVE_CONFIG.getDriveMotorSupplyCurrentTimeThreshold();
+        config.statorCurrentLimit = SWERVE_CONFIG.getDriveMotorStatorCurrentLimit();
+
         config.initialPosition = 0.0;
         config.enableFOC = true;
         return config;

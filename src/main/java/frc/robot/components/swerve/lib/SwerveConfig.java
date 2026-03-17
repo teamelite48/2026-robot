@@ -12,8 +12,16 @@ public final class SwerveConfig {
     private final double maxMetersPerSecond;
     private final double driveReduction;
     private final double angleReduction;
-    public final int driveMotorCurrentLimit;
-    public final int angleMotorCurrentLimit;
+
+    public final int driveMotorSupplyCurrentLimit;
+    public final int driveMotorSupplyCurrentLowerLimit;
+    public final int driveMotorSupplyTimeThreshold;
+    public final int driveMotorStatorCurrentLimit;
+    public final int angleMotorSupplyCurrentLimit;
+    public final int angleMotorSupplyCurrentLowerLimit;
+    public final int angleMotorSupplyTimeThreshold;
+    public final int angleMotorStatorCurrentLimit;
+
     public final double slewRate;
     public final double maxGearSpeed;
     public final double lowGearSpeed;
@@ -34,8 +42,17 @@ public final class SwerveConfig {
         angleReduction = b.angleReduction;
         movingPid = b.movingPid;
         standingPid = b.standingPid;
-        driveMotorCurrentLimit = b.driveMotorCurrentLimit;
-        angleMotorCurrentLimit = b.angleMotorCurrentLimit;
+
+        driveMotorSupplyCurrentLimit = b.driveMotorSupplyCurrentLimit;
+        driveMotorSupplyCurrentLowerLimit = b.driveMotorSupplyCurrentLowerLimit;
+        driveMotorSupplyTimeThreshold = b.driveMotorSupplyTimeThreshold;
+        driveMotorStatorCurrentLimit = b.driveMotorStatorCurrentLimit;
+
+        angleMotorSupplyCurrentLimit = b.angleMotorSupplyCurrentLimit;
+        angleMotorSupplyCurrentLowerLimit = b.angleMotorSupplyCurrentLowerLimit;
+        angleMotorSupplyTimeThreshold = b.angleMotorSupplyTimeThreshold;
+        angleMotorStatorCurrentLimit = b.angleMotorStatorCurrentLimit;
+
         slewRate = b.slewRate;
         maxGearSpeed = b.maxGearSpeed;
         lowGearSpeed = b.lowGearSpeed;
@@ -82,12 +99,36 @@ public final class SwerveConfig {
         return this.standingPid;
     }
 
-    public int getDriveMotorCurrentLimit() {
-        return this.driveMotorCurrentLimit;
+    public int getDriveMotorSupplyCurrentLimit() {
+        return this.driveMotorSupplyCurrentLimit;
     }
 
-    public int getAngleMotorCurrentLimit() {
-        return this.angleMotorCurrentLimit;
+    public int getDriveMotorSupplyCurrentLowerLimit() {
+        return this.driveMotorSupplyCurrentLimit;
+    }
+
+    public int getDriveMotorSupplyCurrentTimeThreshold() {
+        return this.driveMotorSupplyTimeThreshold;
+    }
+
+    public int getDriveMotorStatorCurrentLimit() {
+        return this.driveMotorStatorCurrentLimit;
+    }
+
+    public int getAngleMotorSupplyCurrentLimit() {
+        return this.angleMotorSupplyCurrentLimit;
+    }
+
+    public int getAngleMotorSupplyCurrentLowerLimit() {
+        return this.angleMotorSupplyCurrentLimit;
+    }
+
+    public int getAngleMotorSupplyCurrentTimeThreshold() {
+        return this.angleMotorSupplyTimeThreshold;
+    }
+
+    public int getAngleMotorStatorCurrentLimit() {
+        return this.angleMotorStatorCurrentLimit;
     }
 
     public double getTrackWidthMeters() {
@@ -106,8 +147,17 @@ public final class SwerveConfig {
         private double trackWidthMeters = 0.5;
         private double wheelbaseMeters = 0.5;
         private double maxMetersPerSecond = 4.5;
-        public int driveMotorCurrentLimit = 80;
-        public int angleMotorCurrentLimit = 80;
+
+        public int driveMotorSupplyCurrentLowerLimit = 40;      // Amps
+        public int driveMotorSupplyCurrentLimit = 60;           // Allow a brief spike up to this current
+        public int driveMotorSupplyTimeThreshold = 1;           // Seconds before dropping to Lower Limit
+        public int driveMotorStatorCurrentLimit = 120;
+
+        public int angleMotorSupplyCurrentLowerLimit = 30;      // Amps
+        public int angleMotorSupplyCurrentLimit = 45;           // Allow a brief spike up to this current
+        public int angleMotorSupplyTimeThreshold = 1;           // Seconds before dropping to Lower Limit
+        public int angleMotorStatorCurrentLimit = 90;
+
         public double slewRate = 2.0;
         public double maxGearSpeed = 1.0;
         public double lowGearSpeed = 0.5;
@@ -162,13 +212,13 @@ public final class SwerveConfig {
             return this;
         }
 
-        public Builder setDriveMotorCurrentLimit(int l) {
-            driveMotorCurrentLimit = l;
+        public Builder setDriveMotorSupplyCurrentLimit(int l) {
+            driveMotorSupplyCurrentLimit = l;
             return this;
         }
 
         public Builder setAngleMotorCurrentLimit(int l) {
-            angleMotorCurrentLimit = l;
+            angleMotorSupplyCurrentLimit = l;
             return this;
         }
 
