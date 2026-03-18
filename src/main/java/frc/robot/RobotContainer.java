@@ -36,7 +36,12 @@ import frc.robot.subsystems.turret.TurretConfig;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+
 public class RobotContainer {
+
+  PowerDistribution m_pdh = new PowerDistribution(1, ModuleType.kRev);
 
   DualShock4Controller pilotController = new DualShock4Controller(0);
   DualShock4Controller copilotController = new DualShock4Controller(1);
@@ -347,5 +352,37 @@ public class RobotContainer {
     var robotContainerTab = Shuffleboard.getTab("Robot Container");
 
     robotContainerTab.addBoolean("Aim Assist", () -> RobotContainer.isAimAssistEnabled);
+
+    var currentTab = Shuffleboard.getTab("Motor Currents");
+
+    currentTab.addDouble("RF Drive: ", () -> m_pdh.getCurrent(0));
+    currentTab.addDouble("RF Steer: ", () -> m_pdh.getCurrent(1));
+    currentTab.addDouble("Aux Power: ", () -> m_pdh.getCurrent(2));
+    //currentTab.addDouble("Spare: ", () -> m_pdh.getCurrent(3));
+    //currentTab.addDouble("Servo Hub: ", () -> m_pdh.getCurrent(4));
+    //currentTab.addDouble("Spare: ", () -> m_pdh.getCurrent(5));
+    currentTab.addDouble("Intake: ", () -> m_pdh.getCurrent(6));
+    currentTab.addDouble("Intake Deploy: ", () -> m_pdh.getCurrent(7));
+    currentTab.addDouble("LF Drive: ", () -> m_pdh.getCurrent(8));
+    currentTab.addDouble("LF Steer: ", () -> m_pdh.getCurrent(9));
+    currentTab.addDouble("LR Drive: ", () -> m_pdh.getCurrent(10));
+    currentTab.addDouble("LR Steer: ", () -> m_pdh.getCurrent(11));
+    currentTab.addDouble("Turret: ", () -> m_pdh.getCurrent(12));
+    currentTab.addDouble("Spindexer: ", () -> m_pdh.getCurrent(13));
+    currentTab.addDouble("Shooter Feed: ", () -> m_pdh.getCurrent(14));
+    currentTab.addDouble("R Shooter: ", () -> m_pdh.getCurrent(15));
+    currentTab.addDouble("L Shooter: ", () -> m_pdh.getCurrent(16));
+    //currentTab.addDouble("Climber: ", () -> m_pdh.getCurrent(17));
+    currentTab.addDouble("RR Drive: ", () -> m_pdh.getCurrent(18));
+    currentTab.addDouble("RR Steer: ", () -> m_pdh.getCurrent(19));
+    currentTab.addDouble("RoboRIO 2: ", () -> m_pdh.getCurrent(20));
+    currentTab.addDouble("Radio: ", () -> m_pdh.getCurrent(21));
+    currentTab.addDouble("Blinkin: ", () -> m_pdh.getCurrent(22));
+    //currentTab.addDouble("Spare: ", m_pdh.getCurrent(23));
+
+  // Display total current
+    currentTab.addDouble("Total Current", () -> m_pdh.getTotalCurrent());
+
   }
+
 }
