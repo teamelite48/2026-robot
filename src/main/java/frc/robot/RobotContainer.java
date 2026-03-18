@@ -89,11 +89,10 @@ public class RobotContainer {
   private void bindPilotControls() {
 
     pilotController.triangle
-      .whileTrue(Commands.sequence(
+      .onTrue(Commands.sequence(
         new InstantCommand(() -> disableAimAssist()),
         TurretCommands.moveToSafeState(),
-        DeployCommands.fullRetract(),
-        ClimberCommands.extend()
+        DeployCommands.fullRetract()
       ));
 
     pilotController.square

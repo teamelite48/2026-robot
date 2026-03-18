@@ -20,6 +20,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
+    boolean automatedMove = false;
 
     // long lastSimulationPeriodicMillis = 0;
     // boolean isTurretEnabled = true;
@@ -33,9 +34,22 @@ public class TurretSubsystem extends SubsystemBase {
         // pidController = new PIDController(config.pidParameters.P, config.pidParameters.I, config.pidParameters.D);
         this.absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
-        double absDegrees = getAbsoluteAngle();
-        motor.setInitialPosition(absDegrees / 360.0);
-        targetDegrees = clampTarget(absDegrees);
+        // 1. Get Absolute Position and normalize (358 -> -2)
+        double rawAbs = absoluteEncoder.getPosition();
+
+        if (rawAbs > 180) {
+            rawAbs -= 360;
+        }
+        // 2. Account for 9:1 Gear Ratio
+        double turretDegrees = rawAbs / TURRET_GEAR_RATIO;
+
+        // 3. Seed Motor and Target
+        motor.setInitialPosition(turretDegrees / 360.0);
+        this.targetDegrees = clampTarget(turretDegrees);
+
+        // double absDegrees = getAbsoluteAngle();
+        // motor.setInitialPosition(absDegrees / 360.0);
+        // targetDegrees = clampTarget(absDegrees);
 
         // motor.setInitialPosition(getAbsoluteAngle() / 360.0);
         // targetDegrees = clampTarget(getPositionInDegrees());
@@ -45,42 +59,48 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     // public void periodic() {
-    //     // 1. Update targetDegrees if AutoAim is active
-    //     // This updates the 'targetDegrees' variable but doesn't move the motor yet
     //     if (RobotContainer.isAimAssistEnabled) {
-    //         isManualControl = false;
+    //         isManualControl = false; // Force manual mode OFF
+    //         automatedMove = false;
     //         autoAim();
+    //         double targetRotations = targetDegrees / 360.0;
+    //         motor.setMotionMagicPosition(targetRotations, 0.0);
     //     }
 
-    //     // 2. Safety: If a manual button is being held, skip the position control logic
     //     if (isManualControl) {
+    //         targetDegrees = getPositionInDegrees();
+    //         // While a manual button is held, we do NOT call setMotionMagic.
+    //         // The setMotor() calls from your manual methods handle the movement.
     //         return; 
     //     }
 
-    //     // 3. Constant Position Holding
-    //     // By calling this every 20ms, the turret will stay locked to 'targetDegrees'
-    //     // even if the target is lost or the robot chassis spins.
-    //     double targetRotations = targetDegrees / 360.0;
-    //     motor.setMotionMagicPosition(targetRotations, 0.0);
+    //     if (automatedMove) {
+    //         double targetRotations = targetDegrees / 360.0;
+    //         motor.setMotionMagicPosition(targetRotations, 0.0);   
+    //     }
     // }
 
     public void periodic() {
+        // 1. Determine the Mode and Update Target
         if (RobotContainer.isAimAssistEnabled) {
-            isManualControl = false; // Force manual mode OFF
-            autoAim();
+            isManualControl = false;
+            automatedMove = false;
+            autoAim(); 
+        } 
+        
+        // 2. Execute Movement based on State
+        else if (isManualControl) {
+            // We do nothing here because rotateClockwise() is calling motor.setSpeed()
+            // But we must update targetDegrees so it doesn't "snap" when we let go
+            targetDegrees = getPositionInDegrees();
+            return;
         }
 
-        if (isManualControl) {
-            // While a manual button is held, we do NOT call setMotionMagic.
-            // The setMotor() calls from your manual methods handle the movement.
-            return; 
-        }
-
-        // This is the "Active" state. 
-        // If the motor isn't moving here, it means it's still thinking 
-        // it's in the DutyCycle mode from the manual buttons.
+        // In BOTH Auto-Aim and Smart Button modes, we want to hold a position
+        // This ensures the motor is ALWAYS being told to go somewhere if not manual
         double targetRotations = targetDegrees / 360.0;
         motor.setMotionMagicPosition(targetRotations, 0.0);
+        
     }
 
     // public void enableTurret() {
@@ -106,7 +126,12 @@ public class TurretSubsystem extends SubsystemBase {
     // }
 
     public void autoAim() {
+
+        automatedMove = false;
+        isManualControl = false;
+
         if (isTargetAcquired()) {
+
             double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
             double currentPos = getPositionInDegrees();
             
@@ -133,25 +158,22 @@ public class TurretSubsystem extends SubsystemBase {
         // 2. IMPORTANT: Update the target to where we are RIGHT NOW
         // This prevents the turret from "snapping" back to an old target
         targetDegrees = getPositionInDegrees();
-        
-        // 3. Hand control back to the Motion Magic logic
-        isManualControl = false;
     }
 
     public void moveToDegrees(Double degrees) {
         RobotContainer.disableAimAssist();
         isManualControl = false;
+        automatedMove = true;
         targetDegrees = clampTarget(degrees);
     }
 
     public void moveToHome() {
-        RobotContainer.disableAimAssist();
-        isManualControl = false;
         moveToDegrees(HOME_POSITION);
     }
 
     public void rotateClockwise() {
         RobotContainer.disableAimAssist();
+        automatedMove = false;
         isManualControl = true;
         setMotor(TurretConfig.clockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees + 2);
@@ -159,6 +181,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void rotateCounterClockwise() {
         RobotContainer.disableAimAssist();
+        automatedMove = false;
         isManualControl = true;
         setMotor(TurretConfig.counterClockwiseSpeed);
         // targetDegrees = clampTarget(targetDegrees - 2);
