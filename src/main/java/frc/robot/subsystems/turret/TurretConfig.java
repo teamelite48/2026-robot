@@ -11,7 +11,7 @@ public class TurretConfig {
 
     public static final double inputDeadzone = 0.2;
     public static final double FEED_FORWARD_VOLTS = 2.0;
-    public static final double DEGREES_TOLERANCE = 2.0;
+    public static final double DEGREES_TOLERANCE = 1.5;
     public static final double TURRET_INIT_DEGREES = 7.0;
     public static final double TURRET_GEAR_RATIO = 9.0;
 
@@ -46,15 +46,15 @@ public class TurretConfig {
         config.positionConversionFactor = (9.0 / 1.0); // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(70.0, 0.0, 2.5, 0.7, 0.12); // 25.0, 0.0, 0.0, 2.0, 0.12
+        config.pidParameters = new PIDParameters(25.0, 0.0, 2.0, 0.15, 0.12); // 25.0, 0.0, 0.0, 2.0, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 100;
-        config.motionMagicCruiseVelocity = 2.5; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 2.5; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 40.0; //40.0           // change if overshooting
+        config.motionMagicCruiseVelocity = 1.0; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 2.25; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 100.0; //40.0           // change if overshooting
 
         return config;
     }
