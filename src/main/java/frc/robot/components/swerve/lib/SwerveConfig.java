@@ -149,7 +149,7 @@ public final class SwerveConfig {
         private double maxMetersPerSecond = 4.5;
 
         public int driveMotorSupplyCurrentLowerLimit = 50;      // Amps
-        public int driveMotorSupplyCurrentLimit = 80;           // Allow a brief spike up to this current
+        public int driveMotorSupplyCurrentLimit = 70;           // Allow a brief spike up to this current
         public int driveMotorSupplyTimeThreshold = 3;           // Seconds before dropping to Lower Limit
         public int driveMotorStatorCurrentLimit = 150;
 
