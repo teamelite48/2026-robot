@@ -116,7 +116,7 @@ public class DriveSubsystem extends SubsystemBase{
                 backRight.getPosition()
         });
 
-        zeroGyro(); //This sets proper orientation of robot for some reason idk. Trevor. DO NOT CHANGE! 3/3/26
+        zeroGyro();
         configAutobuilder();
         setHighGear();
         initDashboard();
@@ -139,7 +139,7 @@ public class DriveSubsystem extends SubsystemBase{
             this::getChassisSpeeds,
             (speeds, feedforwards) -> setSwerveModuleStates(speeds),
             new PPHolonomicDriveController(
-                new PIDConstants(0.33, 0.0, 0.0),
+                new PIDConstants(0.8, 0.0, 0.0),
                 new PIDConstants(1.1, 0.0, 0.0)
             ),
             config,

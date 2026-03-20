@@ -23,6 +23,10 @@ public class DeployCommands {
         return Commands.run(() -> deploySubsystem.fullExtend(), deploySubsystem);
     }
 
+    public static Command agitatePosition() {
+        return Commands.run(() -> deploySubsystem.agitatePosition(), deploySubsystem);
+    }
+
     // Never full retract unless turret is in safe place
     public static Command fullRetract() {
         return Commands.run(() -> deploySubsystem.fullRetract(), deploySubsystem);

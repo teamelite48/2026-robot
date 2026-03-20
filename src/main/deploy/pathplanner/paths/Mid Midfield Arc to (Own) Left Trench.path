@@ -4,37 +4,62 @@
     {
       "anchor": {
         "x": 7.843,
-        "y": 4.0
+        "y": 3.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.843,
-        "y": 5.0
+        "x": 7.722741792369121,
+        "y": 3.90357586512866
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.843,
-        "y": 7.59620230700976
+        "x": 7.497400177462289,
+        "y": 7.572058562555457
       },
       "prevControl": {
-        "x": 7.843,
-        "y": 6.59620230700976
+        "x": 8.051379641443276,
+        "y": 7.241533000012178
+      },
+      "nextControl": {
+        "x": 6.539698314108251,
+        "y": 8.14346051464064
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.3205323868677903,
+        "y": 7.491579414374445
+      },
+      "prevControl": {
+        "x": 3.8114551907719605,
+        "y": 7.475483584738242
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0875331564986745,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.9840848806366047,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "Stow Intake",
-      "waypointRelativePos": 0.11744966442953012,
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -45,7 +70,7 @@
     },
     {
       "name": "Intake Off",
-      "waypointRelativePos": 0.8355704697986588,
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -65,7 +90,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 26.995838394086693
   },
   "reversed": false,
   "folder": null,

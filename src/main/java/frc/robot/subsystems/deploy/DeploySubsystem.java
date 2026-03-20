@@ -7,6 +7,7 @@ package frc.robot.subsystems.deploy;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.components.motors.Kraken;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.util.EliteMath;
@@ -81,11 +82,22 @@ public class DeploySubsystem extends SubsystemBase {
   }
 
   public void fullExtend() {
-    setPosition(EXTEND_LIMIT);
+    if (RobotContainer.isShooting) {
+      setPosition(AGITATE_POSITION);
+    }
+    else {
+      setPosition(EXTEND_LIMIT);
+    }
+
+    
   }
 
   public void fullRetract() {
     setPosition(RETRACT_LIMIT);
+  }
+
+  public void agitatePosition() {
+    setPosition(AGITATE_POSITION);
   }
 
   public void extend() {

@@ -15,6 +15,7 @@ public class DeployConfig {
     public static final double MID_POSITION = 0.0;
     public static final double RETRACT_LIMIT = 0.0;
     public static final double HOME_POSITION = RETRACT_LIMIT + 900.0;
+    public static final double AGITATE_POSITION = 2850.0;
 
     public static MotorConfig getIntakeDeployConfig() {
 

@@ -324,7 +324,8 @@ public class RobotContainer {
 
   public static SendableChooser<Command> initAutoChooser() {
 
-    NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend().withTimeout(1.5));
+    NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend());
+    NamedCommands.registerCommand("Agitate", DeployCommands.agitatePosition());
     NamedCommands.registerCommand("Intake", IntakeCommands.intake());
     NamedCommands.registerCommand("Intake Off", IntakeCommands.stop().withTimeout(0.25));
     NamedCommands.registerCommand("Stow Intake", DeployCommands.setToHome());
@@ -338,7 +339,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Everything", Commands.parallel(
       new InstantCommand(() -> shooterSubsystem.setOff()),
       new InstantCommand(() -> shooterFeedSubsystem.stop()),
-      new InstantCommand(() -> spindexerSubsystem.stop())
+      new InstantCommand(() -> spindexerSubsystem.stop()),
+      new InstantCommand(() -> intakeSubsystem.stop())
     ));
     // NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 
