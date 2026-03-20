@@ -1,5 +1,6 @@
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.RobotConfig;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.lib.MotorConfig;
@@ -35,6 +36,9 @@ public class TurretConfig {
 
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
+
+    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.624, 4.03); 
+    public static final Translation2d RED_HUB_LOCATION = new Translation2d(11.916, 4.03);
 
     //TODO: Find home/starting position of turret for start of match configuration
 

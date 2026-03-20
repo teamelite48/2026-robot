@@ -1,5 +1,7 @@
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -198,6 +200,15 @@ public class TurretSubsystem extends SubsystemBase {
         return turretInRange && absInRange;
     }
 
+    public static Translation2d getTargetHub() {
+        // This checks which alliance you are on so you aim at the correct Hub
+        var alliance = edu.wpi.first.wpilibj.DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == edu.wpi.first.wpilibj.DriverStation.Alliance.Red) {
+            return RED_HUB_LOCATION;
+        }
+        return BLUE_HUB_LOCATION;
+    }
+
     public void initDashboard() {
         var tab = Shuffleboard.getTab("Turret");
 
@@ -227,5 +238,10 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addDouble("Motor Velocity", () -> motor.getVelocity());
         tab.addBoolean("Is Manual Mode Enabled", () -> isManualControl);
         tab.addBoolean("Is Turret Initialized", () -> isTurretInitialized());
+
+        tab.addDouble("Distance to Hub (m)", () -> {
+            Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
+            return robotPose.getTranslation().getDistance(getTargetHub());
+        });
     }
 }

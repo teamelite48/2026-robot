@@ -16,9 +16,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
+import frc.robot.subsystems.turret.TurretConfig;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -311,6 +313,10 @@ public class DriveSubsystem extends SubsystemBase{
         );
     }
 
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
     private void initDashboard() {
 
         var driveTab = Shuffleboard.getTab("Drive");
@@ -334,5 +340,24 @@ public class DriveSubsystem extends SubsystemBase{
         driveTab.addDouble("X", () -> currX);
         driveTab.addDouble("Y", () -> currY);
         driveTab.addDouble("Rotation", () -> currRotation);
+
+        driveTab.addDouble("Robot X (m)", () -> odometry.getPoseMeters().getX())
+            .withPosition(0, 3);
+
+        driveTab.addDouble("Robot Y (m)", () -> odometry.getPoseMeters().getY())
+            .withPosition(1, 3);
+
+        driveTab.addDouble("Robot Heading (deg)", () -> odometry.getPoseMeters().getRotation().getDegrees())
+            .withPosition(2, 3);
+
+        // // This pulls the X coordinate from the getPose() we just made
+        // driveTab.addDouble("Robot X (m)", () -> getPose().getX());
+
+        // // This pulls the Y coordinate
+        // driveTab.addDouble("Robot Y (m)", () -> getPose().getY());
+
+        // This shows the distance to the Hub in meters
+        driveTab.addDouble("Dist to Hub (m)", () -> 
+            getPose().getTranslation().getDistance(RobotContainer.turretSubsystem.getTargetHub()));
     }
 }
