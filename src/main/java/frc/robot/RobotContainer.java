@@ -12,8 +12,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.controls.DualShock4Controller;
-import frc.robot.subsystems.climber.ClimberCommands;
-import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.deploy.DeployCommands;
 import frc.robot.subsystems.deploy.DeploySubsystem;
 import frc.robot.subsystems.drive.DriveCommands;
@@ -25,7 +23,6 @@ import frc.robot.subsystems.led.LedSubsystem;
 import frc.robot.subsystems.shooter.ShooterCommands;
 import frc.robot.subsystems.shooter.ShooterConfig;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.shooter.ShooterSubsystem.ShooterMode;
 import frc.robot.subsystems.shooter.commands.ShootCommand;
 import frc.robot.subsystems.shooterFeed.ShooterFeedCommands;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
@@ -50,7 +47,7 @@ public class RobotContainer {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-turret");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
-  public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  // public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
@@ -103,8 +100,8 @@ public class RobotContainer {
     pilotController.square
       .onTrue(DeployCommands.fullExtend());
 
-    pilotController.cross
-      .whileTrue(ClimberCommands.retract());
+    // pilotController.cross
+    //   .whileTrue(ClimberCommands.retract());
 
     pilotController.circle
       .onTrue(DeployCommands.setToHome());
@@ -183,11 +180,11 @@ public class RobotContainer {
     copilotController.r2
       .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
 
-    copilotController.up
-      .whileTrue(ClimberCommands.extend());
+    // copilotController.up
+    //   .whileTrue(ClimberCommands.extend());
 
-    copilotController.down
-      .whileTrue(ClimberCommands.retract());
+    // copilotController.down
+    //   .whileTrue(ClimberCommands.retract());
 
     copilotController.left
       .whileTrue(TurretCommands.RotateTurretCounterClockwise())
@@ -340,7 +337,8 @@ public class RobotContainer {
       new InstantCommand(() -> shooterSubsystem.setOff()),
       new InstantCommand(() -> shooterFeedSubsystem.stop()),
       new InstantCommand(() -> spindexerSubsystem.stop()),
-      new InstantCommand(() -> intakeSubsystem.stop())
+      new InstantCommand(() -> intakeSubsystem.stop()),
+      new InstantCommand(() -> disableAimAssist())
     ));
     // NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 

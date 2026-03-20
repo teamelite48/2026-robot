@@ -7,38 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Trench to Left Midfield"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Midfield to Mid Midfield"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
+            "pathName": "Left Trench Arc to Mid Midfield"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid Midfield to Left Midfield"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Midfield to Own Side (Trench)"
+            "pathName": "Mid Midfield Arc to (Own) Left Trench"
           }
         },
         {
@@ -54,7 +29,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 9.0
+                  "waitTime": 7.0
                 }
               },
               {
@@ -324,9 +299,28 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Stop Everything"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Everything"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Trench Arc to Midfield Hub"
           }
         }
       ]
