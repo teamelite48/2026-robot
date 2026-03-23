@@ -108,6 +108,10 @@ public class DeploySubsystem extends SubsystemBase {
     deployMotor.setSpeed(-EXTEND_SPEED);
   }
 
+  public void sendHome() {
+    setPosition(HOME_POSITION);
+  }
+
   public void stop() {
     // currentMode = ControlMode.POSITION;
     // manualSpeed = 0;

@@ -101,7 +101,8 @@ public class RobotContainer {
       .onTrue(DeployCommands.fullExtend());
 
     pilotController.cross
-      .onTrue(new InstantCommand(() -> toggleAimAssist()));
+      .whileTrue(DeployCommands.agitate())
+      .onFalse(DeployCommands.setToHome());
 
     pilotController.circle
       .onTrue(DeployCommands.setToHome());
@@ -131,16 +132,18 @@ public class RobotContainer {
       //   ShooterFeedCommands.stop()));
 
     pilotController.left
-      .whileTrue(DriveCommands.strafeLeft());
+      .whileTrue(TurretCommands.RotateTurretCounterClockwise())
+      .onFalse(TurretCommands.stop());
 
     pilotController.right
-      .whileTrue(DriveCommands.strafeRight());
+      .whileTrue(TurretCommands.RotateTurretClockwise())
+      .onFalse(TurretCommands.stop());
 
     pilotController.share
       .onTrue(ShooterCommands.idleShooter());
 
-    // pilotController.options
-    //   .onTrue(new InstantCommand(() -> toggleAimAssist()));
+    pilotController.options
+      .onTrue(new InstantCommand(() -> toggleAimAssist()));
 
     pilotController.ps.onTrue(new InstantCommand(() -> driveSubsystem.zeroGyro(), driveSubsystem));
 
