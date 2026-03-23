@@ -305,7 +305,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.5
                 }
               },
               {
@@ -320,7 +320,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Trench Arc to Midfield Hub"
+            "pathName": "Left Trench Arc to Mid Midfield Rd 2"
           }
         }
       ]

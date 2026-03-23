@@ -326,6 +326,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", IntakeCommands.intake());
     NamedCommands.registerCommand("Intake Off", IntakeCommands.stop().withTimeout(0.25));
     NamedCommands.registerCommand("Stow Intake", DeployCommands.setToHome());
+    NamedCommands.registerCommand("Turret to 90", TurretCommands.moveTo90());
     NamedCommands.registerCommand("Aim Assist", new InstantCommand(() -> enableAimAssist()));
     NamedCommands.registerCommand("Shoot", new ShootCommand(ShooterConfig.ShooterPreset.MEDIUM));
     // NamedCommands.registerCommand("Shoot", ShooterCommands.highRPM());

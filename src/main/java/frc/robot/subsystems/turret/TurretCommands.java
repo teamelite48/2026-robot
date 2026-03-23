@@ -27,7 +27,7 @@ public class TurretCommands {
     return new MoveTurretToDegrees(HOME_POSITION);
   }
 
-  public static Command moveToCenter() {
+  public static Command moveTo90() {
     return new MoveTurretToDegrees(degreesAtCenter);
   }
 
