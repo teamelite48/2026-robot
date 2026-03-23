@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.RobotContainer;
 import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
@@ -19,6 +20,9 @@ public class TurretSubsystem extends SubsystemBase {
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
     private double targetDegrees = HOME_POSITION;
     public boolean isManualControl = true;
+    private double manualSpeedRequest = 0.0;
+
+    private final SlewRateLimiter speedLimiter = new SlewRateLimiter(2.0);
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
@@ -71,6 +75,10 @@ public class TurretSubsystem extends SubsystemBase {
         } 
         
         else if (isManualControl) {
+
+            double limitedSpeed = speedLimiter.calculate(manualSpeedRequest);
+            motor.setSpeed(limitedSpeed);
+
             targetDegrees = getPositionInDegrees();
             return;
         }
@@ -133,6 +141,7 @@ public class TurretSubsystem extends SubsystemBase {
         
         // 2. IMPORTANT: Update the target to where we are RIGHT NOW
         // This prevents the turret from "snapping" back to an old target
+        manualSpeedRequest = 0.0;
         targetDegrees = getPositionInDegrees();
         isManualControl = false;
     }
@@ -152,7 +161,9 @@ public class TurretSubsystem extends SubsystemBase {
         RobotContainer.disableAimAssist();
         automatedMove = false;
         isManualControl = true;
-        setMotor(TurretConfig.clockwiseSpeed);
+        
+        manualSpeedRequest = TurretConfig.clockwiseSpeed;
+
         // targetDegrees = clampTarget(targetDegrees + 2);
     }
 
@@ -160,7 +171,9 @@ public class TurretSubsystem extends SubsystemBase {
         RobotContainer.disableAimAssist();
         automatedMove = false;
         isManualControl = true;
-        setMotor(TurretConfig.counterClockwiseSpeed);
+        
+        manualSpeedRequest = TurretConfig.counterClockwiseSpeed;
+
         // targetDegrees = clampTarget(targetDegrees - 2);
     }
 
