@@ -8,7 +8,8 @@ import frc.robot.lib.PIDParameters;
 
 public class TurretConfig {
 
-    public static final double TURRET_ENCODER_OFFSET_DEGREES = 126.9;
+    public static final double TURRET_ENCODER_OFFSET_DEGREES = 109.95;  //126.9
+
 
     public static final double inputDeadzone = 0.2;
     public static final double FEED_FORWARD_VOLTS = 2.0;
@@ -16,7 +17,7 @@ public class TurretConfig {
     public static final double TURRET_INIT_DEGREES = 7.0;
     public static final double TURRET_GEAR_RATIO = 9.0;
 
-    public static final double motorMaxOutput = 0.2;
+    public static final double motorMaxOutput = 0.4;   //0.2 
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
@@ -46,16 +47,16 @@ public class TurretConfig {
 
         var config = new MotorConfig(16, RobotConfig.CANIVORE_48);
 
-        config.isInverted = true;
-        config.positionConversionFactor = (9.0 / 1.0); // (1.0/90.0) * 360.0;
+        config.isInverted = false;   //Motor flipped to add 2:1 reduction - originally true
+        config.positionConversionFactor = (18.0 / 1.0); // ADDED 2:1 REDUCTION // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
         config.pidParameters = new PIDParameters(25.0, 0.0, 1.7, 0.2, 0.12); // 25.0, 0.0, 0.0, 2.0, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
-        config.supplyCurrentLimit = 40;
-        config.statorCurrentLimit = 100;
+        config.supplyCurrentLimit = 40;  //40
+        config.statorCurrentLimit = 100;  //100
         config.motionMagicCruiseVelocity = 1.0; //2.5  // rotations/sec  (smooth start)
         config.motionMagicAcceleration = 2.25; //6.0   // rotations/sec^2 (smooth stop)
         config.motionMagicJerk = 100.0; //40.0           // change if overshooting
