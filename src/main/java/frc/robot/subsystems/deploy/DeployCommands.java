@@ -44,10 +44,10 @@ public class DeployCommands {
 
     public static Command agitate() {
         return Commands.sequence(
-            new InstantCommand(() -> deploySubsystem.agitatePosition()),
-            new WaitCommand(0.75),
-            new InstantCommand(() -> deploySubsystem.sendHome()),
-            new WaitCommand(0.75)
+            Commands.deadline(new WaitCommand(0.5), agitatePosition()),
+            new WaitCommand(0.25),
+            Commands.deadline(new WaitCommand(0.5), setToHome()),
+            new WaitCommand(0.25)
         ).repeatedly();
     }
 }
