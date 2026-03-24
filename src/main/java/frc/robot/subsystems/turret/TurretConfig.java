@@ -21,7 +21,7 @@ public class TurretConfig {
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
-    public static final double CCW_LIMIT = -90.0;
+    public static final double CCW_LIMIT = -180.0;
     public static final double CW_LIMIT = 180.0;
 
     public static final double degreesPerMotorRotation = 40.0;
