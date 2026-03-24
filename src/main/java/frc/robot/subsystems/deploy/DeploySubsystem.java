@@ -82,14 +82,7 @@ public class DeploySubsystem extends SubsystemBase {
   }
 
   public void fullExtend() {
-    if (RobotContainer.isShooting) {
-      setPosition(AGITATE_POSITION);
-    }
-    else {
-      setPosition(EXTEND_LIMIT);
-    }
-
-    
+    setPosition(EXTEND_LIMIT);
   }
 
   public void fullRetract() {
