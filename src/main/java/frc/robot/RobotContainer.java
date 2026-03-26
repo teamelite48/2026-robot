@@ -177,8 +177,8 @@ public class RobotContainer {
       .whileTrue(ShooterFeedCommands.FeedAwayFromShooter())
       .onFalse(ShooterFeedCommands.stop());
 
-    // copilotController.r1
-    //   .whileTrue(SpindexerCommands.FeedTowardsFeed());
+    copilotController.r1
+      .onTrue(new InstantCommand(() -> toggleAimAssist()));
 
     copilotController.r2
       .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
@@ -200,8 +200,8 @@ public class RobotContainer {
     // copilotController.share
     //   .onTrue();
 
-    copilotController.options
-      .onTrue(new InstantCommand(() -> toggleAimAssist()));
+    // copilotController.options
+    //   .onTrue(new InstantCommand(() -> toggleAimAssist()));
 
     // copilotController.ps
     //   .onTrue();
