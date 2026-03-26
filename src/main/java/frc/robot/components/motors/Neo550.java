@@ -1,5 +1,6 @@
 package frc.robot.components.motors;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -100,6 +101,25 @@ public class Neo550 implements Motor {
 
   public double getVelocity() {
     return relativeEncoder.getVelocity();
+  }
+
+  @Override
+  public void setPID(double p, double i, double d, double s, double v) {
+      SparkMaxConfig config = new SparkMaxConfig();
+
+      // Use .p, .i, .d, and .ff (for velocity feedforward)
+      config.closedLoop
+          .p(p)
+          .i(i)
+          .d(d)
+          .velocityFF(v); // 'v' maps to 'ff' in REVLib
+
+      // Static friction (s) is handled in the 'velocity' or 'position' slot 
+      // depending on your control mode, but usually via kS:
+      config.closedLoop.velocityFF(v); 
+      
+      // Apply the configuration
+      sparkMax.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public void setPosition(double position) {

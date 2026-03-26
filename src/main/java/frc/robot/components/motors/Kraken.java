@@ -1,6 +1,7 @@
 package frc.robot.components.motors;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
@@ -130,6 +131,18 @@ public class Kraken implements Motor {
     // public int getCanId() {
     //     return talonFx.getDeviceID();
     // }
+
+    public void setPID(double p, double i, double d, double s, double v) {
+        Slot0Configs slot0 = new Slot0Configs();
+        slot0.kP = p;
+        slot0.kI = i;
+        slot0.kD = d;
+        slot0.kS = s;
+        slot0.kV = v;
+        
+        // This sends the new numbers to the TalonFXS over the CAN bus
+        talonFx.getConfigurator().apply(slot0);
+    }
 
     public void setPosition(double position) {
         var rotations = calculateRotations(position, config.positionConversionFactor);

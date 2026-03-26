@@ -10,6 +10,7 @@ import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.Minion;
 import frc.robot.components.motors.lib.Motor;
+import frc.robot.lib.PIDParameters;
 
 import static frc.robot.subsystems.turret.TurretConfig.*;
 
@@ -22,7 +23,7 @@ public class TurretSubsystem extends SubsystemBase {
     public boolean isManualControl = true;
     private double manualSpeedRequest = 0.0;
 
-    private final SlewRateLimiter speedLimiter = new SlewRateLimiter(0.25);
+    private final SlewRateLimiter speedLimiter = new SlewRateLimiter(0.5);
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
@@ -65,6 +66,18 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+    
+        // If we are close to the target, use a "Precision" PID with lower D
+        // If we are far away, use a "Travel" PID to move fast
+        if (Math.abs(getPositionInDegrees()) < 32.0) {
+            // Precision: Lower D so it doesn't 'choke' before hitting 0
+            motor.setPID(10.0, 0.01, 0.0, 0.32, 0.12); // 0.0025
+        }
+        else {
+            // Travel: Higher D to prevent slamming into the target area
+            motor.setPID(25.0, 0.0, 0.05, 0.55, 0.12); // 0.075
+        }
+
         if (RobotContainer.isAimAssistEnabled) {
             isManualControl = false;
             automatedMove = false;
@@ -77,8 +90,13 @@ public class TurretSubsystem extends SubsystemBase {
         else if (isManualControl) {
 
             double limitedSpeed = speedLimiter.calculate(manualSpeedRequest);
-            motor.setSpeed(limitedSpeed);
 
+            if (manualSpeedRequest == 0) {
+                limitedSpeed = 0;
+                speedLimiter.reset(0);
+            }
+
+            motor.setSpeed(limitedSpeed);
             targetDegrees = getPositionInDegrees();
             return;
         }
@@ -223,17 +241,18 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setManualOutput(double speed) {
-        isManualControl = true;
-        automatedMove = false;
-        RobotContainer.disableAimAssist();
 
         // Apply a deadband so the turret doesn't "drift" if the stick is old
         if (Math.abs(speed) < 0.05) {
             manualSpeedRequest = 0;
-        } else {
-            // Optional: Cube the input for smoother control
-            manualSpeedRequest = Math.pow(speed, 2); 
-            // manualSpeedRequest = speed;
+        }
+        else {
+            isManualControl = true;
+            automatedMove = false;
+            RobotContainer.disableAimAssist();
+
+            // Optional: Square the input for smoother control
+            manualSpeedRequest = (speed * Math.abs(speed));
         }
     }
 

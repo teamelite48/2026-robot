@@ -51,7 +51,7 @@ public class TurretConfig {
         config.positionConversionFactor = (18.0 / 1.0); // ADDED 2:1 REDUCTION // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(22.0, 0.0, 1.5, 0.34, 0.12); // 25.0, 0.0, 1.7, 0.25, 0.12
+        config.pidParameters = new PIDParameters(20.0, 0.0, 0.1, 0.5, 0.12); // 25.0, 0.0, 1.7, 0.25, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;

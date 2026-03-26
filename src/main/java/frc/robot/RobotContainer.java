@@ -74,12 +74,12 @@ public class RobotContainer {
     driveSubsystem
         .setDefaultCommand(DriveCommands.drive(() -> pilotController.getLeftAxes(), () -> pilotController.getRightAxes()));
 
-    // turretSubsystem.setDefaultCommand(
-    //   new RunCommand(
-    //     () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()), 
-    //     turretSubsystem
-    //     )
-    // );
+    turretSubsystem.setDefaultCommand(
+      new RunCommand(
+        () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()), 
+        turretSubsystem
+        )
+    );
 
     bindPilotControls();
     bindCopilotControls();
@@ -139,13 +139,13 @@ public class RobotContainer {
       //   SpindexerCommands.stop(),
       //   ShooterFeedCommands.stop()));
 
-    pilotController.left
-      .whileTrue(TurretCommands.RotateTurretCounterClockwise())
-      .onFalse(TurretCommands.stop());
+    // pilotController.left
+    //   .whileTrue(TurretCommands.RotateTurretCounterClockwise())
+    //   .onFalse(TurretCommands.stop());
 
-    pilotController.right
-      .whileTrue(TurretCommands.RotateTurretClockwise())
-      .onFalse(TurretCommands.stop());
+    // pilotController.right
+    //   .whileTrue(TurretCommands.RotateTurretClockwise())
+    //   .onFalse(TurretCommands.stop());
 
     pilotController.share
       .onTrue(ShooterCommands.idleShooter());
@@ -197,13 +197,13 @@ public class RobotContainer {
     // copilotController.down
     //   .whileTrue(ClimberCommands.retract());
 
-    copilotController.left
-      .whileTrue(TurretCommands.RotateTurretCounterClockwise())
-      .onFalse(TurretCommands.stop());
+    // copilotController.left
+    //   .whileTrue(TurretCommands.RotateTurretCounterClockwise())
+    //   .onFalse(TurretCommands.stop());
 
-    copilotController.right
-      .whileTrue(TurretCommands.RotateTurretClockwise())
-      .onFalse(TurretCommands.stop());
+    // copilotController.right
+    //   .whileTrue(TurretCommands.RotateTurretClockwise())
+    //   .onFalse(TurretCommands.stop());
 
     // copilotController.share
     //   .onTrue();

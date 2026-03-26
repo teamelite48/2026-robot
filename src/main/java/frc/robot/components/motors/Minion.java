@@ -14,6 +14,7 @@ import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.configs.Slot0Configs;
 
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.components.motors.lib.MotorConfig;
@@ -153,6 +154,18 @@ public class Minion implements Motor {
                 .withPosition(position)
                 .withFeedForward(config.feedForwardVolts)
         );
+    }
+
+    public void setPID(double p, double i, double d, double s, double v) {
+        Slot0Configs slot0 = new Slot0Configs();
+        slot0.kP = p;
+        slot0.kI = i;
+        slot0.kD = d;
+        slot0.kS = s;
+        slot0.kV = v;
+        
+        // This sends the new numbers to the TalonFXS over the CAN bus
+        talon.getConfigurator().apply(slot0);
     }
 
     @Override
