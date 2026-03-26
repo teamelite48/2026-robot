@@ -127,17 +127,17 @@ public class DualShock4Controller {
         return value;
     }
 
-    private double getLeftXAxis() {
+    public double getLeftXAxis() {
         return modifyAxis(hid.getRawAxis(0));
     }
-    private double getLeftYAxis() {
+    public double getLeftYAxis() {
         return modifyAxis(hid.getRawAxis(1));
     }
-    private double getRightXAxis() {
+    public double getRightXAxis() {
         return modifyAxis(hid.getRawAxis(2));
     }
 
-    private double getRightYAxis() {
+    public double getRightYAxis() {
          return modifyAxis(hid.getRawAxis(5));
     }
 }

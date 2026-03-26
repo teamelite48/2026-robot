@@ -222,6 +222,21 @@ public class TurretSubsystem extends SubsystemBase {
         return BLUE_HUB_LOCATION;
     }
 
+    public void setManualOutput(double speed) {
+        isManualControl = true;
+        automatedMove = false;
+        RobotContainer.disableAimAssist();
+
+        // Apply a deadband so the turret doesn't "drift" if the stick is old
+        if (Math.abs(speed) < 0.05) {
+            manualSpeedRequest = 0;
+        } else {
+            // Optional: Cube the input for smoother control
+            manualSpeedRequest = Math.pow(speed, 2); 
+            // manualSpeedRequest = speed;
+        }
+    }
+
     public void initDashboard() {
         var tab = Shuffleboard.getTab("Turret");
 

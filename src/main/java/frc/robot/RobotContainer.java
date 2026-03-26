@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -72,6 +73,13 @@ public class RobotContainer {
 
     driveSubsystem
         .setDefaultCommand(DriveCommands.drive(() -> pilotController.getLeftAxes(), () -> pilotController.getRightAxes()));
+
+    // turretSubsystem.setDefaultCommand(
+    //   new RunCommand(
+    //     () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()), 
+    //     turretSubsystem
+    //     )
+    // );
 
     bindPilotControls();
     bindCopilotControls();
@@ -341,8 +349,7 @@ public class RobotContainer {
       new InstantCommand(() -> shooterSubsystem.setOff()),
       new InstantCommand(() -> shooterFeedSubsystem.stop()),
       new InstantCommand(() -> spindexerSubsystem.stop()),
-      new InstantCommand(() -> intakeSubsystem.stop()),
-      new InstantCommand(() -> disableAimAssist())
+      new InstantCommand(() -> intakeSubsystem.stop())
     ));
     // NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 

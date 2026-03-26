@@ -103,7 +103,12 @@
       "name": "Intake",
       "waypointRelativePos": 0.5906040268456368,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake"
+        }
+      }
     },
     {
       "name": "Stop Everything",
@@ -146,7 +151,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 65.0
+    "rotation": 75.0
   },
   "useDefaultConstraints": false
 }
