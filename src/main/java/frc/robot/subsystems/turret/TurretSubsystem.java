@@ -22,7 +22,7 @@ public class TurretSubsystem extends SubsystemBase {
     public boolean isManualControl = true;
     private double manualSpeedRequest = 0.0;
 
-    private final SlewRateLimiter speedLimiter = new SlewRateLimiter(8.0);
+    private final SlewRateLimiter speedLimiter = new SlewRateLimiter(0.25);
 
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
