@@ -305,7 +305,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public void useAimAssistOrPreset(ShooterConfig.ShooterPreset preset) {
     if (RobotContainer.isAimAssistEnabled) {
       shooterMode = ShooterMode.AUTO_RANGE;
-    } else {
+    }
+    else {
       setManualPreset(preset);
     }
   }

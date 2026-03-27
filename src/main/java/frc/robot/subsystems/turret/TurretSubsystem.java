@@ -245,6 +245,7 @@ public class TurretSubsystem extends SubsystemBase {
         // Apply a deadband so the turret doesn't "drift" if the stick is old
         if (Math.abs(speed) < 0.05) {
             manualSpeedRequest = 0;
+            return;
         }
         else {
             isManualControl = true;
@@ -252,7 +253,8 @@ public class TurretSubsystem extends SubsystemBase {
             RobotContainer.disableAimAssist();
 
             // Optional: Square the input for smoother control
-            manualSpeedRequest = (speed * Math.abs(speed));
+            // manualSpeedRequest = (speed * Math.abs(speed));
+            manualSpeedRequest = speed;
         }
     }
 

@@ -221,13 +221,13 @@ public class RobotContainer {
 
   private void bindTestControls() {
 
-    testController.left
-      .whileTrue(TurretCommands.RotateTurretCounterClockwise())
-      .onFalse(TurretCommands.stop());
+    // testController.left
+    //   .whileTrue(TurretCommands.RotateTurretCounterClockwise())
+    //   .onFalse(TurretCommands.stop());
 
-    testController.right
-      .whileTrue(TurretCommands.RotateTurretClockwise())
-      .onFalse(TurretCommands.stop());
+    // testController.right
+    //   .whileTrue(TurretCommands.RotateTurretClockwise())
+    //   .onFalse(TurretCommands.stop());
 
     // testController.square
     //   .onTrue(ShooterCommands.idleShooter());
