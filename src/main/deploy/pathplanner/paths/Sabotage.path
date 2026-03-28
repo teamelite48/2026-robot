@@ -8,36 +8,52 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.827,
-        "y": 2.975732422094024
+        "x": 8.350479148181012,
+        "y": 3.572244897959183
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.344489795918367,
-        "y": 0.07140195208518096
+        "x": 9.074791481810115,
+        "y": 3.20204081632653
       },
       "prevControl": {
-        "x": 8.391877648261369,
-        "y": 0.13605552321746528
+        "x": 8.793114463176575,
+        "y": 3.499813664596273
       },
       "nextControl": {
-        "x": 6.040727595385981,
-        "y": -0.009077196095830548
+        "x": 9.433034060126369,
+        "y": 2.8233272335350597
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.3446761313220934,
-        "y": 0.20016858917479907
+        "x": 7.046716947648624,
+        "y": 0.2
       },
       "prevControl": {
-        "x": 4.344676131322091,
-        "y": 0.20016858917479896
+        "x": 8.157329192546584,
+        "y": 0.2565039929015075
+      },
+      "nextControl": {
+        "x": 6.234889355496017,
+        "y": 0.15869710538942108
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.345,
+        "y": 0.2
+      },
+      "prevControl": {
+        "x": 4.656486246672582,
+        "y": 0.24845607808340675
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,11 +62,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0053050397878014,
+      "waypointRelativePos": 2.1511936339522553,
       "rotationDegrees": 180.0
     },
     {
-      "waypointRelativePos": 1.9681697612732076,
+      "waypointRelativePos": 2.9920424403183006,
       "rotationDegrees": 180.0
     }
   ],
@@ -59,7 +75,7 @@
   "eventMarkers": [
     {
       "name": "Stow Intake",
-      "waypointRelativePos": 0.5939597315436246,
+      "waypointRelativePos": 0.4630872483221473,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -70,7 +86,7 @@
     },
     {
       "name": "Intake Off",
-      "waypointRelativePos": 0.7818791946308744,
+      "waypointRelativePos": 0.5134228187919458,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -89,7 +105,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 153.0
   },
   "reversed": false,

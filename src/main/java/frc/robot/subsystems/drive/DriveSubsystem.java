@@ -268,7 +268,7 @@ public class DriveSubsystem extends SubsystemBase{
     }
 
 
-    private ChassisSpeeds getChassisSpeeds() {
+    public ChassisSpeeds getChassisSpeeds() {
         return kinematics.toChassisSpeeds(
             frontLeft.getState(),
             frontRight.getState(),
