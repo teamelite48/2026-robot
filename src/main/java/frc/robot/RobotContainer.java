@@ -165,8 +165,8 @@ public class RobotContainer {
 
   private void bindCopilotControls() {
 
-    // copilotController.triangle
-    //   .whileTrue();
+    copilotController.triangle
+      .onTrue(TurretCommands.moveTo90());
 
     // copilotController.square
     //   .onTrue();
