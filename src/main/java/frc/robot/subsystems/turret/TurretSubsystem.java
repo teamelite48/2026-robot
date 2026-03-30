@@ -66,7 +66,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-    
+
         // If we are close to the target, use a "Precision" PID with lower D
         // If we are far away, use a "Travel" PID to move fast
         if (Math.abs(getPositionInDegrees()) < 32.0) {
@@ -85,8 +85,8 @@ public class TurretSubsystem extends SubsystemBase {
 
             double targetRotations = targetDegrees / 360.0;
             motor.setMotionMagicPosition(targetRotations, 0.0);
-        } 
-        
+        }
+
         else if (isManualControl) {
 
             double limitedSpeed = speedLimiter.calculate(manualSpeedRequest);
@@ -105,7 +105,7 @@ public class TurretSubsystem extends SubsystemBase {
             double targetRotations = targetDegrees / 360.0;
             motor.setMotionMagicPosition(targetRotations, 0.0);
         }
-        
+
         else {
             motor.stop();
         }
@@ -132,12 +132,12 @@ public class TurretSubsystem extends SubsystemBase {
 
         if (isTargetAcquired()) {
 
-            double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
+            double error = RobotContainer.turretVisionSubsystem.getXOffsetDegrees();
             double currentPos = getPositionInDegrees();
-            
+
             // Use a temporary variable to see if the math is working
             double calculatedTarget = currentPos - error;
-            
+
             // Deadband tolerance for turret
             if (Math.abs(error) <= DEGREES_TOLERANCE) {
                 targetDegrees = getPositionInDegrees();
@@ -150,13 +150,13 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public boolean isTargetAcquired(){
-        return RobotContainer.shooterVisionSubsystem.hasTarget();
+        return RobotContainer.turretVisionSubsystem.hasTarget();
     }
 
     public void stop() {
         // 1. Tell the motor to stop spinning at a percentage
-        // motor.stop(); 
-        
+        // motor.stop();
+
         // 2. IMPORTANT: Update the target to where we are RIGHT NOW
         // This prevents the turret from "snapping" back to an old target
         manualSpeedRequest = 0.0;
@@ -179,7 +179,7 @@ public class TurretSubsystem extends SubsystemBase {
         RobotContainer.disableAimAssist();
         automatedMove = false;
         isManualControl = true;
-        
+
         manualSpeedRequest = TurretConfig.clockwiseSpeed;
 
         // targetDegrees = clampTarget(targetDegrees + 2);
@@ -189,7 +189,7 @@ public class TurretSubsystem extends SubsystemBase {
         RobotContainer.disableAimAssist();
         automatedMove = false;
         isManualControl = true;
-        
+
         manualSpeedRequest = TurretConfig.counterClockwiseSpeed;
 
         // targetDegrees = clampTarget(targetDegrees - 2);
@@ -271,7 +271,7 @@ public class TurretSubsystem extends SubsystemBase {
             .withPosition(0, 0)
             .withSize(2, 1);
 
-        tab.addDouble("Turret tx", () -> RobotContainer.shooterVisionSubsystem.getXOffsetDegrees())
+        tab.addDouble("Turret tx", () -> RobotContainer.turretVisionSubsystem.getXOffsetDegrees())
             .withPosition(0, 1)
             .withSize(2, 1);
 

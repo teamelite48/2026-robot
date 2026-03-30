@@ -108,7 +108,7 @@ public class ShootCommand extends Command {
   private final ShooterFeedSubsystem shooterFeedSubsystem = RobotContainer.shooterFeedSubsystem;
   private final ShooterSubsystem shooterSubsystem = RobotContainer.shooterSubsystem;
   private final SpindexerSubsystem spindexerSubsystem = RobotContainer.spindexerSubsystem;
-  private final VisionSubsystem shooterVisionSubsystem = RobotContainer.shooterVisionSubsystem;
+  private final VisionSubsystem shooterVisionSubsystem = RobotContainer.turretVisionSubsystem;
 
   private final ShooterConfig.ShooterPreset preset;
 

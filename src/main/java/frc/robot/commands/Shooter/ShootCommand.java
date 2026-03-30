@@ -12,7 +12,7 @@ import frc.robot.subsystems.vision.VisionSubsystem;
 public class ShootCommand extends Command {
 
   TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
-  VisionSubsystem visionSubsystem = RobotContainer.shooterVisionSubsystem;
+  VisionSubsystem visionSubsystem = RobotContainer.turretVisionSubsystem;
 
   long onSpeedMillis;
 
