@@ -32,7 +32,7 @@ public class VisionSubsystem extends SubsystemBase {
   //     this.pipelineId = pipelineId;
   //     this.heightInInches = targetInInches;
   //   }
-  
+
 
   final NetworkTableEntry tid;
   final NetworkTableEntry tx;
@@ -148,10 +148,10 @@ public class VisionSubsystem extends SubsystemBase {
 
   private void updateDistanceToTarget() {
 
-    double angleDegrees = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
+    double angleDegrees = TURRET_MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
     double angleRadians = Math.toRadians(angleDegrees);
 
-    double heightDifferenceInches = HUB_APRILTAG_HEIGHT_INCHES - MOUNT_HEIGHT_INCHES;
+    double heightDifferenceInches = HUB_APRILTAG_HEIGHT_INCHES - TURRET_MOUNT_HEIGHT_INCHES;
 
     if (Math.abs(Math.tan(angleRadians)) < 1e-6) {
         return;

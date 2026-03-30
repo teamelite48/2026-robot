@@ -47,14 +47,14 @@ public class RobotContainer {
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static VisionSubsystem turretVisionSubsystem = new VisionSubsystem("limelight-turret");
-  // public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-turret");
-  // public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-turret");
+  public static VisionSubsystem leftVisionSubsystem = new VisionSubsystem("limelight-left");
+  public static VisionSubsystem rightVisionSubsystem = new VisionSubsystem("limelight-right");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   // public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
-  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> turretVisionSubsystem.getFeetFromTarget());
+  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> leftVisionSubsystem.getFeetFromTarget());
   public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
   public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
 
