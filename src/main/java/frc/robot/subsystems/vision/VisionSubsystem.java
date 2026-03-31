@@ -4,15 +4,19 @@
 
 package frc.robot.subsystems.vision;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.components.limelights.PoseBasedShooting;
 import frc.robot.components.limelights.TargetBasedShooting;
 import frc.robot.components.limelights.lib.LimelightCamera;
+import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
@@ -31,6 +35,8 @@ public class VisionSubsystem extends SubsystemBase {
   final NetworkTableEntry pipeline;
   final double[] botpose;
 
+  private final DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
+
   // private VisionTarget target;
   private Optional<Alliance> alliance = Optional.empty();
 
@@ -41,6 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
   private final LimelightCamera turretLimelight;
   private final LimelightCamera leftLimelight;
   private final LimelightCamera rightLimelight;
+  private final SwerveDrivePoseEstimator poseEstimator = driveSubsystem.poseEstimator;
 
   public VisionSubsystem(String limelightName) {
 
@@ -157,6 +164,10 @@ public class VisionSubsystem extends SubsystemBase {
     double distanceInches = heightDifferenceInches / Math.tan(angleRadians);
 
     distanceFromTargetFeet = distanceInches / 12.0;
+  }
+
+  public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
+      poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
   private void initDashboard(String tabName) {
