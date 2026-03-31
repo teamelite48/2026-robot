@@ -333,7 +333,8 @@ public class RobotContainer {
   public static SendableChooser<Command> initAutoChooser() {
 
     NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend());
-    NamedCommands.registerCommand("Agitate", DeployCommands.agitatePosition());
+    NamedCommands.registerCommand("Agitate", DeployCommands.agitateOutPosition());
+    NamedCommands.registerCommand("Agitate", DeployCommands.agitateInPosition());
     NamedCommands.registerCommand("Intake", IntakeCommands.intake());
     NamedCommands.registerCommand("Intake Off", IntakeCommands.stop().withTimeout(0.25));
     NamedCommands.registerCommand("Stow Intake", DeployCommands.setToHome());

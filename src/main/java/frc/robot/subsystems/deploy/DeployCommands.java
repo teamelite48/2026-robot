@@ -25,8 +25,12 @@ public class DeployCommands {
         return Commands.run(() -> deploySubsystem.fullExtend(), deploySubsystem);
     }
 
-    public static Command agitatePosition() {
-        return Commands.run(() -> deploySubsystem.agitatePosition(), deploySubsystem);
+    public static Command agitateOutPosition() {
+        return Commands.run(() -> deploySubsystem.agitateOutPosition(), deploySubsystem);
+    }
+
+    public static Command agitateInPosition() {
+        return Commands.run(() -> deploySubsystem.agitateInPosition(), deploySubsystem);
     }
 
     // Never full retract unless turret is in safe place
@@ -44,9 +48,9 @@ public class DeployCommands {
 
     public static Command agitate() {
         return Commands.sequence(
-            Commands.deadline(new WaitCommand(0.5), agitatePosition()),
+            Commands.deadline(new WaitCommand(0.5), agitateOutPosition()),
             new WaitCommand(0.25),
-            Commands.deadline(new WaitCommand(0.5), setToHome()),
+            Commands.deadline(new WaitCommand(0.5), agitateInPosition()),
             new WaitCommand(0.25)
         ).repeatedly();
     }

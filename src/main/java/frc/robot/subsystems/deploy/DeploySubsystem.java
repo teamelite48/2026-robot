@@ -88,8 +88,12 @@ public class DeploySubsystem extends SubsystemBase {
     setPosition(RETRACT_LIMIT);
   }
 
-  public void agitatePosition() {
-    setPosition(AGITATE_POSITION);
+  public void agitateOutPosition() {
+    setPosition(AGITATE_OUT_POSITION);
+  }
+
+  public void agitateInPosition() {
+    setPosition(AGITATE_IN_POSITION);
   }
 
   public void extend() {
