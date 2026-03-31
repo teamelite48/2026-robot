@@ -6,10 +6,12 @@ package frc.robot.subsystems.vision;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -76,9 +78,29 @@ public class VisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (!hasTarget()) {
-      return;
+    // if (!hasTarget()) {
+    //   return;
+    // }
+
+    if (leftLimelight.hasTarget()) {
+        Pose2d pose = leftLimelight.getBotPose2d(); // TODO: Figure out this method and where to put it.
+        double timestamp = Timer.getFPGATimestamp() - leftLimelight.getLatency();
+
+        addVisionMeasurement(pose, timestamp);
     }
+
+    if (rightLimelight.hasTarget()) {
+        Pose2d pose = rightLimelight.getBotPose2d(); // TODO: Figure out this method and where to put it.
+        double timestamp = Timer.getFPGATimestamp() - rightLimelight.getLatency();
+
+        addVisionMeasurement(pose, timestamp);
+    }
+
+    // SANITY CHECK: If distance is more than 1.5 meters away, then ignore it. (I don't know if this is actually a problem. -Trevor)
+
+    // if (visionPose.getTranslation().getDistance(getPose().getTranslation()) < 1.5) {
+    //     poseEstimator.addVisionMeasurement(visionPose, timestamp);
+    // }
 
     updateDistanceToTarget();
   }

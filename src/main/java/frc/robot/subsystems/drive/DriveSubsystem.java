@@ -311,25 +311,36 @@ public class DriveSubsystem extends SubsystemBase{
 
     private void resetOdometry(Pose2d pose) {
 
-        var degrees = pose.getRotation().getDegrees();
+        // var degrees = pose.getRotation().getDegrees();
 
-        gyro.setYaw(degrees);
+        // gyro.setYaw(degrees);
 
-        // var start = System.currentTimeMillis();
+        // // var start = System.currentTimeMillis();
 
-        // while (System.currentTimeMillis() - start < 25) {
-        //     // wait ~1 cycle for the gyro to initialize
-        // }
+        // // while (System.currentTimeMillis() - start < 25) {
+        // //     // wait ~1 cycle for the gyro to initialize
+        // // }
 
-        odometry.resetPosition(
-            Rotation2d.fromDegrees(degrees),
-            new SwerveModulePosition[] {
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-            },
-            pose
+        // odometry.resetPosition(
+        //     Rotation2d.fromDegrees(degrees),
+        //     new SwerveModulePosition[] {
+        //         frontLeft.getPosition(),
+        //         frontRight.getPosition(),
+        //         backLeft.getPosition(),
+        //         backRight.getPosition()
+        //     },
+        //     pose
+        // );
+
+        poseEstimator.resetPosition(
+        Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
+        new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        },
+        pose
         );
     }
 
