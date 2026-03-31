@@ -21,6 +21,7 @@ import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
 import frc.robot.subsystems.turret.TurretConfig;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,6 +69,8 @@ public class DriveSubsystem extends SubsystemBase{
 
     private final SwerveDriveKinematics kinematics;
     private final SwerveDriveOdometry odometry;
+
+    private final Field2d field = new Field2d();
 
     private double currX, currY, currRotation = 0.0;
 
@@ -161,6 +164,7 @@ public class DriveSubsystem extends SubsystemBase{
 
     public void periodic() {
         updateOdometry();
+        field.setRobotPose(getPose());
     }
 
     public void drive(double x, double y, double rotation) {
@@ -357,7 +361,11 @@ public class DriveSubsystem extends SubsystemBase{
         // driveTab.addDouble("Robot Y (m)", () -> getPose().getY());
 
         // This shows the distance to the Hub in meters
-        driveTab.addDouble("Dist to Hub (m)", () -> 
+        driveTab.addDouble("Dist to Hub (m)", () ->
             getPose().getTranslation().getDistance(RobotContainer.turretSubsystem.getTargetHub()));
+
+        driveTab.add("Field", field)
+            .withPosition(0, 4)
+            .withSize(6, 4);
     }
 }
