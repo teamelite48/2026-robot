@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems.vision;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.components.limelights.PoseBasedShooting;
 import frc.robot.components.limelights.TargetBasedShooting;
 import frc.robot.components.limelights.lib.LimelightCamera;
+import frc.robot.subsystems.drive.DriveSubsystem;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
 
@@ -20,10 +25,20 @@ public class VisionSubsystem extends SubsystemBase {
     POSE_BASED_DUAL
   }
 
+  private final DriveSubsystem driveSubsystem = RobotContainer.driveSubsystem;
+
+  // private VisionTarget target;
+  // private Optional<Alliance> alliance = Optional.empty();
+
+  // private boolean isTracking = false;
+  // private double feetFromTarget;
+  // private double distanceFromTargetFeet;
+
   private final LimelightCamera turretLimelight;
   private final LimelightCamera leftLimelight;
   private final LimelightCamera rightLimelight;
   private VisionMode currentMode = VisionMode.TURRET_ONLY;
+  private final SwerveDrivePoseEstimator poseEstimator = driveSubsystem.poseEstimator;
 
   public VisionSubsystem() {
 
@@ -41,9 +56,29 @@ public class VisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (!hasTarget()) {
-      return;
+    // if (!hasTarget()) {
+    //   return;
+    // }
+
+    if (leftLimelight.hasTarget()) {
+        Pose2d pose = leftLimelight.getBotPose(); // TODO: Figure out this method and where to put it.
+        double timestamp = Timer.getFPGATimestamp() - leftLimelight.getLatency();
+
+        addVisionMeasurement(pose, timestamp);
     }
+
+    if (rightLimelight.hasTarget()) {
+        Pose2d pose = rightLimelight.getBotPose(); // TODO: Figure out this method and where to put it.
+        double timestamp = Timer.getFPGATimestamp() - rightLimelight.getLatency();
+
+        addVisionMeasurement(pose, timestamp);
+    }
+
+    // SANITY CHECK: If distance is more than 1.5 meters away, then ignore it. (I don't know if this is actually a problem. -Trevor)
+
+    // if (visionPose.getTranslation().getDistance(getPose().getTranslation()) < 1.5) {
+    //     poseEstimator.addVisionMeasurement(visionPose, timestamp);
+    // }
   }
 
   public void setVisionMode(VisionMode mode) {
@@ -96,6 +131,10 @@ public class VisionSubsystem extends SubsystemBase {
   private double getYOffsetDegrees() {
     // TODO: negative when target is below cross hair, positive when it's above
     return -getActiveCamera().getYOffsetDegrees();
+  }
+
+  public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
+      poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
   private void initDashboard(String tabName) {

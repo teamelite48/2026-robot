@@ -17,7 +17,7 @@ public class TurretConfig {
     public static final double TURRET_INIT_DEGREES = 7.0;
     public static final double TURRET_GEAR_RATIO = 9.0;
 
-    public static final double motorMaxOutput = 0.5;   //0.2 
+    public static final double motorMaxOutput = 0.5;   //0.2
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
@@ -38,8 +38,12 @@ public class TurretConfig {
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
 
-    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.624, 4.03); 
-    public static final Translation2d RED_HUB_LOCATION = new Translation2d(11.916, 4.03);
+    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.624, 4.03); //These are in meters
+    public static final Translation2d RED_HUB_LOCATION = new Translation2d(11.916, 4.03); //These are in meters
+    public static final Translation2d BLUE_PASS_LEFT = new Translation2d(0.0, 0.0); //THESE NEED FILLED IN
+    public static final Translation2d BLUE_PASS_RIGHT = new Translation2d(0.0, 0.0); //THESE NEED FILLED IN
+    public static final Translation2d RED_PASS_LEFT = new Translation2d(0.0, 0.0); //THESE NEED FILLED IN
+    public static final Translation2d RED_PASS_RIGHT = new Translation2d(0.0, 0.0); //THESE NEED FILLED IN
 
     //TODO: Find home/starting position of turret for start of match configuration
 

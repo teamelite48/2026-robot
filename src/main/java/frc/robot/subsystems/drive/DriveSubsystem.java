@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.drive;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,7 +22,7 @@ import frc.robot.RobotContainer;
 import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
-import frc.robot.subsystems.turret.TurretConfig;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,6 +70,8 @@ public class DriveSubsystem extends SubsystemBase{
 
     private final SwerveDriveKinematics kinematics;
     private final SwerveDriveOdometry odometry;
+    public final SwerveDrivePoseEstimator poseEstimator;
+    private final Field2d field = new Field2d();
 
     private double currX, currY, currRotation = 0.0;
 
@@ -118,6 +122,24 @@ public class DriveSubsystem extends SubsystemBase{
                 backRight.getPosition()
         });
 
+        poseEstimator = new SwerveDrivePoseEstimator(
+            kinematics,
+            Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
+            new SwerveModulePosition[] {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            },
+            new Pose2d(),
+
+            // STATE STD DEVS (trust in odometry)
+            VecBuilder.fill(0.05, 0.05, Math.toRadians(2)),
+
+            // VISION STD DEVS (trust in vision)
+            VecBuilder.fill(0.5, 0.5, Math.toRadians(10))
+        );
+
         zeroGyro();
         configAutobuilder();
         setHighGear();
@@ -161,6 +183,16 @@ public class DriveSubsystem extends SubsystemBase{
 
     public void periodic() {
         updateOdometry();
+        poseEstimator.update(
+            Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
+            new SwerveModulePosition[] {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            }
+        );
+        field.setRobotPose(getPose());
     }
 
     public void drive(double x, double y, double rotation) {
@@ -279,25 +311,36 @@ public class DriveSubsystem extends SubsystemBase{
 
     private void resetOdometry(Pose2d pose) {
 
-        var degrees = pose.getRotation().getDegrees();
+        // var degrees = pose.getRotation().getDegrees();
 
-        gyro.setYaw(degrees);
+        // gyro.setYaw(degrees);
 
-        // var start = System.currentTimeMillis();
+        // // var start = System.currentTimeMillis();
 
-        // while (System.currentTimeMillis() - start < 25) {
-        //     // wait ~1 cycle for the gyro to initialize
-        // }
+        // // while (System.currentTimeMillis() - start < 25) {
+        // //     // wait ~1 cycle for the gyro to initialize
+        // // }
 
-        odometry.resetPosition(
-            Rotation2d.fromDegrees(degrees),
-            new SwerveModulePosition[] {
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-            },
-            pose
+        // odometry.resetPosition(
+        //     Rotation2d.fromDegrees(degrees),
+        //     new SwerveModulePosition[] {
+        //         frontLeft.getPosition(),
+        //         frontRight.getPosition(),
+        //         backLeft.getPosition(),
+        //         backRight.getPosition()
+        //     },
+        //     pose
+        // );
+
+        poseEstimator.resetPosition(
+        Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
+        new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        },
+        pose
         );
     }
 
@@ -314,7 +357,8 @@ public class DriveSubsystem extends SubsystemBase{
     }
 
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        // return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     private void initDashboard() {
@@ -357,7 +401,11 @@ public class DriveSubsystem extends SubsystemBase{
         // driveTab.addDouble("Robot Y (m)", () -> getPose().getY());
 
         // This shows the distance to the Hub in meters
-        driveTab.addDouble("Dist to Hub (m)", () -> 
+        driveTab.addDouble("Dist to Hub (m)", () ->
             getPose().getTranslation().getDistance(RobotContainer.turretSubsystem.getTargetHub()));
+
+        driveTab.add("Field", field)
+            .withPosition(0, 4)
+            .withSize(6, 4);
     }
 }
