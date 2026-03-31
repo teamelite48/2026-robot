@@ -6,21 +6,19 @@ package frc.robot.components.limelights;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.networktables.DoubleArrayEntry;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.components.limelights.lib.LimelightCamera;
 import frc.robot.components.limelights.lib.LimelightCameraConfig;
 
-public class TargetBasedShooting {
-    final NetworkTableEntry tid;
-    final NetworkTableEntry tx;
-    final NetworkTableEntry ty;
-    final NetworkTableEntry ta;
-    final NetworkTableEntry tv;
-    final NetworkTableEntry ledMode;
-    final NetworkTableEntry pipeline;
-    final double[] botpose;
+public class TargetBasedShooting implements LimelightCamera {
+
+    private final NetworkTable table;
+    private final LimelightCameraConfig config;
+    private final DoubleArrayEntry botposeEntry;
 
     // private VisionTarget target;
     private Optional<Alliance> alliance = Optional.empty();
@@ -29,96 +27,94 @@ public class TargetBasedShooting {
     private double feetFromTarget;
     private double distanceFromTargetFeet;
 
-    final LimelightCameraConfig config;
+    public TargetBasedShooting(LimelightCameraConfig cameraConfig) {
+        this.config = cameraConfig;
 
-    public TargetBasedShooting(LimelightCameraConfig limelight) {
-        this.config = limelight;
+        this.table = NetworkTableInstance.getDefault().getTable(config.hostname);
 
-        final NetworkTable table = NetworkTableInstance.getDefault().getTable(config.hostname);
+        this.botposeEntry = table.getDoubleArrayTopic("camerapose_targetspace").getEntry(new double[6]);
 
-        this.tid = table.getEntry("tid");
-        this.tx = table.getEntry("tx");
-        this.ty = table.getEntry("ty");
-        this.ta = table.getEntry("ta");
-        this.tv = table.getEntry("tv");
-        this.ledMode = table.getEntry("ledMode");
-        this.pipeline = table.getEntry("pipeline");
-        this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
-
-        enableLed(false);
+        setLedMode(1);  // Disable Limelight LED
     }
-
-    public void enableLed(boolean isEnabled) {
-        if (isEnabled) {
-            ledMode.setNumber(3);
-        }
-        else {
-            ledMode.setNumber(1);
-        }
-    }
-
-    public long getTargetId() {
-        return tid.getInteger(0);
-    }
-
-    // IF LOOKING AT APRILTAGS 9, 10, 25, 26 AND YOUR X OFFSET IS POSITIVE THEN BIAS TURRET RIGHT TO SOME DEGREE
-    // IT'S GONNA TAKE TRIG
-    // FOR NOW
-    // IF X OFFSET IS > 0 THEN AFTER CALCULATION ADD DEGREES
-    // IF DISTANCE IS LESS THAN 8 FEET AWAY THEN ADD 2 DEGREES
-    // IF DISTANCE IS GREATER THAN 8 FEET AWAY THEN ADD 1 DEGREE
-
-    // public void offsetTurret() {
-    //   long idNumber = getTargetId();
-    //   }
-    // }
-
-    // public void startTracking(VisionTarget target) {
-    //   this.target = target;
-    //   isTracking = true;
-    //   enableLed(true);
-    // }
-
-    // public void stopTracking() {
-    //   isTracking = false;
-    //   enableLed(false);
-    // }
 
     public double getFeetFromTarget(){
         return distanceFromTargetFeet;
     }
 
-    public boolean hasTarget() {
-        return tv.getDouble(0) == 1 ? true: false;
-    }
-
     public boolean hasTargetWithinParameters() {
-        return hasTarget() && Math.abs(getXOffsetDegrees()) < config.has_target_degrees_threshold;
+        return hasTarget() && Math.abs(getXOffsetDegrees()) < config.hasTargetDegreesThreshold;
     }
 
+    @Override
+    public boolean hasTarget() {
+        return table.getEntry("tv").getDouble(0) == 1.0 ? true: false;
+    }
+
+    @Override
     public double getXOffsetDegrees() {
-        return tx.getDouble(0.0);
+        return table.getEntry("tx").getDouble(0.0);
     }
 
-    private double getYOffsetDegrees() {
+    @Override
+    public double getYOffsetDegrees() {
         // TODO: negative when target is below cross hair, positive when it's above
-        return -ty.getDouble(0.0);
+        return table.getEntry("ty").getDouble(0.0);
     }
 
-    // private void updateFeetFromTarget() {
+    @Override
+    public double getTargetArea() {
+        return table.getEntry("ta").getDouble(0.0);
+    }
 
-    //   double degreesToApriltag = MOUNT_ANGLE_DEGREES + getYOffsetDegrees();
-    //   double radiansToApriltag = degreesToApriltag * (Math.PI / 180.0);
+    @Override
+    public long getTargetId() {
+        return table.getEntry("tid").getInteger(0);
+    }
 
-    //   feetFromTarget = (((HUB_APRILTAG_HEIGHT_INCHES - MOUNT_HEIGHT_INCHES) / Math.tan(radiansToApriltag)) / 12.0);
-    // }
+    @Override
+    public Pose2d getBotPose() {
+        // Do Nothing
+        return null;
+    }
+
+    @Override
+    public double[] getRawBotPose() {
+        // Do Nothing
+        return null;
+    }
+
+    @Override
+    public double getLatency() {
+        // Do Nothing
+        return 0.0;
+    }
+
+    @Override
+    public void setPipeline(int pipeline) {
+        table.getEntry("pipeline").setNumber(pipeline);
+    }
+
+    @Override
+    public void setLedMode(int mode) {
+        table.getEntry("ledMode").setNumber(mode);
+    }
+
+    @Override
+    public String getHostname() {
+        return config.hostname;
+    }
+
+    @Override
+    public void logPoseToDashboard(String key) {
+        // Do Nothing
+    }
 
     private void updateDistanceToTarget() {
 
-        double angleDegrees = config.mount_pitch + getYOffsetDegrees();
+        double angleDegrees = config.mountPitch + getYOffsetDegrees();
         double angleRadians = Math.toRadians(angleDegrees);
 
-        double heightDifferenceInches = config.april_tag_height_inches - config.mount_height_inches;
+        double heightDifferenceInches = config.aprilTagHeightInches - config.mountHeightInches;
 
         if (Math.abs(Math.tan(angleRadians)) < 1e-6) {
             return;

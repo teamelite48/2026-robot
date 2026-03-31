@@ -17,24 +17,24 @@ public class VisionConfig {
 
 
     public static LimelightCameraConfig getTurretLimelightConfig() {
-        var config = new LimelightCameraConfig("limelight-turret");
-        config.mount_pitch = 20.0;
-        config.mount_height_inches = 17.25;
-        config.has_target_degrees_threshold = 1.5;
+        var config = new LimelightCameraConfig("limelight-turret");     // Browser: 10.0.48.11:5801
+        config.mountPitch = 20.0;
+        config.mountHeightInches = 17.25;
+        config.hasTargetDegreesThreshold = 1.5;
         return config;
     }
 
     public static LimelightCameraConfig getLeftLimelightConfig() {
-        var config = new LimelightCameraConfig("limelight-left");
-        config.mount_pitch = 20.0;
-        config.mount_height_inches = 17.25;
+        var config = new LimelightCameraConfig("limelight-left");       // Browser: 10.0.48.13:5801
+        config.mountPitch = 20.0;
+        config.mountHeightInches = 17.25;
         return config;
     }
 
     public static LimelightCameraConfig getRightLimelightConfig() {
-        var config = new LimelightCameraConfig("limelight-right");
-        config.mount_pitch = 20.0;
-        config.mount_height_inches = 17.25;
+        var config = new LimelightCameraConfig("limelight-right");      // Browser: 10.0.48.15:5801
+        config.mountPitch = 20.0;
+        config.mountHeightInches = 17.25;
         return config;
     }
 }

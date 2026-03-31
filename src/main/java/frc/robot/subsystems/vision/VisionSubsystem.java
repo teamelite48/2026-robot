@@ -10,6 +10,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.components.limelights.PoseBasedShooting;
+import frc.robot.components.limelights.TargetBasedShooting;
+import frc.robot.components.limelights.lib.LimelightCamera;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
 
@@ -17,22 +20,6 @@ import java.util.Optional;
 
 
 public class VisionSubsystem extends SubsystemBase {
-
-  // public enum VisionTarget {
-
-  //   HubApriltag(0, HUB_APRILTAG_HEIGHT_INCHES);
-  //   // LoadStationAprilTag(0, LOAD_STATION_APRILTAG_HEIGHT_INCHES),
-  //   // BargeAprilTag(0, BARGE_APRILTAG_HEIGHT_INCHES),
-  //   // ProcessorAprilTag(0, PROCESSOR_APRILTAG_HEIGHT_INCHES);
-
-  //   public final int pipelineId;
-  //   public final double heightInInches;
-
-  //   private VisionTarget(int pipelineId, double targetInInches) {
-  //     this.pipelineId = pipelineId;
-  //     this.heightInInches = targetInInches;
-  //   }
-
 
   final NetworkTableEntry tid;
   final NetworkTableEntry tx;
@@ -50,9 +37,19 @@ public class VisionSubsystem extends SubsystemBase {
   private double feetFromTarget;
   private double distanceFromTargetFeet;
 
+  private final LimelightCamera turretLimelight;
+  private final LimelightCamera leftLimelight;
+  private final LimelightCamera rightLimelight;
+
   public VisionSubsystem(String limelightName) {
-    // limielightName = hostname in Limelight settings
-    // stopTracking();
+
+    var turretConfig = getTurretLimelightConfig();
+    var leftConfig = getLeftLimelightConfig();
+    var rightConfig = getRightLimelightConfig();
+
+    this.turretLimelight = new TargetBasedShooting(turretConfig);
+    this.leftLimelight = new PoseBasedShooting(leftConfig);
+    this.rightLimelight = new PoseBasedShooting(rightConfig);
 
     final NetworkTable table = NetworkTableInstance.getDefault().getTable(limelightName);
 
@@ -65,8 +62,7 @@ public class VisionSubsystem extends SubsystemBase {
     this.pipeline = table.getEntry("pipeline");
     this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
 
-    enableLed(false);
-    initDashboard(limelightName);
+    initDashboard(turretLimelight.getHostname());
   }
 
   @Override

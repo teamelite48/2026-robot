@@ -4,5 +4,19 @@
 
 package frc.robot.components.limelights.lib;
 
-/** Add your docs here. */
-public class LimelightCamera {}
+import edu.wpi.first.math.geometry.Pose2d;
+
+public interface LimelightCamera {
+    public boolean hasTarget();
+    public double getXOffsetDegrees();
+    public double getYOffsetDegrees();
+    public double getTargetArea();
+    public long getTargetId();
+    public Pose2d getBotPose();     // Field-space pose (MegaTag)
+    public double[] getRawBotPose();
+    public double getLatency();
+    public void setPipeline(int pipeline);
+    public void setLedMode(int mode);
+    public void logPoseToDashboard(String key);
+    public String getHostname();
+}
