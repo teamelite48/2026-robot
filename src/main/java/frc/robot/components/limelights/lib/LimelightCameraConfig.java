@@ -4,6 +4,8 @@
 
 package frc.robot.components.limelights.lib;
 
+import edu.wpi.first.math.geometry.Translation2d;
+
 public class LimelightCameraConfig {
     public String hostname = null;  // Find this in the Limelight browser (Example: 10.0.48.11:5801)
     public Double mountPitch = null;  // Previously the "mount_angle_degrees"
@@ -15,6 +17,7 @@ public class LimelightCameraConfig {
     public double hasTargetDegreesThreshold = 0.0;
     public Double aprilTagHeightInches = null;  // TODO: Target based shooting needs this to be any # of april tags
 
+    public Translation2d targetTranslation = new Translation2d(0, 0);   // The field coordinate of the goal/hub for distance calculations
     public LimelightCameraConfig(String host) {
         this.hostname = host;
     }

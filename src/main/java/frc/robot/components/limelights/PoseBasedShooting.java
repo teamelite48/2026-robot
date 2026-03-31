@@ -12,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.components.limelights.lib.LimelightCamera;
 import frc.robot.components.limelights.lib.LimelightCameraConfig;
+import frc.robot.lib.LimelightHelpers;
 
 public class PoseBasedShooting implements LimelightCamera {
 
@@ -24,9 +25,13 @@ public class PoseBasedShooting implements LimelightCamera {
         this.table = NetworkTableInstance.getDefault().getTable(config.hostname);
 
         // Limelight MegaTag2 array: [x, y, z, roll, pitch, yaw, latency, tagCount, tagSpan, avgTagDist, avgTagArea]
-        this.botposeEntry = table.getDoubleArrayTopic("botpose").getEntry(new double[7]);
+        this.botposeEntry = table.getDoubleArrayTopic("botpose_wpiblue").getEntry(new double[7]);
 
         setLedMode(1);  // Disable Limelight LED
+    }
+
+    public void updateMegaTag2(double gyroYawDegrees) {
+        LimelightHelpers.SetRobotOrientation(config.hostname, gyroYawDegrees, 0, 0, 0, 0, 0);
     }
 
     @Override
@@ -55,10 +60,19 @@ public class PoseBasedShooting implements LimelightCamera {
         return table.getEntry("tid").getInteger(0);
     }
 
+    public double getFeetFromTarget() {
+
+        Pose2d currentPose = getBotPose();
+        // Distance formula: $\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$
+        double distanceMeters = currentPose.getTranslation().getDistance(config.targetTranslation);
+        return distanceMeters * 3.28084; // Convert meters to feet
+    }
+
     @Override
     public Pose2d getBotPose() {
+
         double[] poseArray = botposeEntry.get();
-        if (poseArray.length < 6) return new Pose2d();
+        if (poseArray.length < 7) return new Pose2d();
 
         // Limelight botpose array: [x, y, z, roll, pitch, yaw, latency]
         return new Pose2d(

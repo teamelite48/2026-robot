@@ -46,19 +46,21 @@ public class RobotContainer {
   DualShock4Controller testController = new DualShock4Controller(2);
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-  public static VisionSubsystem turretVisionSubsystem = new VisionSubsystem("limelight-turret");
-  public static VisionSubsystem leftVisionSubsystem = new VisionSubsystem("limelight-left");
-  public static VisionSubsystem rightVisionSubsystem = new VisionSubsystem("limelight-right");
+  // public static VisionSubsystem turretVisionSubsystem = new VisionSubsystem("limelight-turret");
+  // public static VisionSubsystem leftVisionSubsystem = new VisionSubsystem("limelight-left");
+  // public static VisionSubsystem rightVisionSubsystem = new VisionSubsystem("limelight-right");
+  public static VisionSubsystem visionSubsystem = new VisionSubsystem();
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   // public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
-  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> leftVisionSubsystem.getFeetFromTarget());
+  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> visionSubsystem.getFeetFromTarget());
   public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
   public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
 
   private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<VisionSubsystem.VisionMode> visionModeChooser = new SendableChooser<>();
 
   public static boolean isAimAssistEnabled = false;
   public static boolean isShooting = false;
@@ -70,6 +72,10 @@ public class RobotContainer {
   public RobotContainer() {
 
     autoChooser = RobotContainer.initAutoChooser();
+
+    visionModeChooser.setDefaultOption("Turret (Target Based)", VisionSubsystem.VisionMode.TURRET_ONLY);
+    visionModeChooser.addOption("Dual Limelight (Pose Based)", VisionSubsystem.VisionMode.POSE_BASED_DUAL);
+    SmartDashboard.putData("Vision Mode", visionModeChooser);
 
     // CameraServer.startAutomaticCapture();
 
@@ -330,6 +336,10 @@ public class RobotContainer {
 
   public static void enableAimAssist() {
     isAimAssistEnabled = true;
+  }
+
+  public void updateVisionMode() {
+    visionSubsystem.setVisionMode(visionModeChooser.getSelected());
   }
 
   public static SendableChooser<Command> initAutoChooser() {
