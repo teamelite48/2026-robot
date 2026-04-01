@@ -17,6 +17,9 @@ public class LimelightCameraConfig {
     public double hasTargetDegreesThreshold = 0.0;
     public Double aprilTagHeightInches = null;  // TODO: Target based shooting needs this to be any # of april tags
 
+    public double manipulatorForwardOffset; //From center of robot in inches
+    public double manipulatorLeftOffset;    //From center of robot in inches
+
     public Translation2d targetTranslation = new Translation2d(0, 0);   // The field coordinate of the goal/hub for distance calculations
     public LimelightCameraConfig(String host) {
         this.hostname = host;
