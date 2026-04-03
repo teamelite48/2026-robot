@@ -140,11 +140,11 @@ public class TurretSubsystem extends SubsystemBase {
         isManualControl = false;
 
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
-        Translation2d hubLocation = getTargetHub();
+        Translation2d targetLocation = getDynamicTarget();
 
         // 1. Get field-relative direction to Hub
-        Translation2d robotToHub = hubLocation.minus(robotPose.getTranslation());
-        double fieldRelativeAngle = robotToHub.getAngle().getDegrees();
+        Translation2d robotToTarget = targetLocation.minus(robotPose.getTranslation());
+        double fieldRelativeAngle = robotToTarget.getAngle().getDegrees();
 
         // 2. Subtract robot heading to get angle relative to robot front
         double robotRelativeAngle = fieldRelativeAngle - robotPose.getRotation().getDegrees();
