@@ -30,6 +30,8 @@ public class ShooterConfig {
 
     public static final double RPM_BUMP = 100.0;
 
+    public static final double AVERAGE_FUEL_VELOCITY = 12.0; // This may need adjusted based on our shooter.
+
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
         put(2, 2400.0);
         put(3, 2400.0);
