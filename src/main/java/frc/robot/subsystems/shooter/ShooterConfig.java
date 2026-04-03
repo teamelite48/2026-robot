@@ -54,6 +54,7 @@ public class ShooterConfig {
         put(22, 4300.0);
         put(23, 4400.0);
         put(24, 4500.0);
+        put(54, 4500.0);
     }};
 
     public static MotorConfig getShooterRightConfig() {
