@@ -179,6 +179,9 @@ import static frc.robot.subsystems.shooter.ShooterConfig.*;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -186,6 +189,8 @@ import frc.robot.components.motors.Kraken;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.components.motors.lib.MotorConfig;
 import frc.robot.lib.LinearInterpolator;
+import frc.robot.subsystems.shooter.ShooterConfig.ShooterPreset;
+import frc.robot.subsystems.turret.TurretConfig;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -202,6 +207,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final Supplier<Double> feetFromTargetSupplier;
   private final LinearInterpolator feetToRpmInterpolator = new LinearInterpolator(FEET_TO_RPM_MAP);
+  private final LinearInterpolator feetToRpmInterpolatorPassing = new LinearInterpolator(FEET_TO_RPM_MAP_PASS);
 
   private ShooterMode shooterMode = ShooterMode.OFF;
   private ShooterConfig.ShooterPreset manualPreset = ShooterConfig.ShooterPreset.MEDIUM;
@@ -244,6 +250,26 @@ public class ShooterSubsystem extends SubsystemBase {
 
       case AUTO_RANGE:
         double feet = feetFromTargetSupplier.get();
+        Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
+        boolean isBlue = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue;
+
+        if (isBlue) {
+          // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
+          if (robotPose.getX() > TurretConfig.BLUE_TRENCH_LINE) {
+              targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
+              leftMotor.setVelocity(targetRPM);
+              break;
+          }
+        }
+        else {
+          // RED STRATEGY: If we are past the trench line, aim the turret for passing
+          if (robotPose.getX() < TurretConfig.RED_TRENCH_LINE) {
+              targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
+              leftMotor.setVelocity(targetRPM);
+              break;
+          }
+        }
+
         targetRPM = feetToRpmInterpolator.calculate(feet);
         leftMotor.setVelocity(targetRPM);
         break;

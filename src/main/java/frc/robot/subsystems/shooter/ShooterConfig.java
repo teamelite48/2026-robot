@@ -61,6 +61,33 @@ public class ShooterConfig {
         put(54, 4500.0);
     }};
 
+    public static final HashMap<Integer, Double> FEET_TO_RPM_MAP_PASS = new HashMap<Integer, Double>() {{
+        put(2, 3000.0);
+        put(3, 3000.0);
+        put(4, 3000.0);
+        put(5, 3000.0);
+        put(6, 3000.0);
+        put(7, 3000.0);
+        put(8, 3000.0);
+        put(9, 3000.0);
+        put(10, 3100.0);
+        put(11, 3200.0);
+        put(12, 3300.0);
+        put(13, 3450.0);
+        put(14, 3600.0);
+        put(15, 3700.0);
+        put(16, 3800.0);
+        put(17, 3900.0);
+        put(18, 4000.0);
+        put(19, 4100.0);
+        put(20, 4300.0);
+        put(21, 4400.0);
+        put(22, 4500.0);
+        put(23, 4600.0);
+        put(24, 4700.0);
+        put(54, 4700.0);
+    }};
+
     public static MotorConfig getShooterRightConfig() {
 
         var config = new MotorConfig(19, RobotConfig.CANIVORE_48);
