@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -46,13 +48,40 @@ public class RobotContainer {
   DualShock4Controller testController = new DualShock4Controller(2);
 
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-  public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-turret");
+  // public static VisionSubsystem shooterVisionSubsystem = new VisionSubsystem("limelight-turret");
+  public static final VisionSubsystem leftLimelight = new VisionSubsystem("limelight-left");
+  public static final VisionSubsystem rightLimelight = new VisionSubsystem("limelight-right");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   // public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
-  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(() -> shooterVisionSubsystem.getFeetFromTarget());
+  
+  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(
+    () -> {
+        // 1. Get where the robot center is
+        Pose2d robotPose = driveSubsystem.getPose();
+
+        // 2. Define where the turret is relative to the center (in METERS)
+        // Adjust these numbers based on your actual CAD/Measurements
+        // Example: Turret is 15cm (0.15m) behind center and 0cm left/right
+        Translation2d turretOffset = new Translation2d(-0.082885, 0.1778);
+
+        // 3. Rotate that offset by the robot's current heading
+        // This is the magic part—it "swings" the offset as the robot spins
+        Translation2d rotatedOffset = turretOffset.rotateBy(robotPose.getRotation());
+
+        // 4. Find the Turret's actual location on the field
+        Translation2d turretFieldLocation = robotPose.getTranslation().plus(rotatedOffset);
+
+        // 5. Calculate distance from TURRET to HUB
+        double distanceMeters = turretFieldLocation.getDistance(TurretSubsystem.getTargetHub());
+
+        // 6. Convert to feet for your interpolator
+        return distanceMeters * 3.28084;
+    }
+  );
+
   public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
   public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
 

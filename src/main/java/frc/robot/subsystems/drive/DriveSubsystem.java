@@ -20,8 +20,11 @@ import frc.robot.RobotContainer;
 import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
-import frc.robot.subsystems.turret.TurretConfig;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.wpilibj.Timer;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,7 +71,8 @@ public class DriveSubsystem extends SubsystemBase{
     final TalonFxDriveController backRightDrive;
 
     private final SwerveDriveKinematics kinematics;
-    private final SwerveDriveOdometry odometry;
+    // private final SwerveDriveOdometry odometry;
+    private final SwerveDrivePoseEstimator poseEstimator;
 
     private final Field2d field = new Field2d();
 
@@ -111,15 +115,27 @@ public class DriveSubsystem extends SubsystemBase{
             new Translation2d(-SWERVE_CONFIG.getTrackWidthMeters() / 2.0, -SWERVE_CONFIG.getWheelBaseMeters() / 2.0)
         );
 
-        odometry = new SwerveDriveOdometry(
+        // odometry = new SwerveDriveOdometry(
+        //     kinematics,
+        //     Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
+        //     new SwerveModulePosition[] {
+        //         frontLeft.getPosition(),
+        //         frontRight.getPosition(),
+        //         backLeft.getPosition(),
+        //         backRight.getPosition()
+        // });
+
+        poseEstimator = new SwerveDrivePoseEstimator(
             kinematics,
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
             new SwerveModulePosition[] {
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-        });
+                frontLeft.getPosition(), frontRight.getPosition(),
+                backLeft.getPosition(), backRight.getPosition()
+            },
+            new Pose2d(),
+            VecBuilder.fill(0.1, 0.1, 0.1), // State std devs (Trust wheels/gyro)
+            VecBuilder.fill(0.9, 0.9, 0.9)  // Vision std devs (Trust vision)
+        );
 
         zeroGyro();
         configAutobuilder();
@@ -139,7 +155,8 @@ public class DriveSubsystem extends SubsystemBase{
         }
 
         AutoBuilder.configure(
-            () -> odometry.getPoseMeters(),
+            // () -> odometry.getPoseMeters(),
+            this::getPose,
             this::resetOdometry,
             this::getChassisSpeeds,
             (speeds, feedforwards) -> setSwerveModuleStates(speeds),
@@ -281,20 +298,34 @@ public class DriveSubsystem extends SubsystemBase{
         );
     }
 
+    // private void resetOdometry(Pose2d pose) {
+
+    //     var degrees = pose.getRotation().getDegrees();
+
+    //     gyro.setYaw(degrees);
+
+    //     // var start = System.currentTimeMillis();
+
+    //     // while (System.currentTimeMillis() - start < 25) {
+    //     //     // wait ~1 cycle for the gyro to initialize
+    //     // }
+
+    //     odometry.resetPosition(
+    //         Rotation2d.fromDegrees(degrees),
+    //         new SwerveModulePosition[] {
+    //             frontLeft.getPosition(),
+    //             frontRight.getPosition(),
+    //             backLeft.getPosition(),
+    //             backRight.getPosition()
+    //         },
+    //         pose
+    //     );
+    // }
+
     private void resetOdometry(Pose2d pose) {
-
-        var degrees = pose.getRotation().getDegrees();
-
-        gyro.setYaw(degrees);
-
-        // var start = System.currentTimeMillis();
-
-        // while (System.currentTimeMillis() - start < 25) {
-        //     // wait ~1 cycle for the gyro to initialize
-        // }
-
-        odometry.resetPosition(
-            Rotation2d.fromDegrees(degrees),
+        gyro.setYaw(pose.getRotation().getDegrees());
+        poseEstimator.resetPosition(
+            Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
             new SwerveModulePosition[] {
                 frontLeft.getPosition(),
                 frontRight.getPosition(),
@@ -306,7 +337,8 @@ public class DriveSubsystem extends SubsystemBase{
     }
 
     private void updateOdometry() {
-        odometry.update(
+        // odometry.update(
+        poseEstimator.update(
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
             new SwerveModulePosition[] {
                 frontLeft.getPosition(),
@@ -317,8 +349,16 @@ public class DriveSubsystem extends SubsystemBase{
         );
     }
 
+    // public Pose2d getPose() {
+    //     return odometry.getPoseMeters();
+    // }
+
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
+    }
+
+    public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
+        poseEstimator.addVisionMeasurement(visionPose, timestamp);
     }
 
     private void initDashboard() {
@@ -331,7 +371,7 @@ public class DriveSubsystem extends SubsystemBase{
             driveTab.addDouble("Yaw", () -> gyro.getYaw().getValueAsDouble())
             .withPosition(1, 0);
 
-        driveTab.addString("Odometry", () -> odometry.getPoseMeters().getTranslation().toString())
+        driveTab.addString("Odometry", () -> getPose().getTranslation().toString())
             .withPosition(2, 0)
             .withSize(2, 1);
 
@@ -345,13 +385,13 @@ public class DriveSubsystem extends SubsystemBase{
         driveTab.addDouble("Y", () -> currY);
         driveTab.addDouble("Rotation", () -> currRotation);
 
-        driveTab.addDouble("Robot X (m)", () -> odometry.getPoseMeters().getX())
+        driveTab.addDouble("Robot X (m)", () -> getPose().getX())
             .withPosition(0, 3);
 
-        driveTab.addDouble("Robot Y (m)", () -> odometry.getPoseMeters().getY())
+        driveTab.addDouble("Robot Y (m)", () -> getPose().getY())
             .withPosition(1, 3);
 
-        driveTab.addDouble("Robot Heading (deg)", () -> odometry.getPoseMeters().getRotation().getDegrees())
+        driveTab.addDouble("Robot Heading (deg)", () -> getPose().getRotation().getDegrees())
             .withPosition(2, 3);
 
         // // This pulls the X coordinate from the getPose() we just made

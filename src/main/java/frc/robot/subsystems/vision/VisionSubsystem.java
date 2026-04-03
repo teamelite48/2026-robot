@@ -10,6 +10,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.lib.LimelightHelpers; 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.math.geometry.Pose2d;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
 
@@ -33,6 +37,7 @@ public class VisionSubsystem extends SubsystemBase {
   //     this.heightInInches = targetInInches;
   //   }
   
+  private final String name;
 
   final NetworkTableEntry tid;
   final NetworkTableEntry tx;
@@ -54,6 +59,8 @@ public class VisionSubsystem extends SubsystemBase {
     // limielightName = hostname in Limelight settings
     // stopTracking();
 
+    this.name = limelightName;
+
     final NetworkTable table = NetworkTableInstance.getDefault().getTable(limelightName);
 
     this.tid = table.getEntry("tid");
@@ -66,17 +73,39 @@ public class VisionSubsystem extends SubsystemBase {
     this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
 
     enableLed(false);
-    initDashboard(limelightName);
+    initDashboard(name);
   }
 
   @Override
   public void periodic() {
 
-    if (!hasTarget()) {
-      return;
+    // if (!hasTarget()) {
+    //   return;
+    // }
+
+    // updateDistanceToTarget();
+
+    if (hasTarget()) {
+      updateDistanceToTarget();
     }
 
-    updateDistanceToTarget();
+    // 2. NEW: Pose Estimation Logic
+    // Get the botpose based on alliance color
+
+    if (hasTarget()) {
+        Pose2d botPose = LimelightHelpers.getBotPose2d_wpiBlue(name);
+
+      // Filter out invalid/zeroed poses
+      if (botPose != null && (botPose.getX() != 0 || botPose.getY() != 0)) {
+          double tl = LimelightHelpers.getLatency_Pipeline(name) / 1000.0;
+          double cl = LimelightHelpers.getLatency_Capture(name) / 1000.0;
+          double timestamp = Timer.getFPGATimestamp() - tl - cl;
+
+        if (getDistanceToTargetInMeters() < 2.0) {
+            RobotContainer.driveSubsystem.addVisionMeasurement(botPose, timestamp);
+        }
+      }
+    }
   }
 
   public void enableLed(boolean isEnabled) {
@@ -119,6 +148,10 @@ public class VisionSubsystem extends SubsystemBase {
 
   public double getFeetFromTarget(){
     return distanceFromTargetFeet;
+  }
+
+  public double getDistanceToTargetInMeters() {
+    return (getFeetFromTarget() / 3.281);
   }
 
   public boolean hasTarget() {
@@ -166,31 +199,28 @@ public class VisionSubsystem extends SubsystemBase {
 
     var tab = Shuffleboard.getTab("Vision");
 
-    tab.addDouble("Target ID", () -> getTargetId())
-      .withPosition(0, 0);
+    // tab.addDouble("Target ID", () -> getTargetId())
+    //   .withPosition(0, 0);
 
-    tab.addDouble("X Offset (deg)", () -> getXOffsetDegrees())
-      .withPosition(1, 0);
+    // tab.addDouble("X Offset (deg)", () -> getXOffsetDegrees())
+    //   .withPosition(1, 0);
 
-    tab.addDouble("Y  Offset (deg)", () -> getYOffsetDegrees())
-      .withPosition(2, 0);
+    // tab.addDouble("Y  Offset (deg)", () -> getYOffsetDegrees())
+    //   .withPosition(2, 0);
 
-    tab.addInteger("LED Mode", () -> ledMode.getInteger(0))
-      .withPosition(3, 0);
+    // tab.addDouble("Distance from Target (ft)", () -> getFeetFromTarget())
+    //   .withPosition(0, 1)
+    //   .withSize(2, 1);
 
-    tab.addDouble("Distance from Target (ft)", () -> getFeetFromTarget())
-      .withPosition(0, 1)
-      .withSize(2, 1);
+    // tab.addBoolean("Tracking Target", () -> isTracking)
+    //   .withPosition(3, 1);
 
-    tab.addBoolean("Tracking Target", () -> isTracking)
-      .withPosition(3, 1);
+    // // tab.addString("Vision Target", () -> getTargetName())
+    // //   .withPosition(4, 1);
 
-    // tab.addString("Vision Target", () -> getTargetName())
-    //   .withPosition(4, 1);
-
-    tab.addBoolean("Has Target", () -> hasTarget());
-    tab.addString("Alliance", () -> (alliance.isPresent() ? alliance.get() : "Not Present").toString());
-    tab.addDoubleArray("botpose", () -> botpose);
+    // tab.addBoolean("Has Target", () -> hasTarget());
+    // tab.addString("Alliance", () -> (alliance.isPresent() ? alliance.get() : "Not Present").toString());
+    // tab.addDoubleArray("botpose", () -> botpose);
   }
 
   // public String getTargetName() {

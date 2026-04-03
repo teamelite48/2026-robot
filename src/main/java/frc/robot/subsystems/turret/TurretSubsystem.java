@@ -113,44 +113,60 @@ public class TurretSubsystem extends SubsystemBase {
 
     // public void autoAim() {
 
-    //     //if (isTargetAcquired() == false || RobotContainer.isAimAssistEnabled == false) return;
+    //     automatedMove = false;
+    //     isManualControl = false;
 
-    //     if (isTargetAcquired() && RobotContainer.isAimAssistEnabled) {
+    //     if (isTargetAcquired()) {
 
-    //     double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
-    //     targetDegrees = clampTarget(getPositionInDegrees() - error);
-    //     }
-    //     else {
-    //         return;
+    //         double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
+    //         double currentPos = getPositionInDegrees();
+            
+    //         // Use a temporary variable to see if the math is working
+    //         double calculatedTarget = currentPos - error;
+            
+    //         // Deadband tolerance for turret
+    //         if (Math.abs(error) <= DEGREES_TOLERANCE) {
+    //             targetDegrees = getPositionInDegrees();
+    //         }
+    //         else {
+    //             // Update the global target
+    //             targetDegrees = clampTarget(calculatedTarget);
+    //         }
     //     }
     // }
 
     public void autoAim() {
-
         automatedMove = false;
         isManualControl = false;
 
-        if (isTargetAcquired()) {
+        Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
+        Translation2d hubLocation = getTargetHub();
 
-            double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
-            double currentPos = getPositionInDegrees();
-            
-            // Use a temporary variable to see if the math is working
-            double calculatedTarget = currentPos - error;
-            
-            // Deadband tolerance for turret
-            if (Math.abs(error) <= DEGREES_TOLERANCE) {
-                targetDegrees = getPositionInDegrees();
-            }
-            else {
-                // Update the global target
-                targetDegrees = clampTarget(calculatedTarget);
-            }
-        }
+        // 1. Get field-relative direction to Hub
+        Translation2d robotToHub = hubLocation.minus(robotPose.getTranslation());
+        double fieldRelativeAngle = robotToHub.getAngle().getDegrees();
+
+        // 2. Subtract robot heading to get angle relative to robot front
+        double robotRelativeAngle = fieldRelativeAngle - robotPose.getRotation().getDegrees();
+
+        // 3. Apply your "Zero is Right" offset
+        // Since Right is -90 in field terms, we add 90 to make it your 0.
+        double turretTarget = robotRelativeAngle + 90.0;
+
+        // 4. INVERT for your motor's direction (CCW is Negative)
+        // We multiply by -1 because your hardware moves opposite to standard math.
+        turretTarget = turretTarget * -1.0;
+
+        // 5. Wrap to stay within your [-180, 180] hardware limits
+        while (turretTarget > 180) turretTarget -= 360;
+        while (turretTarget < -180) turretTarget += 360;
+
+        // 6. Apply final clamps
+        targetDegrees = clampTarget(turretTarget);
     }
 
     public boolean isTargetAcquired(){
-        return RobotContainer.shooterVisionSubsystem.hasTarget();
+        return RobotContainer.leftLimelight.hasTarget() || RobotContainer.rightLimelight.hasTarget();
     }
 
     public void stop() {
@@ -271,7 +287,7 @@ public class TurretSubsystem extends SubsystemBase {
             .withPosition(0, 0)
             .withSize(2, 1);
 
-        tab.addDouble("Turret tx", () -> RobotContainer.shooterVisionSubsystem.getXOffsetDegrees())
+        tab.addDouble("Turret tx", () -> RobotContainer.leftLimelight.getXOffsetDegrees())
             .withPosition(0, 1)
             .withSize(2, 1);
 

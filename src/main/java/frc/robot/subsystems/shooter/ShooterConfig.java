@@ -31,29 +31,29 @@ public class ShooterConfig {
     public static final double RPM_BUMP = 100.0;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
-        put(0, 2400.0);
-        put(1, 2400.0);
         put(2, 2400.0);
         put(3, 2400.0);
-        put(4, 2500.0);
-        put(5, 2600.0);
-        put(6, 2700.0);
-        put(7, 2800.0);
-        put(8, 2900.0);
-        put(9, 3000.0);
-        put(10, 3100.0);
-        put(11, 3200.0);
-        put(12, 3300.0);
-        put(13, 3600.0);
-        put(14, 3700.0);
-        // put(15, 3600.0);
-        // put(16, 3700.0);
-        // put(17, 3800.0);
-        // put(18, 3900.0);
-        // put(19, 4000.0);
-        // put(20, 4100.0);
-        // put(21, 4200.0);
-        // put(22, 4300.0);
+        put(4, 2400.0);
+        put(5, 2400.0);
+        put(6, 2500.0);
+        put(7, 2600.0);
+        put(8, 2700.0);
+        put(9, 2800.0);
+        put(10, 2900.0);
+        put(11, 3000.0);
+        put(12, 3100.0);
+        put(13, 3200.0);
+        put(14, 3300.0);
+        put(15, 3600.0);
+        put(16, 3700.0);
+        put(17, 3800.0);
+        put(18, 3900.0);
+        put(19, 4000.0);
+        put(20, 4100.0);
+        put(21, 4200.0);
+        put(22, 4300.0);
+        put(23, 4400.0);
+        put(24, 4500.0);
     }};
 
     public static MotorConfig getShooterRightConfig() {
