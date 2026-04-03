@@ -2,9 +2,13 @@ package frc.robot.subsystems.turret;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
@@ -141,14 +145,17 @@ public class TurretSubsystem extends SubsystemBase {
         isManualControl = false;
 
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
-        ChassisSpeeds robotSpeeds = RobotContainer.driveSubsystem.getRobotRelativeSpeeds();
+        ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+            RobotContainer.driveSubsystem.getChassisSpeeds(),
+            RobotContainer.driveSubsystem.getPose().getRotation()
+        );
         Translation2d targetLocation = getDynamicTarget();
 
         double distance = robotPose.getTranslation().getDistance(targetLocation);
-        double flightTime = distance / ShooterConfig.AVERAGE_FUEL_VELOCITY;
+        double flightTime = distance / AVERAGE_FUEL_VELOCITY;
 
-        double driftX = robotSpeeds.vxMetersPerSecond * flightTime;
-        double driftY = robotSpeeds.vyMetersPerSecond * flightTime;
+        double driftX = robotRelativeSpeeds.vxMetersPerSecond * flightTime;
+        double driftY = robotRelativeSpeeds.vyMetersPerSecond * flightTime;
     
         Translation2d compensatedTarget = new Translation2d(
             targetLocation.getX() - driftX, 
