@@ -71,7 +71,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-    
+
         // If we are close to the target, use a "Precision" PID with lower D
         // If we are far away, use a "Travel" PID to move fast
         if (Math.abs(getPositionInDegrees()) < 32.0) {
@@ -90,8 +90,8 @@ public class TurretSubsystem extends SubsystemBase {
 
             double targetRotations = targetDegrees / 360.0;
             motor.setMotionMagicPosition(targetRotations, 0.0);
-        } 
-        
+        }
+
         else if (isManualControl) {
 
             double limitedSpeed = speedLimiter.calculate(manualSpeedRequest);
@@ -110,7 +110,7 @@ public class TurretSubsystem extends SubsystemBase {
             double targetRotations = targetDegrees / 360.0;
             motor.setMotionMagicPosition(targetRotations, 0.0);
         }
-        
+
         else {
             motor.stop();
         }
@@ -125,10 +125,10 @@ public class TurretSubsystem extends SubsystemBase {
 
     //         double error = RobotContainer.shooterVisionSubsystem.getXOffsetDegrees();
     //         double currentPos = getPositionInDegrees();
-            
+
     //         // Use a temporary variable to see if the math is working
     //         double calculatedTarget = currentPos - error;
-            
+
     //         // Deadband tolerance for turret
     //         if (Math.abs(error) <= DEGREES_TOLERANCE) {
     //             targetDegrees = getPositionInDegrees();
@@ -156,10 +156,10 @@ public class TurretSubsystem extends SubsystemBase {
 
         double driftX = robotRelativeSpeeds.vxMetersPerSecond * flightTime;
         double driftY = robotRelativeSpeeds.vyMetersPerSecond * flightTime;
-    
+
         Translation2d compensatedTarget = new Translation2d(
-            targetLocation.getX() - driftX, 
-            targetLocation.getY() - driftY
+            targetLocation.getX(), // - driftX,
+            targetLocation.getY() // - driftY
         );
 
         // 1. Get field-relative direction to Hub
@@ -188,10 +188,10 @@ public class TurretSubsystem extends SubsystemBase {
     public Translation2d getDynamicTarget() {
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
         boolean isBlue = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue;
-    
+
         if (isBlue) {
             // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
-            if (robotPose.getX() > BLUE_TRENCH_LINE) { 
+            if (robotPose.getX() > BLUE_TRENCH_LINE) {
                 return (robotPose.getY() >= Y_CENTER_LINE) ? BLUE_LEFT_PASS_AREA : BLUE_RIGHT_PASS_AREA;
             }
             return BLUE_HUB_LOCATION; // Standard scoring
@@ -211,8 +211,8 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void stop() {
         // 1. Tell the motor to stop spinning at a percentage
-        // motor.stop(); 
-        
+        // motor.stop();
+
         // 2. IMPORTANT: Update the target to where we are RIGHT NOW
         // This prevents the turret from "snapping" back to an old target
         manualSpeedRequest = 0.0;
@@ -235,7 +235,7 @@ public class TurretSubsystem extends SubsystemBase {
         RobotContainer.disableAimAssist();
         automatedMove = false;
         isManualControl = true;
-        
+
         manualSpeedRequest = TurretConfig.clockwiseSpeed;
 
         // targetDegrees = clampTarget(targetDegrees + 2);
@@ -245,7 +245,7 @@ public class TurretSubsystem extends SubsystemBase {
         RobotContainer.disableAimAssist();
         automatedMove = false;
         isManualControl = true;
-        
+
         manualSpeedRequest = TurretConfig.counterClockwiseSpeed;
 
         // targetDegrees = clampTarget(targetDegrees - 2);

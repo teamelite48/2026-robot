@@ -9,7 +9,7 @@ import frc.robot.components.motors.lib.MotorConfig;
 
 public class ShooterFeedConfig {
 
-    public static final double FEED_SPEED = 0.5;   //0.45
+    public static final double FEED_SPEED = 0.7;   //0.45
 
     public static final boolean BALL_SENSED_VALUE = false;
     public static final int BALL_COOLDOWN_TIMER = 100;
