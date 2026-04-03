@@ -145,17 +145,20 @@ public class TurretSubsystem extends SubsystemBase {
         isManualControl = false;
 
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
-        ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-            RobotContainer.driveSubsystem.getChassisSpeeds(),
-            RobotContainer.driveSubsystem.getPose().getRotation()
+        ChassisSpeeds robotRelativeSpeeds = RobotContainer.driveSubsystem.getChassisSpeeds();
+
+        ChassisSpeeds fieldSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
+            robotRelativeSpeeds, 
+            robotPose.getRotation()
         );
+
         Translation2d targetLocation = getDynamicTarget();
 
         double distance = robotPose.getTranslation().getDistance(targetLocation);
         double flightTime = distance / AVERAGE_FUEL_VELOCITY;
 
-        double driftX = robotRelativeSpeeds.vxMetersPerSecond * flightTime;
-        double driftY = robotRelativeSpeeds.vyMetersPerSecond * flightTime;
+        double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
+        double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
     
         Translation2d compensatedTarget = new Translation2d(
             targetLocation.getX() - driftX, 
