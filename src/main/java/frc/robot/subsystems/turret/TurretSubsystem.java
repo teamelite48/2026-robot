@@ -184,14 +184,14 @@ public class TurretSubsystem extends SubsystemBase {
         if (isBlue) {
             // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
             if (robotPose.getX() > BLUE_TRENCH_LINE) { 
-                return (robotPose.getY() > Y_CENTER_LINE) ? BLUE_LEFT_PASS_AREA : BLUE_RIGHT_PASS_AREA;
+                return (robotPose.getY() >= Y_CENTER_LINE) ? BLUE_LEFT_PASS_AREA : BLUE_RIGHT_PASS_AREA;
             }
             return BLUE_HUB_LOCATION; // Standard scoring
         } else {
             // RED STRATEGY: If we are past the trench line, aim the turret for passing
             if (robotPose.getX() < RED_TRENCH_LINE) {
                 // Note: "Left" and "Right" are relative to the driver's view!
-                return (robotPose.getY() > Y_CENTER_LINE) ? RED_RIGHT_PASS_AREA : RED_LEFT_PASS_AREA;
+                return (robotPose.getY() >= Y_CENTER_LINE) ? RED_RIGHT_PASS_AREA : RED_LEFT_PASS_AREA;
             }
             return RED_HUB_LOCATION; // Standard scoring
         }
