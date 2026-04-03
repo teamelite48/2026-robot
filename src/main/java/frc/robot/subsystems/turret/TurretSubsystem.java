@@ -13,6 +13,7 @@ import frc.robot.components.motors.lib.Motor;
 import frc.robot.lib.PIDParameters;
 
 import static frc.robot.subsystems.turret.TurretConfig.*;
+import static frc.robot.subsystems.shooter.ShooterConfig.*;
 
 public class TurretSubsystem extends SubsystemBase {
 
