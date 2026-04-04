@@ -171,8 +171,8 @@ public class TurretSubsystem extends SubsystemBase {
             targetLocation.getY() - driftY
         );
 
-        // double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
-        // compensatedDistance = effectiveDistance;
+        double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
+        compensatedDistance = effectiveDistance;
 
         // 1. Get field-relative direction to Hub
         Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
