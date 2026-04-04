@@ -32,7 +32,7 @@ public class ShooterConfig {
 
     // If 3000 RPM is your 'Sweet Spot' and we assume 70% efficiency:
     // (3000 * 0.319 / 60) * 0.70 = ~11.1 m/s
-    public static final double AVERAGE_FUEL_VELOCITY = 10.0;
+    public static final double AVERAGE_FUEL_VELOCITY = 15.0;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
         put(2, 2400.0);

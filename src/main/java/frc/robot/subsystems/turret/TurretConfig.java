@@ -13,7 +13,7 @@ public class TurretConfig {
 
     public static final double inputDeadzone = 0.2;
     public static final double FEED_FORWARD_VOLTS = 2.0;
-    public static final double DEGREES_TOLERANCE = 2.0;
+    public static final double DEGREES_TOLERANCE = 1.0;
     public static final double TURRET_INIT_DEGREES = 7.0;
     public static final double TURRET_GEAR_RATIO = 9.0;
 
@@ -58,17 +58,17 @@ public class TurretConfig {
         var config = new MotorConfig(16, RobotConfig.CANIVORE_48);
 
         config.isInverted = false;   //Motor flipped to add 2:1 reduction - originally true
-        config.positionConversionFactor = (18.0 / 1.0); // ADDED 2:1 REDUCTION // (1.0/90.0) * 360.0;
+        config.positionConversionFactor = 20.0; // (18.0 / 1.0); // ADDED 2:1 REDUCTION // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(20.0, 0.0, 0.1, 0.5, 0.12); // 25.0, 0.0, 1.7, 0.25, 0.12
+        config.pidParameters = new PIDParameters(5.0, 0.0, 0.1, 0.5, 0.12); // 25.0, 0.0, 1.7, 0.25, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;  //40
         config.statorCurrentLimit = 100;  //100
-        config.motionMagicCruiseVelocity = 3.0; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 6.0; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicCruiseVelocity = 1.0; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 2.0; //6.0   // rotations/sec^2 (smooth stop)
         config.motionMagicJerk = 100.0; //100.0           // change if overshooting
 
         return config;

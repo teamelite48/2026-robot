@@ -191,6 +191,7 @@ import frc.robot.components.motors.lib.MotorConfig;
 import frc.robot.lib.LinearInterpolator;
 import frc.robot.subsystems.shooter.ShooterConfig.ShooterPreset;
 import frc.robot.subsystems.turret.TurretConfig;
+import frc.robot.subsystems.turret.TurretSubsystem;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -270,7 +271,7 @@ public class ShooterSubsystem extends SubsystemBase {
           }
         }
 
-        targetRPM = feetToRpmInterpolator.calculate(feet);
+        targetRPM = feetToRpmInterpolator.calculate(TurretSubsystem.compensatedDistance * 3.281);
         leftMotor.setVelocity(targetRPM);
         break;
     }

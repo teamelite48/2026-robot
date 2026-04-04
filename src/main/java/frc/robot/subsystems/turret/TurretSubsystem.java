@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Robot;
@@ -17,7 +18,9 @@ import frc.robot.components.motors.lib.Motor;
 import frc.robot.lib.PIDParameters;
 
 import static frc.robot.subsystems.turret.TurretConfig.*;
+import static frc.robot.subsystems.drive.DriveConfig.SWERVE_CONFIG;
 import static frc.robot.subsystems.shooter.ShooterConfig.*;
+import static frc.robot.components.swerve.lib.SwerveConfig.*;
 
 public class TurretSubsystem extends SubsystemBase {
 
@@ -27,6 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
     private double targetDegrees = HOME_POSITION;
     public boolean isManualControl = true;
     private double manualSpeedRequest = 0.0;
+    public static double compensatedDistance = 0.0;
 
     private final SlewRateLimiter speedLimiter = new SlewRateLimiter(0.5);
 
@@ -74,7 +78,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         // If we are close to the target, use a "Precision" PID with lower D
         // If we are far away, use a "Travel" PID to move fast
-        if (Math.abs(getPositionInDegrees()) < 32.0) {
+        if (getPositionInDegrees() >= -70.0 && getPositionInDegrees() <= 0.0) {
             // Precision: Lower D so it doesn't 'choke' before hitting 0
             motor.setPID(10.0, 0.01, 0.0, 0.32, 0.12); // 0.0025
         }
@@ -114,6 +118,7 @@ public class TurretSubsystem extends SubsystemBase {
         else {
             motor.stop();
         }
+
     }
 
     // public void autoAim() {
@@ -156,13 +161,18 @@ public class TurretSubsystem extends SubsystemBase {
 
         double distance = robotPose.getTranslation().getDistance(targetLocation);
         double flightTime = distance / AVERAGE_FUEL_VELOCITY;
+        double metersPerRotation = SWERVE_CONFIG.driveMetersPerRotation();
 
-        double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
-        double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
+        double driftX = (fieldSpeeds.vxMetersPerSecond * metersPerRotation) * flightTime;
+        double driftY = (fieldSpeeds.vyMetersPerSecond * metersPerRotation) * flightTime;
+
         Translation2d compensatedTarget = new Translation2d(
-            targetLocation.getX() - driftX,
-            targetLocation.getY() - driftY
+            targetLocation.getX(), // - (driftX * 0.000001),
+            targetLocation.getY() // - driftY
         );
+
+        // double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
+        // compensatedDistance = effectiveDistance;
 
         // 1. Get field-relative direction to Hub
         Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
@@ -185,6 +195,10 @@ public class TurretSubsystem extends SubsystemBase {
 
         // 6. Apply final clamps
         targetDegrees = clampTarget(turretTarget);
+
+        SmartDashboard.putNumber("Debug/Flight Time", flightTime);
+        SmartDashboard.putNumber("Debug/Drift X", driftX);
+
     }
 
     public Translation2d getDynamicTarget() {
@@ -349,6 +363,7 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addDouble("Distance to Hub (m)", () -> {
             Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
             return robotPose.getTranslation().getDistance(getTargetHub());
-        });
+        }
+        );
     }
 }
