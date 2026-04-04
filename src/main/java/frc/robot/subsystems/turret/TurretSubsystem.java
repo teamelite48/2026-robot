@@ -161,7 +161,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         double distance = robotPose.getTranslation().getDistance(targetLocation);
         double flightTime = distance / AVERAGE_FUEL_VELOCITY;
-        double metersPerRotation = SWERVE_CONFIG.driveMetersPerRotation();
+        // double metersPerRotation = SWERVE_CONFIG.driveMetersPerRotation();
 
         double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
         double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
