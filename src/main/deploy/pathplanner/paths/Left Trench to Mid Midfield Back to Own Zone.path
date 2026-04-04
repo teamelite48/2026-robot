@@ -96,12 +96,28 @@
     },
     {
       "anchor": {
-        "x": 2.3708784383318537,
-        "y": 6.284392191659272
+        "x": 1.8799556344276835,
+        "y": 6.252200532386868
       },
       "prevControl": {
-        "x": 2.636459627329192,
-        "y": 6.139529724933451
+        "x": 2.3969756836250427,
+        "y": 5.7351804831895095
+      },
+      "nextControl": {
+        "x": 1.4856078083407271,
+        "y": 6.646548358473824
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.6826885536823424,
+        "y": 7.491579414374445
+      },
+      "prevControl": {
+        "x": 2.1374889086069206,
+        "y": 7.58815439219166
       },
       "nextControl": null,
       "isLocked": false,
@@ -134,7 +150,7 @@
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 5.132625994694959,
+      "waypointRelativePos": 5.25,
       "rotationDegrees": 180.0
     }
   ],
@@ -168,7 +184,7 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 3.8557046979865794,
-      "maxWaypointRelativePos": 5.114093959731548,
+      "maxWaypointRelativePos": 5.25,
       "constraints": {
         "maxVelocity": 2.25,
         "maxAcceleration": 3.0,
@@ -193,10 +209,23 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 5.11,
-      "maxWaypointRelativePos": 6.0,
+      "minWaypointRelativePos": 5.2,
+      "maxWaypointRelativePos": 5.59,
       "constraints": {
         "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 5.590604026845638,
+      "maxWaypointRelativePos": 7.0,
+      "constraints": {
+        "maxVelocity": 1.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -543,7 +572,7 @@
     },
     {
       "name": "Stop Everything",
-      "waypointRelativePos": 5.184563758389264,
+      "waypointRelativePos": 5.35,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -567,7 +596,7 @@
     },
     {
       "name": "Stow Intake",
-      "waypointRelativePos": 5.224832214765113,
+      "waypointRelativePos": 5.45,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -591,7 +620,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 6.0,
+      "waypointRelativePos": 5.637583892617453,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -831,7 +860,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
