@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -31,6 +32,7 @@ public class TurretSubsystem extends SubsystemBase {
     public boolean isManualControl = true;
     private double manualSpeedRequest = 0.0;
     public static double compensatedDistance = 0.0;
+    public static Translation2d compensatedTarget = new Translation2d();
 
     private final SlewRateLimiter speedLimiter = new SlewRateLimiter(0.5);
 
@@ -80,11 +82,11 @@ public class TurretSubsystem extends SubsystemBase {
         // If we are far away, use a "Travel" PID to move fast
         if (getPositionInDegrees() >= -70.0 && getPositionInDegrees() <= 0.0) {
             // Precision: Lower D so it doesn't 'choke' before hitting 0
-            motor.setPID(10.0, 0.01, 0.0, 0.32, 0.12); // 0.0025
+            motor.setPID(12.0, 0.02, 0.0, 0.35, 0.12); // 0.0025
         }
         else {
             // Travel: Higher D to prevent slamming into the target area
-            motor.setPID(25.0, 0.0, 0.05, 0.55, 0.12); // 0.075
+            motor.setPID(28.0, 0.01, 0.05, 0.60, 0.12); // 0.075
         }
 
         if (RobotContainer.isAimAssistEnabled) {
@@ -161,12 +163,11 @@ public class TurretSubsystem extends SubsystemBase {
 
         double distance = robotPose.getTranslation().getDistance(targetLocation);
         double flightTime = distance / AVERAGE_FUEL_VELOCITY;
-        // double metersPerRotation = SWERVE_CONFIG.driveMetersPerRotation();
 
         double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
         double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
 
-        Translation2d compensatedTarget = new Translation2d(
+        compensatedTarget = new Translation2d(
             targetLocation.getX() - driftX,
             targetLocation.getY() - driftY
         );
@@ -189,12 +190,15 @@ public class TurretSubsystem extends SubsystemBase {
         // We multiply by -1 because your hardware moves opposite to standard math.
         turretTarget = turretTarget * -1.0;
 
-        // 5. Wrap to stay within your [-180, 180] hardware limits
-        while (turretTarget > 180) turretTarget -= 360;
-        while (turretTarget < -180) turretTarget += 360;
+        // 5. Wrap to stay within your [-270, 270] hardware limits
+        // while (turretTarget > CW_LIMIT) turretTarget -= 360;
+        // while (turretTarget < CCW_LIMIT) turretTarget += 360;
+        double currentAngle = getPositionInDegrees();
+        double adjustedTarget = currentAngle + MathUtil.inputModulus(turretTarget - currentAngle, -180, 180);
 
         // 6. Apply final clamps
-        targetDegrees = clampTarget(turretTarget);
+        // targetDegrees = clampTarget(turretTarget);
+        targetDegrees = MathUtil.clamp(adjustedTarget, CCW_LIMIT, CW_LIMIT);
 
         SmartDashboard.putNumber("Debug/Flight Time", flightTime);
         SmartDashboard.putNumber("Debug/Drift X", driftX);

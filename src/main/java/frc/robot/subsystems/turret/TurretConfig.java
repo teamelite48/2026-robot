@@ -21,8 +21,8 @@ public class TurretConfig {
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
-    public static final double CCW_LIMIT = -180.0;
-    public static final double CW_LIMIT = 180.0;
+    public static final double CCW_LIMIT = -270.0;
+    public static final double CW_LIMIT = 270.0;
 
     public static final double degreesPerMotorRotation = 40.0;
 
@@ -47,8 +47,8 @@ public class TurretConfig {
     public static final Translation2d RED_RIGHT_PASS_AREA = new Translation2d(14.539341, 6.051804);
         
 
-    public static final double BLUE_TRENCH_LINE = 4.003294;
-    public static final double RED_TRENCH_LINE = 12.537694;
+    public static final double BLUE_TRENCH_LINE = 4.333294;
+    public static final double RED_TRENCH_LINE = 12.887694;
     public static final double Y_CENTER_LINE = 4.034536;
 
     //TODO: Find home/starting position of turret for start of match configuration
