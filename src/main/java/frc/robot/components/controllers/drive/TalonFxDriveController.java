@@ -32,7 +32,10 @@ public class TalonFxDriveController implements DriveController {
     }
 
     public double getCurrentVelocity() {
-        return motor.getVelocity();
+        // return motor.getVelocity();
+
+        // RPS * Meters Per Rotation = Meters Per Second
+        return motor.getVelocity() * swerveConfig.driveMetersPerRotation();
     }
 
     public double getCurrentPosition() {
