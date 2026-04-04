@@ -123,9 +123,14 @@ public class Kraken implements Motor {
     //     return rotorVel.refresh().getValueAsDouble() * config.positionConversionFactor;
     // }
 
+    // @Override
+    // public double getVelocity() {
+    //     return talonFx.getVelocity().getValueAsDouble() * 60.0;
+    // }
+
     @Override
     public double getVelocity() {
-        return talonFx.getVelocity().getValueAsDouble() * 60.0;
+        return talonFx.getVelocity().getValueAsDouble();
     }
 
     // public int getCanId() {
