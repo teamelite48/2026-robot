@@ -145,93 +145,60 @@ public class TurretSubsystem extends SubsystemBase {
     //     }
     // }
     // POSE WORKS IN THIS, BUT SOTM DOES NOT
-    // public void autoAim() {
-    //     automatedMove = false;
-    //     isManualControl = false;
-
-    //     Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
-    //     ChassisSpeeds robotRelativeSpeeds = RobotContainer.driveSubsystem.getChassisSpeeds();
-
-    //     ChassisSpeeds fieldSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
-    //         robotRelativeSpeeds, 
-    //         robotPose.getRotation()
-    //     );
-
-    //     Translation2d targetLocation = getDynamicTarget();
-
-    //     double distance = robotPose.getTranslation().getDistance(targetLocation);
-    //     double flightTime = distance / AVERAGE_FUEL_VELOCITY;
-    //     double metersPerRotation = SWERVE_CONFIG.driveMetersPerRotation();
-
-    //     double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
-    //     double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
-
-    //     Translation2d compensatedTarget = new Translation2d(
-    //         targetLocation.getX(), // - (driftX * 0.000001),
-    //         targetLocation.getY() // - driftY
-    //     );
-
-    //     // double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
-    //     // compensatedDistance = effectiveDistance;
-
-    //     // 1. Get field-relative direction to Hub
-    //     Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
-    //     double fieldRelativeAngle = robotToTarget.getAngle().getDegrees();
-
-    //     // 2. Subtract robot heading to get angle relative to robot front
-    //     double robotRelativeAngle = fieldRelativeAngle - robotPose.getRotation().getDegrees();
-
-    //     // 3. Apply your "Zero is Right" offset
-    //     // Since Right is -90 in field terms, we add 90 to make it your 0.
-    //     double turretTarget = robotRelativeAngle + 90.0;
-
-    //     // 4. INVERT for your motor's direction (CCW is Negative)
-    //     // We multiply by -1 because your hardware moves opposite to standard math.
-    //     turretTarget = turretTarget * -1.0;
-
-    //     // 5. Wrap to stay within your [-180, 180] hardware limits
-    //     while (turretTarget > 180) turretTarget -= 360;
-    //     while (turretTarget < -180) turretTarget += 360;
-
-    //     // 6. Apply final clamps
-    //     targetDegrees = clampTarget(turretTarget);
-
-    //     SmartDashboard.putNumber("Debug/Flight Time", flightTime);
-    //     SmartDashboard.putNumber("Debug/Drift X", driftX);
-
-    // }
-
     public void autoAim() {
+        automatedMove = false;
+        isManualControl = false;
+
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
-        // Get speeds in Field-Relative terms (m/s)
-        ChassisSpeeds fieldSpeeds = RobotContainer.driveSubsystem.getFieldRelativeSpeeds(); 
-    
+        ChassisSpeeds robotRelativeSpeeds = RobotContainer.driveSubsystem.getChassisSpeeds();
+
+        ChassisSpeeds fieldSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
+            robotRelativeSpeeds, 
+            robotPose.getRotation()
+        );
+
         Translation2d targetLocation = getDynamicTarget();
+
         double distance = robotPose.getTranslation().getDistance(targetLocation);
-        
-        // 1. Calculate Flight Time (Standard is ~15-20 m/s)
         double flightTime = distance / AVERAGE_FUEL_VELOCITY;
-    
-        // 2. Calculate Virtual Target (Where the Hub 'appears' to be because we are moving)
-        // If we move LEFT, the target must move RIGHT relative to us.
-        double vTargetX = targetLocation.getX() - (fieldSpeeds.vxMetersPerSecond * flightTime);
-        double vTargetY = targetLocation.getY() - (fieldSpeeds.vyMetersPerSecond * flightTime);
-        Translation2d compensatedTarget = new Translation2d(vTargetX, vTargetY);
-    
-        // 3. Get Angle to that Virtual Target
+        double metersPerRotation = SWERVE_CONFIG.driveMetersPerRotation();
+
+        double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
+        double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
+
+        Translation2d compensatedTarget = new Translation2d(
+            targetLocation.getX() - driftX,
+            targetLocation.getY() - driftY
+        );
+
+        // double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
+        // compensatedDistance = effectiveDistance;
+
+        // 1. Get field-relative direction to Hub
         Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
         double fieldRelativeAngle = robotToTarget.getAngle().getDegrees();
-    
-        // 4. Convert to Turret Degrees (Robot Relative)
+
+        // 2. Subtract robot heading to get angle relative to robot front
         double robotRelativeAngle = fieldRelativeAngle - robotPose.getRotation().getDegrees();
-        
-        // Offset for your hardware "Zero" and invert for motor direction
-        double turretTarget = (robotRelativeAngle + 90.0) * -1.0;
-    
-        // 5. Wrap and Clamp
+
+        // 3. Apply your "Zero is Right" offset
+        // Since Right is -90 in field terms, we add 90 to make it your 0.
+        double turretTarget = robotRelativeAngle + 90.0;
+
+        // 4. INVERT for your motor's direction (CCW is Negative)
+        // We multiply by -1 because your hardware moves opposite to standard math.
+        turretTarget = turretTarget * -1.0;
+
+        // 5. Wrap to stay within your [-180, 180] hardware limits
         while (turretTarget > 180) turretTarget -= 360;
         while (turretTarget < -180) turretTarget += 360;
+
+        // 6. Apply final clamps
         targetDegrees = clampTarget(turretTarget);
+
+        SmartDashboard.putNumber("Debug/Flight Time", flightTime);
+        SmartDashboard.putNumber("Debug/Drift X", driftX);
+
     }
 
     public Translation2d getDynamicTarget() {
