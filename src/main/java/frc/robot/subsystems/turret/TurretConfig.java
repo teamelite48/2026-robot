@@ -16,6 +16,7 @@ public class TurretConfig {
     public static final double DEGREES_TOLERANCE = 1.0;
     public static final double TURRET_INIT_DEGREES = 7.0;
     public static final double TURRET_GEAR_RATIO = 9.0;
+    public static final double MANUAL_DEADBAND = 0.05;
 
     public static final double motorMaxOutput = 0.5;   //0.2 
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
@@ -34,6 +35,12 @@ public class TurretConfig {
     public static final double motorForwardLimit = CW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
     public static final double motorBackwardsLimit = CCW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
     public static final double nominalMotorRotationsPerSecond = 7200.0 / 60.0;
+
+    public static final double CCW_SOFT_MOVEMENT_LIMIT = -70.0;
+    public static final double CW_SOFT_MOVEMENT_LIMIT = 0.0;
+
+    public static final double BACKWARDS_BIAS = 1.0;
+    public static final double BACKWARDS_BIAS_MODIFIER = 1.15;
 
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
