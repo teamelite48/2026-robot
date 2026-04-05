@@ -80,7 +80,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         // If we are close to the target, use a "Precision" PID with lower D
         // If we are far away, use a "Travel" PID to move fast
-        if (getPositionInDegrees() >= -70.0 && getPositionInDegrees() <= 0.0) {
+        if (getPositionInDegrees() >= CCW_SOFT_MOVEMENT_LIMIT && getPositionInDegrees() <= CW_SOFT_MOVEMENT_LIMIT) {
             // Precision: Lower D so it doesn't 'choke' before hitting 0
             motor.setPID(12.0, 0.02, 0.0, 0.35, 0.12); // 0.0025
         }
@@ -173,13 +173,13 @@ public class TurretSubsystem extends SubsystemBase {
         );
 
         double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
-        double backwardsBias = 1.0;
+        double backwardsBias = BACKWARDS_BIAS;
 
         // If we are moving backwards (vx is negative)
         if (fieldSpeeds.vxMetersPerSecond < -0.1) {
             // Because the flight time is 2s, the penalty is huge. 
             // Add 15-20% extra distance to the shooter's "perceived" target.
-            backwardBias = 1.10; 
+            backwardBias = BACKWARDS_BIAS_MODIFIER; 
         }
 
         compensatedDistance = effectiveDistance * backwardBias;
@@ -328,7 +328,7 @@ public class TurretSubsystem extends SubsystemBase {
     public void setManualOutput(double speed) {
 
         // Apply a deadband so the turret doesn't "drift" if the stick is old
-        if (Math.abs(speed) < 0.05) {
+        if (Math.abs(speed) < MANUAL_DEADBAND) {
             manualSpeedRequest = 0;
             return;
         }
