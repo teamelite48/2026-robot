@@ -173,7 +173,16 @@ public class TurretSubsystem extends SubsystemBase {
         );
 
         double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
-        compensatedDistance = effectiveDistance;
+        double backwardsBias = 1.0;
+
+        // If we are moving backwards (vx is negative)
+        if (fieldSpeeds.vxMetersPerSecond < -0.1) {
+            // Because the flight time is 2s, the penalty is huge. 
+            // Add 15-20% extra distance to the shooter's "perceived" target.
+            backwardBias = 1.10; 
+        }
+
+        compensatedDistance = effectiveDistance * backwardBias;
 
         // 1. Get field-relative direction to Hub
         Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
