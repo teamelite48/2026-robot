@@ -30,9 +30,8 @@ public class ShooterConfig {
 
     public static final double RPM_BUMP = 100.0;
 
-    // If 3000 RPM is your 'Sweet Spot' and we assume 70% efficiency:
-    // (3000 * 0.319 / 60) * 0.70 = ~11.1 m/s
-    public static final double AVERAGE_FUEL_VELOCITY = 2.25;
+    // We only take into account the horizontal part of the flight vector (in m/s)
+    public static final double AVERAGE_FUEL_VELOCITY = 3.0;
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
         put(2, 2400.0);

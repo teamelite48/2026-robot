@@ -9,7 +9,7 @@ import frc.robot.components.motors.lib.MotorConfig;
 
 public class IntakeConfig {
 
-    public static final double INTAKE_SPEED = -0.75;
+    public static final double INTAKE_SPEED = -0.625;
 
     public static MotorConfig getIntakeRightConfig() {
 

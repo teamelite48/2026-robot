@@ -87,13 +87,11 @@ public class VisionSubsystem extends SubsystemBase {
 
     if (hasTarget()) {
       updateDistanceToTarget();
-    }
 
     // 2. NEW: Pose Estimation Logic
     // Get the botpose based on alliance color
 
-    if (hasTarget()) {
-        Pose2d botPose = LimelightHelpers.getBotPose2d_wpiBlue(name);
+      Pose2d botPose = LimelightHelpers.getBotPose2d_wpiBlue(name);
 
       // Filter out invalid/zeroed poses
       if (botPose != null && (botPose.getX() != 0 || botPose.getY() != 0)) {
@@ -101,7 +99,7 @@ public class VisionSubsystem extends SubsystemBase {
           double cl = LimelightHelpers.getLatency_Capture(name) / 1000.0;
           double timestamp = Timer.getFPGATimestamp() - tl - cl;
 
-        if (getDistanceToTargetInMeters() < 2.0) {
+        if (getDistanceToTargetInMeters() < 5.0) {
             RobotContainer.driveSubsystem.addVisionMeasurement(botPose, timestamp);
         }
       }

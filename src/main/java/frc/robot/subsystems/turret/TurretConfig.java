@@ -40,7 +40,7 @@ public class TurretConfig {
     public static final double CW_SOFT_MOVEMENT_LIMIT = 0.0;
 
     public static final double BACKWARDS_BIAS = 1.0;
-    public static final double BACKWARDS_BIAS_MODIFIER = 1.15;
+    public static final double BACKWARDS_BIAS_MODIFIER = 1.0825;
 
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
@@ -74,8 +74,8 @@ public class TurretConfig {
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;  //40
         config.statorCurrentLimit = 100;  //100
-        config.motionMagicCruiseVelocity = 1.0; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 2.0; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicCruiseVelocity = 1.5; //2.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 2.5; //6.0   // rotations/sec^2 (smooth stop)
         config.motionMagicJerk = 100.0; //100.0           // change if overshooting
 
         return config;

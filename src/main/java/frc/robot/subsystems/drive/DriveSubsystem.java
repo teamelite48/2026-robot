@@ -133,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase{
             },
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1), // State std devs (Trust wheels/gyro)
-            VecBuilder.fill(0.9, 0.9, 0.9)  // Vision std devs (Trust vision)
+            VecBuilder.fill(1.3, 1.3, 1.3)  // Vision std devs (Trust vision)
         );
 
         zeroGyro();
@@ -187,7 +187,7 @@ public class DriveSubsystem extends SubsystemBase{
 
         double speedModifier = SWERVE_CONFIG.getMaxGearSpeed();
 
-        if (gear == Gear.Low) {
+        if (gear == Gear.Low || RobotContainer.isShooting) {
             speedModifier = SWERVE_CONFIG.getLowGearSpeed();
         }
 

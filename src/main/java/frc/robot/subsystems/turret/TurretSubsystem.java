@@ -142,16 +142,26 @@ public class TurretSubsystem extends SubsystemBase {
     //         }
     //     }
     // }
-    // POSE WORKS IN THIS, BUT SOTM DOES NOT
+
     public void autoAim() {
         automatedMove = false;
         isManualControl = false;
 
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
         ChassisSpeeds robotRelativeSpeeds = RobotContainer.driveSubsystem.getChassisSpeeds();
+        Translation2d turretOffset = new Translation2d(-0.082885, 0.1778);
+
+        double tangentialVx = -robotRelativeSpeeds.omegaRadiansPerSecond * turretOffset.getY();
+        double tangentialVy = robotRelativeSpeeds.omegaRadiansPerSecond * turretOffset.getX();
+
+        ChassisSpeeds turretRelativeSpeeds = new ChassisSpeeds(
+            robotRelativeSpeeds.vxMetersPerSecond + tangentialVx,
+            robotRelativeSpeeds.vyMetersPerSecond + tangentialVy,
+            robotRelativeSpeeds.omegaRadiansPerSecond
+        );
 
         ChassisSpeeds fieldSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
-            robotRelativeSpeeds, 
+            turretRelativeSpeeds, 
             robotPose.getRotation()
         );
 
@@ -169,16 +179,16 @@ public class TurretSubsystem extends SubsystemBase {
         );
 
         double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
-        double backwardsBias = BACKWARDS_BIAS;
 
         // If we are moving backwards (vx is negative)
         if (fieldSpeeds.vxMetersPerSecond < -0.1) {
             // Because the flight time is 2s, the penalty is huge. 
             // Add 15-20% extra distance to the shooter's "perceived" target.
-            backwardsBias = BACKWARDS_BIAS_MODIFIER; 
+            compensatedDistance = effectiveDistance * BACKWARDS_BIAS_MODIFIER;
         }
-
-        compensatedDistance = effectiveDistance * backwardsBias;
+        else {
+            compensatedDistance = effectiveDistance;
+        }
 
         // 1. Get field-relative direction to Hub
         Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
@@ -200,6 +210,13 @@ public class TurretSubsystem extends SubsystemBase {
         // while (turretTarget < CCW_LIMIT) turretTarget += 360;
         double currentAngle = getPositionInDegrees();
         double adjustedTarget = currentAngle + MathUtil.inputModulus(turretTarget - currentAngle, -180, 180);
+
+        if (adjustedTarget > CW_LIMIT && (adjustedTarget - 360) > CCW_LIMIT) {
+            adjustedTarget -= 360;
+        }
+        else if (adjustedTarget < CCW_LIMIT && (adjustedTarget + 360) < CW_LIMIT) {
+            adjustedTarget += 360;
+        }
 
         // 6. Apply final clamps
         // targetDegrees = clampTarget(turretTarget);
