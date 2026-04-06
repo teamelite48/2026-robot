@@ -10,18 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.Minion;
 import frc.robot.components.motors.lib.Motor;
-import frc.robot.lib.PIDParameters;
 
 import static frc.robot.subsystems.turret.TurretConfig.*;
-import static frc.robot.subsystems.drive.DriveConfig.SWERVE_CONFIG;
 import static frc.robot.subsystems.shooter.ShooterConfig.*;
-import static frc.robot.components.swerve.lib.SwerveConfig.*;
 
 public class TurretSubsystem extends SubsystemBase {
 
@@ -212,7 +208,7 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Debug/Flight Time", flightTime);
         SmartDashboard.putNumber("Debug/Drift X", driftX);
         SmartDashboard.putNumber("vx Meters/s", fieldSpeeds.vxMetersPerSecond);
-        
+
     }
 
     public Translation2d getDynamicTarget() {
