@@ -179,10 +179,10 @@ public class TurretSubsystem extends SubsystemBase {
         if (fieldSpeeds.vxMetersPerSecond < -0.1) {
             // Because the flight time is 2s, the penalty is huge. 
             // Add 15-20% extra distance to the shooter's "perceived" target.
-            backwardBias = BACKWARDS_BIAS_MODIFIER; 
+            backwardsBias = BACKWARDS_BIAS_MODIFIER; 
         }
 
-        compensatedDistance = effectiveDistance * backwardBias;
+        compensatedDistance = effectiveDistance * backwardsBias;
 
         // 1. Get field-relative direction to Hub
         Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
@@ -211,7 +211,8 @@ public class TurretSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Debug/Flight Time", flightTime);
         SmartDashboard.putNumber("Debug/Drift X", driftX);
-
+        SmartDashboard.putNumber("vx Meters/s", fieldSpeeds.vxMetersPerSecond);
+        
     }
 
     public Translation2d getDynamicTarget() {
