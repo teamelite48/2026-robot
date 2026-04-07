@@ -97,6 +97,7 @@ package frc.robot.subsystems.shooter.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.shooter.ShooterConfig;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
