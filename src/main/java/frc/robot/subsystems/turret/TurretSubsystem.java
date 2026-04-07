@@ -249,7 +249,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public boolean isTargetAcquired(){
-        return Math.abs(getPositionInDegrees() - targetDegrees) < TURRET_TARGET_THRESHOLD;
+        return Math.abs(getPositionInDegrees() - targetDegrees) < DEGREES_TOLERANCE;
     }
 
     public void stop() {
