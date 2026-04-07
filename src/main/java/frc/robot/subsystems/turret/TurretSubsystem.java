@@ -249,7 +249,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public boolean isTargetAcquired(){
-        return RobotContainer.leftLimelight.hasTarget() || RobotContainer.rightLimelight.hasTarget();
+        return Math.abs(getPositionInDegrees() - targetDegrees) < TURRET_TARGET_THRESHOLD;
     }
 
     public void stop() {
