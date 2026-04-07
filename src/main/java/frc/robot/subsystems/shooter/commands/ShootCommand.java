@@ -108,6 +108,7 @@ public class ShootCommand extends Command {
   private final ShooterFeedSubsystem shooterFeedSubsystem = RobotContainer.shooterFeedSubsystem;
   private final ShooterSubsystem shooterSubsystem = RobotContainer.shooterSubsystem;
   private final SpindexerSubsystem spindexerSubsystem = RobotContainer.spindexerSubsystem;
+  private final TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
   // private final VisionSubsystem shooterVisionSubsystem = RobotContainer.shooterVisionSubsystem;
 
   private final ShooterConfig.ShooterPreset preset;
@@ -145,7 +146,7 @@ public class ShootCommand extends Command {
       readyToFeed = shooterSubsystem.getIsOnSpeed();
     }
 
-    if (readyToFeed) {
+    if (readyToFeed && RobotContainer.turretSubsystem.isTargetAcquired()) {
       shooterFeedSubsystem.feedTowardsShooter();
       spindexerSubsystem.feedTowardsShooterFeed();
     }
