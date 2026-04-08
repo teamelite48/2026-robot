@@ -97,19 +97,17 @@ package frc.robot.subsystems.shooter.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.shooter.ShooterConfig;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
-import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class ShootCommand extends Command {
 
   private final ShooterFeedSubsystem shooterFeedSubsystem = RobotContainer.shooterFeedSubsystem;
   private final ShooterSubsystem shooterSubsystem = RobotContainer.shooterSubsystem;
   private final SpindexerSubsystem spindexerSubsystem = RobotContainer.spindexerSubsystem;
-  private final TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
+  // private final TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
   // private final VisionSubsystem shooterVisionSubsystem = RobotContainer.shooterVisionSubsystem;
 
   private final ShooterConfig.ShooterPreset preset;

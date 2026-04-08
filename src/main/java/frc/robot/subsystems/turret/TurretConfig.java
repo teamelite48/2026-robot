@@ -39,7 +39,6 @@ public class TurretConfig {
     public static final double CCW_SOFT_MOVEMENT_LIMIT = -70.0;
     public static final double CW_SOFT_MOVEMENT_LIMIT = 0.0;
 
-    public static final double BACKWARDS_BIAS = 1.0;
     public static final double BACKWARDS_BIAS_MODIFIER = 1.0825;
 
     public static final double moveWithinDegrees = 3;

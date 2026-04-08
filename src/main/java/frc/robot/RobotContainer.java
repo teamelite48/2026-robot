@@ -224,11 +224,11 @@ public class RobotContainer {
     copilotController.r2
       .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
 
-    // copilotController.up
-    //   .whileTrue(ClimberCommands.extend());
+    copilotController.up
+      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpUpRPM()));
 
-    // copilotController.down
-    //   .whileTrue(ClimberCommands.retract());
+    copilotController.down
+      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpDownRPM()));
 
     // copilotController.left
     //   .whileTrue(TurretCommands.RotateTurretCounterClockwise())

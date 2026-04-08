@@ -195,11 +195,19 @@ public class DriveSubsystem extends SubsystemBase{
         var vy = -xLimiter.calculate(x * speedModifier) * SWERVE_CONFIG.getMaxMetersPerSecond();
         // System.out.println("vx="+ vx + "\tvy="+vy);
 
+        Rotation2d robotRotation = getPose().getRotation();
+        var alliance = DriverStation.getAlliance();
+        
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            robotRotation = robotRotation.plus(Rotation2d.fromDegrees(180));
+        }
+
         var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
             vx,
             vy,
             -rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
-            Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
+            // Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
+            getPose().getRotation()
         );
 
         setSwerveModuleStates(chassisSpeeds);

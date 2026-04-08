@@ -379,7 +379,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private double getShooterRPM() {
-    return leftMotor.getVelocity() * 60.0;
+    return leftMotor.getVelocity() * 60.0; //Turns motor RPS into RPM
   }
 
   public void initDashboard() {

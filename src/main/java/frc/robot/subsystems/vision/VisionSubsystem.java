@@ -7,7 +7,6 @@ package frc.robot.subsystems.vision;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -16,9 +15,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.geometry.Pose2d;
 
 import static frc.robot.subsystems.vision.VisionConfig.*;
-
-import java.util.Optional;
-
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -48,11 +44,6 @@ public class VisionSubsystem extends SubsystemBase {
   final NetworkTableEntry pipeline;
   final double[] botpose;
 
-  // private VisionTarget target;
-  private Optional<Alliance> alliance = Optional.empty();
-
-  private boolean isTracking = false;
-  private double feetFromTarget;
   private double distanceFromTargetFeet;
 
   public VisionSubsystem(String limelightName) {
@@ -73,7 +64,7 @@ public class VisionSubsystem extends SubsystemBase {
     this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
 
     enableLed(false);
-    initDashboard(name);
+    // initDashboard(name);
   }
 
   @Override
@@ -99,7 +90,7 @@ public class VisionSubsystem extends SubsystemBase {
           double cl = LimelightHelpers.getLatency_Capture(name) / 1000.0;
           double timestamp = Timer.getFPGATimestamp() - tl - cl;
 
-        if (getDistanceToTargetInMeters() < 5.0) {
+        if (getDistanceToTargetInMeters() < DISTANCE_TOLERANCE) {
             RobotContainer.driveSubsystem.addVisionMeasurement(botPose, timestamp);
         }
       }
@@ -118,20 +109,6 @@ public class VisionSubsystem extends SubsystemBase {
   public long getTargetId() {
     return tid.getInteger(0);
   }
-
-  // IF LOOKING AT APRILTAGS 9, 10, 25, 26 AND YOUR X OFFSET IS POSITIVE THEN BIAS TURRET RIGHT TO SOME DEGREE
-  // IT'S GONNA TAKE TRIG
-  // FOR NOW
-  // IF X OFFSET IS > 0 THEN AFTER CALCULATION ADD DEGREES
-  // IF DISTANCE IS LESS THAN 8 FEET AWAY THEN ADD 2 DEGREES
-  // IF DISTANCE IS GREATER THAN 8 FEET AWAY THEN ADD 1 DEGREE
-
-  // public void offsetTurret() {
-  //   long idNumber = getTargetId();
-
-
-  //   }
-  // }
 
   // public void startTracking(VisionTarget target) {
   //   this.target = target;
@@ -193,9 +170,9 @@ public class VisionSubsystem extends SubsystemBase {
     distanceFromTargetFeet = distanceInches / 12.0;
   }
 
-  private void initDashboard(String tabName) {
+  // private void initDashboard(String tabName) {
 
-    var tab = Shuffleboard.getTab("Vision");
+    // var tab = Shuffleboard.getTab("Vision");
 
     // tab.addDouble("Target ID", () -> getTargetId())
     //   .withPosition(0, 0);
@@ -219,7 +196,7 @@ public class VisionSubsystem extends SubsystemBase {
     // tab.addBoolean("Has Target", () -> hasTarget());
     // tab.addString("Alliance", () -> (alliance.isPresent() ? alliance.get() : "Not Present").toString());
     // tab.addDoubleArray("botpose", () -> botpose);
-  }
+  // }
 
   // public String getTargetName() {
   //   return target == null
