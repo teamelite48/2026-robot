@@ -206,8 +206,8 @@ public class DriveSubsystem extends SubsystemBase{
             vx,
             vy,
             -rotationLimiter.calculate(rotation * speedModifier) * SWERVE_CONFIG.getMaxAngularMetersPerSecond(),
-            // Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
-            getPose().getRotation()
+            Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble())
+            // getPose().getRotation()
         );
 
         setSwerveModuleStates(chassisSpeeds);
