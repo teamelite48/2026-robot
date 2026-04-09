@@ -145,7 +145,7 @@ public class ShootCommand extends Command {
       readyToFeed = shooterSubsystem.getIsOnSpeed();
     }
 
-    if (readyToFeed && RobotContainer.turretSubsystem.isTargetAcquired()) {
+    if (readyToFeed) {
       shooterFeedSubsystem.feedTowardsShooter();
       spindexerSubsystem.feedTowardsShooterFeed();
     }
