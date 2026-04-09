@@ -72,8 +72,8 @@ public class TurretConfig {
         config.supplyCurrentLimit = 40;  //40
         config.statorCurrentLimit = 100;  //100
         config.motionMagicCruiseVelocity = 1.5; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 2.5; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 100.0; //100.0           // change if overshooting
+        config.motionMagicAcceleration = 3.0; //6.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 35.0; //100.0           // change if overshooting
 
         return config;
     }

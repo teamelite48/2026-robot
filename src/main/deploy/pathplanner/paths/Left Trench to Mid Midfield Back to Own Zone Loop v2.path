@@ -64,32 +64,48 @@
     },
     {
       "anchor": {
-        "x": 7.6664063886424145,
-        "y": 6.992608695652174
+        "x": 5.823433895297249,
+        "y": 7.435244010647738
       },
       "prevControl": {
-        "x": 7.212127694301908,
-        "y": 7.151901224836508
+        "x": 5.369155200956743,
+        "y": 7.594536539832072
       },
       "nextControl": {
-        "x": 8.286095829636203,
-        "y": 6.775314995563442
+        "x": 6.443123336291037,
+        "y": 7.217950310559006
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.8756521739130445,
-        "y": 4.908198757763975
+        "x": 6.072919254658385,
+        "y": 4.063167701863353
       },
       "prevControl": {
-        "x": 8.483713946682112,
-        "y": 4.981700730296499
+        "x": 5.625422201989117,
+        "y": 4.589099369502413
       },
       "nextControl": {
-        "x": 7.14329192546584,
-        "y": 4.819671694764862
+        "x": 6.520416307327652,
+        "y": 3.5372360342242937
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.521543921916594,
+        "y": 4.843815439219165
+      },
+      "prevControl": {
+        "x": 7.449112688553684,
+        "y": 4.529946761313219
+      },
+      "nextControl": {
+        "x": 7.6874208420641565,
+        "y": 5.562615426525272
       },
       "isLocked": false,
       "linkedName": null
@@ -146,11 +162,15 @@
       "rotationDegrees": 0.0
     },
     {
-      "waypointRelativePos": 4.1,
+      "waypointRelativePos": 4.2,
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 5.25,
+      "waypointRelativePos": 5.5066312997347495,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 6.25,
       "rotationDegrees": 180.0
     }
   ],
@@ -183,8 +203,8 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 3.8557046979865794,
-      "maxWaypointRelativePos": 5.25,
+      "minWaypointRelativePos": 4.322147651006717,
+      "maxWaypointRelativePos": 6.25,
       "constraints": {
         "maxVelocity": 2.75,
         "maxAcceleration": 3.0,
@@ -196,8 +216,8 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.34,
-      "maxWaypointRelativePos": 1.82,
+      "minWaypointRelativePos": 1.5167785234899327,
+      "maxWaypointRelativePos": 1.8389261744966447,
       "constraints": {
         "maxVelocity": 3.25,
         "maxAcceleration": 3.0,
@@ -209,8 +229,8 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 5.2,
-      "maxWaypointRelativePos": 5.59,
+      "minWaypointRelativePos": 6.402684563758389,
+      "maxWaypointRelativePos": 6.65771812080537,
       "constraints": {
         "maxVelocity": 3.25,
         "maxAcceleration": 3.0,
@@ -222,8 +242,8 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 5.590604026845638,
-      "maxWaypointRelativePos": 7.0,
+      "minWaypointRelativePos": 6.590604026845638,
+      "maxWaypointRelativePos": 8.0,
       "constraints": {
         "maxVelocity": 0.8,
         "maxAcceleration": 3.0,
@@ -537,7 +557,7 @@
     },
     {
       "name": "Intake",
-      "waypointRelativePos": 3.5,
+      "waypointRelativePos": 3.758389261744969,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -548,7 +568,7 @@
     },
     {
       "name": "Deploy",
-      "waypointRelativePos": 3.5033557046979933,
+      "waypointRelativePos": 3.758389261744969,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -572,7 +592,7 @@
     },
     {
       "name": "Stop Everything",
-      "waypointRelativePos": 5.35,
+      "waypointRelativePos": 6.35,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -596,7 +616,7 @@
     },
     {
       "name": "Stow Intake",
-      "waypointRelativePos": 5.45,
+      "waypointRelativePos": 6.45,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -620,7 +640,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 5.602348993288593,
+      "waypointRelativePos": 6.657718120805369,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",

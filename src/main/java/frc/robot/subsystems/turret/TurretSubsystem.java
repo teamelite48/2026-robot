@@ -78,11 +78,11 @@ public class TurretSubsystem extends SubsystemBase {
         // If we are far away, use a "Travel" PID to move fast
         if (getPositionInDegrees() >= CCW_SOFT_MOVEMENT_LIMIT && getPositionInDegrees() <= CW_SOFT_MOVEMENT_LIMIT) {
             // Precision: Lower D so it doesn't 'choke' before hitting 0
-            motor.setPID(12.0, 0.02, 0.0, 0.5, 0.12); // 0.0025
+            motor.setPID(12.0, 0.02, 0.0, 0.55, 0.12); // 0.0025
         }
         else {
             // Travel: Higher D to prevent slamming into the target area
-            motor.setPID(28.0, 0.01, 0.05, 0.65, 0.12); // 0.075
+            motor.setPID(45.0, 0.03, 0.05, 0.75, 0.12); // 0.075
         }
 
         if (RobotContainer.isAimAssistEnabled) {
