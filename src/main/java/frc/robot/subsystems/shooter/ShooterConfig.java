@@ -22,7 +22,7 @@ public class ShooterConfig {
     public static final double LOW_RPM = 2000.0;
     public static final double MEDIUM_RPM = 2850.0;
     public static final double HIGH_RPM = 3300.0;
-    public static final double PASS_RPM = 3800.0;
+    public static final double PASS_RPM = 4400.0;
 
     public static final double ON_SPEED_TOLERANCE_RPM = 200.0;
 
@@ -57,7 +57,6 @@ public class ShooterConfig {
         put(22, 4300.0);
         put(23, 4400.0);
         put(24, 4500.0);
-        put(54, 4500.0);
     }};
 
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP_PASS = new HashMap<Integer, Double>() {{
@@ -90,30 +89,30 @@ public class ShooterConfig {
         put(28, 4700.0);
         put(29, 4700.0);
         put(30, 4700.0);
-        put(31, 4700.0);
-        put(32, 4700.0);
-        put(33, 4700.0);
-        put(34, 4700.0);
-        put(35, 4700.0);
-        put(36, 4700.0);
-        put(37, 4700.0);
-        put(38, 4700.0);
-        put(39, 4700.0);
-        put(40, 4700.0);
-        put(41, 4700.0);
-        put(42, 4700.0);
-        put(43, 4700.0);
-        put(44, 4700.0);
-        put(45, 4700.0);
-        put(46, 4700.0);
-        put(47, 4700.0);
-        put(48, 4700.0);
-        put(49, 4700.0);
-        put(50, 4700.0);
-        put(51, 4700.0);
-        put(52, 4700.0);
-        put(53, 4700.0);
-        put(54, 4700.0);
+        put(31, 4900.0);
+        put(32, 4900.0);
+        put(33, 4900.0);
+        put(34, 4900.0);
+        put(35, 4900.0);
+        put(36, 4900.0);
+        put(37, 4900.0);
+        put(38, 4900.0);
+        put(39, 4900.0);
+        put(40, 4900.0);
+        put(41, 4900.0);
+        put(42, 4900.0);
+        put(43, 4900.0);
+        put(44, 4900.0);
+        put(45, 4900.0);
+        put(46, 4900.0);
+        put(47, 4900.0);
+        put(48, 4900.0);
+        put(49, 4900.0);
+        put(50, 4900.0);
+        put(51, 4900.0);
+        put(52, 4900.0);
+        put(53, 4900.0);
+        put(54, 4900.0);
     }};
 
     public static MotorConfig getShooterRightConfig() {

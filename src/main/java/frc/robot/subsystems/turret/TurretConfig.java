@@ -28,9 +28,7 @@ public class TurretConfig {
     public static final double degreesPerMotorRotation = 40.0;
 
     public static final double HOME_POSITION = 0.0;
-    public static final double degreesAtLeft = 0.0;
     public static final double degreesAtCenter = 100.0;
-    public static final double degreesAtRight = 180.0;
 
     public static final double motorForwardLimit = CW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
     public static final double motorBackwardsLimit = CCW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
