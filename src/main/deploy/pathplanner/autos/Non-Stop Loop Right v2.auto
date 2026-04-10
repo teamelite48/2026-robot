@@ -5,9 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Aim Assist"
+            "pathName": "Right Trench to Mid Midfield Back to Own Zone Loop v2"
           }
         },
         {
@@ -30,34 +30,22 @@
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Shoot"
+                  "waitTime": 0.33
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 8.0
+                  "name": "Stop Everything"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Everything"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Basically Don't Move"
           }
         }
       ]

@@ -82,7 +82,7 @@ public class TurretSubsystem extends SubsystemBase {
         }
         else {
             // Travel: Higher D to prevent slamming into the target area
-            motor.setPID(45.0, 0.03, 0.05, 0.75, 0.12); // 0.075
+            motor.setPID(37.5, 0.03, 0.05, 0.75, 0.12); // 0.075
         }
 
         if (RobotContainer.isAimAssistEnabled) {

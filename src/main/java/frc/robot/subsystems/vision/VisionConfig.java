@@ -11,5 +11,5 @@ public class VisionConfig {
 
     public static final double HAS_TARGET_DEGREES_THRESHOLD = 1.5;
     public static final double HAS_TARGET_AREA_THRESHOLD = 0.00001;
-    public static final double DISTANCE_TOLERANCE = 5.0;
+    public static final double DISTANCE_TOLERANCE = 4.0;
 }

@@ -8,7 +8,7 @@ import frc.robot.lib.PIDParameters;
 
 public class TurretConfig {
 
-    public static final double TURRET_ENCODER_OFFSET_DEGREES = 109.95;  //126.9
+    public static final double TURRET_ENCODER_OFFSET_DEGREES = 101.0; // 109.95;  //126.9
 
 
     public static final double inputDeadzone = 0.2;
