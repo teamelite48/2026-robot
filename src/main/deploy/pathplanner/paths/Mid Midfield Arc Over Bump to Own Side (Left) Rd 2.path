@@ -28,18 +28,27 @@
       "linkedName": null
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [
     {
-      "waypointRelativePos": 0.55,
-      "rotationDegrees": 0.0
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.37583892617449705,
+      "constraints": {
+        "maxVelocity": 2.75,
+        "maxAcceleration": 3.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
     }
   ],
-  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "Stow Intake",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.40939597315436327,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -50,7 +59,7 @@
     },
     {
       "name": "Intake Off",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.40939597315436327,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -70,13 +79,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": -90.0
+    "velocity": 2.75,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

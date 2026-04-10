@@ -248,8 +248,9 @@ public class RobotContainer {
     // copilotController.ps
     //   .onTrue();
 
-    //  copilotController.touchpad
-    //   .onTrue();
+     copilotController.touchpad
+      .whileTrue(SpindexerCommands.FeedTowardsFeed())
+      .onFalse(SpindexerCommands.stop());
 
   }
 
