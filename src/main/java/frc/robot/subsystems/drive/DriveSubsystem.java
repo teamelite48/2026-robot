@@ -133,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase{
             },
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1), // State std devs (Trust wheels/gyro)
-            VecBuilder.fill(2.75, 2.75, 2.75)  // Vision std devs (Trust vision)
+            VecBuilder.fill(2.0, 2.0, 2.0)  // Vision std devs (Trust vision)
         );
 
         zeroGyro();

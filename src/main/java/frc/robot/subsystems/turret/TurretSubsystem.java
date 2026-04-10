@@ -35,6 +35,7 @@ public class TurretSubsystem extends SubsystemBase {
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
     boolean automatedMove = false;
+    private boolean isInSlackArea = false;
 
     // long lastSimulationPeriodicMillis = 0;
     // boolean isTurretEnabled = true;
@@ -74,15 +75,20 @@ public class TurretSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        // If we are close to the target, use a "Precision" PID with lower D
-        // If we are far away, use a "Travel" PID to move fast
-        if (getPositionInDegrees() >= CCW_SOFT_MOVEMENT_LIMIT && getPositionInDegrees() <= CW_SOFT_MOVEMENT_LIMIT) {
-            // Precision: Lower D so it doesn't 'choke' before hitting 0
-            motor.setPID(12.0, 0.02, 0.0, 0.55, 0.12); // 0.0025
-        }
-        else {
-            // Travel: Higher D to prevent slamming into the target area
-            motor.setPID(37.5, 0.03, 0.05, 0.75, 0.12); // 0.075
+        double currentPos = getPositionInDegrees();
+        boolean shouldBeInSlackArea = (currentPos >= CCW_SOFT_MOVEMENT_LIMIT && currentPos <= CW_SOFT_MOVEMENT_LIMIT);
+
+        // Only update the motor if the state has actually CHANGED
+        if (shouldBeInSlackArea != isInSlackArea) {
+            isInSlackArea = shouldBeInSlackArea;
+            
+            if (isInSlackArea) {
+                // Precision values applied ONCE
+                motor.setPID(12.0, 0.02, 0.0, 0.55, 0.12);
+            } else {
+                // Travel values applied ONCE
+                motor.setPID(37.5, 0.03, 0.05, 0.75, 0.12);
+            }
         }
 
         if (RobotContainer.isAimAssistEnabled) {
