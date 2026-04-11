@@ -1,0 +1,98 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.827,
+        "y": 4.071
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.827,
+        "y": 3.3467324220940236
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.167435669920142,
+        "y": 0.4737976929902391
+      },
+      "prevControl": {
+        "x": 8.214823522263142,
+        "y": 0.5384512641225234
+      },
+      "nextControl": {
+        "x": 5.863673469387756,
+        "y": 0.39331854480922757
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.312484472049689,
+        "y": 0.44965394853593577
+      },
+      "prevControl": {
+        "x": 4.312484472049688,
+        "y": 0.44965394853593565
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0053050397878014,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Stow Intake",
+      "waypointRelativePos": 0.34899328859060336,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Stow Intake"
+        }
+      }
+    },
+    {
+      "name": "Intake Off",
+      "waypointRelativePos": 0.3959731543624151,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake Off"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
