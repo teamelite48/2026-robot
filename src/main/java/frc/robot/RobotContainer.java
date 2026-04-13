@@ -173,9 +173,8 @@ public class RobotContainer {
       //   SpindexerCommands.stop(),
       //   ShooterFeedCommands.stop()));
 
-    // pilotController.left
-    //   .whileTrue(TurretCommands.RotateTurretCounterClockwise())
-    //   .onFalse(TurretCommands.stop());
+    pilotController.left
+      .whileTrue(new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
 
     // pilotController.right
     //   .whileTrue(TurretCommands.RotateTurretClockwise())
