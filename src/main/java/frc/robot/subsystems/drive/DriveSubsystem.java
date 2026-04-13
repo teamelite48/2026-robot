@@ -305,6 +305,13 @@ public class DriveSubsystem extends SubsystemBase{
         );
     }
 
+    public void setWheelsToX() {
+        frontLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        frontRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        backLeft.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        backRight.setState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    }
+
     // private void resetOdometry(Pose2d pose) {
 
     //     var degrees = pose.getRotation().getDegrees();
