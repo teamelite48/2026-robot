@@ -217,6 +217,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private double targetRPM = IDLE_RPM;
   private boolean isOnSpeed = false;
 
+  public double rpmAdjust = 0.0;
+
   public ShooterSubsystem(Supplier<Double> feetFromTargetSupplier) {
     this.feetFromTargetSupplier = feetFromTargetSupplier;
 
@@ -272,7 +274,7 @@ public class ShooterSubsystem extends SubsystemBase {
         }
 
         targetRPM = feetToRpmInterpolator.calculate(TurretSubsystem.compensatedDistance * 3.281);
-        leftMotor.setVelocity(targetRPM);
+        leftMotor.setVelocity(targetRPM + rpmAdjust);
         break;
     }
 
@@ -336,6 +338,14 @@ public class ShooterSubsystem extends SubsystemBase {
     else {
       setManualPreset(preset);
     }
+  }
+
+  public void autoRpmBumpUp() {
+    rpmAdjust += RPM_BUMP;
+  }
+
+  public void autoRpmBumpDown() {
+    rpmAdjust -= RPM_BUMP;
   }
 
   public void bumpUpRPM() {
@@ -404,5 +414,7 @@ public class ShooterSubsystem extends SubsystemBase {
     tab.addBoolean("On Speed", this::getIsOnSpeed)
       .withPosition(0, 2)
       .withSize(1, 1);
+
+    tab.addDouble("RPM Adjust", () -> rpmAdjust);
   }
 }

@@ -88,12 +88,19 @@ public class SwerveModule {
             }
         }
 
+        // if (Math.abs(desiredVelocity) < 0.05) {
+        //     driveController.setVelocity(0.0);
+        //     return;
+        // }
+
         if (Math.abs(desiredVelocity) < 0.05) {
             driveController.setVelocity(0.0);
-            return;
+        }
+        else {
+            driveController.setVelocity(desiredVelocity);
         }
 
-        driveController.setVelocity(desiredVelocity);
+        // driveController.setVelocity(desiredVelocity);
         angleController.setAngle(targetAngle);   // IMPORTANT: no normalize here
     }
 

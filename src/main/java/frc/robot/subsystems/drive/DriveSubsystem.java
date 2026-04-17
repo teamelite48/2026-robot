@@ -20,8 +20,9 @@ import frc.robot.RobotContainer;
 import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
+import frc.robot.lib.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.VecBuilder;
 
@@ -77,6 +78,8 @@ public class DriveSubsystem extends SubsystemBase{
 
     private double currX, currY, currRotation = 0.0;
 
+    double trustValue = 4.0;
+
     public DriveSubsystem() {
 
         // this.swerveConfig = getSwerveConfig();
@@ -124,6 +127,22 @@ public class DriveSubsystem extends SubsystemBase{
         //         backRight.getPosition()
         // });
 
+        double[] targetPose = LimelightHelpers.getTargetPose_CameraSpace(""); 
+
+        if (targetPose.length > 0) {
+            // The "Norm" or Euclidean distance to the target
+            double x = targetPose[0];
+            double y = targetPose[1];
+            double z = targetPose[2];
+            
+            double distance = Math.sqrt(x*x + y*y + z*z);
+
+            // Now apply your trust curve
+            if (distance < 1.5) trustValue = 0.5;
+            else if (distance < 4.0) trustValue = 4.0;
+            else trustValue = 20.0;
+        }
+
         poseEstimator = new SwerveDrivePoseEstimator(
             kinematics,
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
@@ -133,7 +152,7 @@ public class DriveSubsystem extends SubsystemBase{
             },
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1), // State std devs (Trust wheels/gyro)
-            VecBuilder.fill(2.0, 2.0, 2.0)  // Vision std devs (Trust vision)
+            VecBuilder.fill(trustValue, trustValue, trustValue)  // Vision std devs (Trust vision)
         );
 
         zeroGyro();
@@ -187,7 +206,7 @@ public class DriveSubsystem extends SubsystemBase{
 
         double speedModifier = SWERVE_CONFIG.getMaxGearSpeed();
 
-        if (gear == Gear.Low) {
+        if (gear == Gear.Low) { // SOTM Limiter = || RobotContainer.isShooting;
             speedModifier = SWERVE_CONFIG.getLowGearSpeed();
         }
 
@@ -211,6 +230,8 @@ public class DriveSubsystem extends SubsystemBase{
         );
 
         setSwerveModuleStates(chassisSpeeds);
+
+        SmartDashboard.putNumber("Drive X (Fwd/Back)", vx);
     }
 
     public void driveRobotRelative(double x, double y) {

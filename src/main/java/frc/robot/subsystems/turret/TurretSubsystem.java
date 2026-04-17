@@ -36,6 +36,7 @@ public class TurretSubsystem extends SubsystemBase {
     boolean isAutoAimOn = false;
     boolean automatedMove = false;
     private boolean isInSlackArea = false;
+    double lastActiveI = -1.0;
 
     // long lastSimulationPeriodicMillis = 0;
     // boolean isTurretEnabled = true;
@@ -76,19 +77,32 @@ public class TurretSubsystem extends SubsystemBase {
     public void periodic() {
 
         double currentPos = getPositionInDegrees();
-        boolean shouldBeInSlackArea = (currentPos >= CCW_SOFT_MOVEMENT_LIMIT && currentPos <= CW_SOFT_MOVEMENT_LIMIT);
+        // boolean shouldBeInSlackArea = (currentPos >= CCW_SOFT_MOVEMENT_LIMIT && currentPos <= CW_SOFT_MOVEMENT_LIMIT);
+        double activeI = 0.0;
 
         // Only update the motor if the state has actually CHANGED
-        if (shouldBeInSlackArea != isInSlackArea) {
-            isInSlackArea = shouldBeInSlackArea;
+        // if (shouldBeInSlackArea != isInSlackArea) {
+        //     isInSlackArea = shouldBeInSlackArea;
             
-            if (isInSlackArea) {
-                // Precision values applied ONCE
-                motor.setPID(12.0, 0.02, 0.0, 0.55, 0.12);
-            } else {
-                // Travel values applied ONCE
-                motor.setPID(37.5, 0.03, 0.05, 0.75, 0.12);
-            }
+        //     if (isInSlackArea) {
+        //         // Precision values applied ONCE
+        //         motor.setPID(12.0, 0.02, 0.0, 0.55, 0.12);
+        //     } else {
+        //         // Travel values applied ONCE
+        //         motor.setPID(37.5, 0.03, 0.05, 0.75, 0.12);
+        //     }
+        // }
+
+        if (Math.abs(currentPos - targetDegrees) < 7.5) {
+            activeI = 0.1;
+        }
+        else {
+            activeI = 0.0;
+        }
+
+        if (lastActiveI != activeI) {
+            motor.setPID(37.5, activeI, 0.05, 0.75, 0.12);
+            lastActiveI = activeI;
         }
 
         if (RobotContainer.isAimAssistEnabled) {
@@ -187,7 +201,7 @@ public class TurretSubsystem extends SubsystemBase {
         double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
 
         // If we are moving backwards (vx is negative)
-        if (fieldSpeeds.vxMetersPerSecond < -0.1) {
+        if (fieldSpeeds.vxMetersPerSecond < -0.25) {
             // Because the flight time is 2s, the penalty is huge. 
             // Add 15-20% extra distance to the shooter's "perceived" target.
             compensatedDistance = effectiveDistance * BACKWARDS_BIAS_MODIFIER;

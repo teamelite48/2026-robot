@@ -225,10 +225,10 @@ public class RobotContainer {
       .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
 
     copilotController.up
-      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpUpRPM()));
+      .onTrue(new InstantCommand(() -> shooterSubsystem.autoRpmBumpUp()));
 
     copilotController.down
-      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpDownRPM()));
+      .onTrue(new InstantCommand(() -> shooterSubsystem.autoRpmBumpDown()));
 
     // copilotController.left
     //   .whileTrue(TurretCommands.RotateTurretCounterClockwise())
@@ -347,6 +347,7 @@ public class RobotContainer {
   }
 
   public static void toggleAimAssist() {
+    shooterSubsystem.rpmAdjust = 0.0;
     isAimAssistEnabled = !isAimAssistEnabled;
     // If we just enabled it, we MUST tell the turret to stop manual mode
     if (isAimAssistEnabled) {

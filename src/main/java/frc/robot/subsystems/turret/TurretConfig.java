@@ -37,7 +37,7 @@ public class TurretConfig {
     public static final double CCW_SOFT_MOVEMENT_LIMIT = -70.0;
     public static final double CW_SOFT_MOVEMENT_LIMIT = 0.0;
 
-    public static final double BACKWARDS_BIAS_MODIFIER = 1.05;
+    public static final double BACKWARDS_BIAS_MODIFIER = 1.075;
 
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
@@ -65,15 +65,15 @@ public class TurretConfig {
         config.positionConversionFactor = (18.0 / 1.0); // ADDED 2:1 REDUCTION // (1.0/90.0) * 360.0;
         config.isBrakeModeEnabled = true;
         config.initialPosition = HOME_POSITION;
-        config.pidParameters = new PIDParameters(5.0, 0.0, 0.1, 0.5, 0.12); // 25.0, 0.0, 1.7, 0.25, 0.12
+        config.pidParameters = new PIDParameters(45.0, 0.05, 0.05, 1.0, 0.12); // 25.0, 0.0, 1.7, 0.25, 0.12
         config.enableFOC = false;
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;  //40
         config.statorCurrentLimit = 100;  //100
-        config.motionMagicCruiseVelocity = 1.5; //2.5  // rotations/sec  (smooth start)
-        config.motionMagicAcceleration = 3.0; //6.0   // rotations/sec^2 (smooth stop)
-        config.motionMagicJerk = 35.0; //100.0           // change if overshooting
+        config.motionMagicCruiseVelocity = 15.0; //1.5  // rotations/sec  (smooth start)
+        config.motionMagicAcceleration = 70.0; //3.0   // rotations/sec^2 (smooth stop)
+        config.motionMagicJerk = 0.0; //35.0           // change if overshooting
 
         return config;
     }
