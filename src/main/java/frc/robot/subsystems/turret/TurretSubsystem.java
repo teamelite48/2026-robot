@@ -185,7 +185,7 @@ public class TurretSubsystem extends SubsystemBase {
             robotPose.getRotation()
         );
 
-        double predictionTime = 0.12; // Adjust this "Lookahead" to fix the lag
+        double predictionTime = 0.10; // Adjust this "Lookahead" to fix the lag. Lower number = shooting ahead, higher number = shooting behind.
         Translation2d futureRobotTranslation = robotPose.getTranslation().plus(
             new Translation2d(
                 fieldSpeeds.vxMetersPerSecond * predictionTime,
