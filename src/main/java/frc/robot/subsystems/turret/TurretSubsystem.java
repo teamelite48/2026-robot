@@ -185,18 +185,17 @@ public class TurretSubsystem extends SubsystemBase {
             robotPose.getRotation()
         );
 
-        double predictionTime = 0.10; // Adjust this "Lookahead" to fix the lag. Lower number = shooting ahead, higher number = shooting behind.
         Translation2d futureRobotTranslation = robotPose.getTranslation().plus(
             new Translation2d(
-                fieldSpeeds.vxMetersPerSecond * predictionTime,
-                fieldSpeeds.vyMetersPerSecond * predictionTime
+                fieldSpeeds.vxMetersPerSecond * PREDICTION_TIME,
+                fieldSpeeds.vyMetersPerSecond * PREDICTION_TIME
             )
         );
 
         Translation2d targetLocation = getDynamicTarget();
 
-        double distance = robotPose.getTranslation().getDistance(targetLocation);
-        double flightTime = (distance / AVERAGE_FUEL_VELOCITY) + 0.1;
+        double distance = futureRobotTranslation.getDistance(targetLocation);
+        double flightTime = (distance / AVERAGE_FUEL_VELOCITY) + LATENCY_COMPENSATION;
 
         double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
         double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
@@ -211,7 +210,7 @@ public class TurretSubsystem extends SubsystemBase {
         double effectiveDistance = futureRobotTranslation.getDistance(compensatedTarget);
 
         // If we are moving backwards (vx is negative)
-        if (fieldSpeeds.vxMetersPerSecond < -0.25) {
+        if (fieldSpeeds.vxMetersPerSecond < BACKWARDS_MOVEMENT_THRESHOLD) {
             // Because the flight time is 2s, the penalty is huge. 
             // Add 15-20% extra distance to the shooter's "perceived" target.
             compensatedDistance = effectiveDistance * BACKWARDS_BIAS_MODIFIER;
