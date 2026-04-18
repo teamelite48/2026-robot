@@ -185,10 +185,18 @@ public class TurretSubsystem extends SubsystemBase {
             robotPose.getRotation()
         );
 
+        double predictionTime = 0.12; // Adjust this "Lookahead" to fix the lag
+        Translation2d futureRobotTranslation = robotPose.getTranslation().plus(
+            new Translation2d(
+                fieldSpeeds.vxMetersPerSecond * predictionTime,
+                fieldSpeeds.vyMetersPerSecond * predictionTime
+            )
+        );
+
         Translation2d targetLocation = getDynamicTarget();
 
         double distance = robotPose.getTranslation().getDistance(targetLocation);
-        double flightTime = distance / AVERAGE_FUEL_VELOCITY;
+        double flightTime = (distance / AVERAGE_FUEL_VELOCITY) + 0.1;
 
         double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
         double driftY = fieldSpeeds.vyMetersPerSecond * flightTime;
@@ -198,7 +206,9 @@ public class TurretSubsystem extends SubsystemBase {
             targetLocation.getY() - driftY
         );
 
-        double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
+        // double effectiveDistance = robotPose.getTranslation().getDistance(compensatedTarget);
+
+        double effectiveDistance = futureRobotTranslation.getDistance(compensatedTarget);
 
         // If we are moving backwards (vx is negative)
         if (fieldSpeeds.vxMetersPerSecond < -0.25) {
@@ -211,7 +221,10 @@ public class TurretSubsystem extends SubsystemBase {
         }
 
         // 1. Get field-relative direction to Hub
-        Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
+        // Translation2d robotToTarget = compensatedTarget.minus(robotPose.getTranslation());
+        // double fieldRelativeAngle = robotToTarget.getAngle().getDegrees();
+
+        Translation2d robotToTarget = compensatedTarget.minus(futureRobotTranslation);
         double fieldRelativeAngle = robotToTarget.getAngle().getDegrees();
 
         // 2. Subtract robot heading to get angle relative to robot front
