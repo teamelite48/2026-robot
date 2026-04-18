@@ -78,8 +78,6 @@ public class DriveSubsystem extends SubsystemBase{
 
     private double currX, currY, currRotation = 0.0;
 
-    double trustValue = 4.0;
-
     public DriveSubsystem() {
 
         // this.swerveConfig = getSwerveConfig();
@@ -126,23 +124,7 @@ public class DriveSubsystem extends SubsystemBase{
         //         backLeft.getPosition(),
         //         backRight.getPosition()
         // });
-
-        double[] targetPose = LimelightHelpers.getTargetPose_CameraSpace(""); 
-
-        if (targetPose.length > 0) {
-            // The "Norm" or Euclidean distance to the target
-            double x = targetPose[0];
-            double y = targetPose[1];
-            double z = targetPose[2];
-            
-            double distance = Math.sqrt(x*x + y*y + z*z);
-
-            // Now apply your trust curve
-            if (distance < 1.5) trustValue = 0.5;
-            else if (distance < 4.0) trustValue = 4.0;
-            else trustValue = 20.0;
-        }
-
+    
         poseEstimator = new SwerveDrivePoseEstimator(
             kinematics,
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
@@ -152,7 +134,7 @@ public class DriveSubsystem extends SubsystemBase{
             },
             new Pose2d(),
             VecBuilder.fill(0.1, 0.1, 0.1), // State std devs (Trust wheels/gyro)
-            VecBuilder.fill(trustValue, trustValue, trustValue)  // Vision std devs (Trust vision)
+            VecBuilder.fill(4.0, 4.0, 4.0)  // Vision std devs (Trust vision)
         );
 
         zeroGyro();
@@ -200,6 +182,7 @@ public class DriveSubsystem extends SubsystemBase{
     public void periodic() {
         updateOdometry();
         field.setRobotPose(getPose());
+        updateVision();
     }
 
     public void drive(double x, double y, double rotation) {
@@ -232,6 +215,36 @@ public class DriveSubsystem extends SubsystemBase{
         setSwerveModuleStates(chassisSpeeds);
 
         SmartDashboard.putNumber("Drive X (Fwd/Back)", vx);
+    }
+
+    private void updateVision() {
+
+        String[] limelights = {"limelight-left", "limelight-right"};
+        
+        for (String name : limelights) {
+            double[] targetPose = LimelightHelpers.getTargetPose_CameraSpace(name); 
+    
+            if (targetPose.length > 0 && targetPose[0] != 0) {
+                // The "Norm" or Euclidean distance to the target
+                double x = targetPose[0];
+                double y = targetPose[1];
+                double z = targetPose[2];
+                
+                double distance = Math.sqrt(x*x + y*y + z*z);
+    
+                // Now apply your trust curve
+                double trustValue;
+                
+                if (distance < 1.5) trustValue = 0.5;
+                else if (distance < 4.0) trustValue = 4.0;
+                else trustValue = 20.0;
+
+                var result = LimelightHelpers.getBotPoseEstimate_wpiBlue(name);
+
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(trustValue, trustValue, trustValue));
+                poseEstimator.addVisionMeasurement(result.pose, result.timestampSeconds);
+            }
+        }
     }
 
     public void driveRobotRelative(double x, double y) {
