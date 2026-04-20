@@ -1,6 +1,7 @@
 package frc.robot.subsystems.turret;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -35,7 +36,6 @@ public class TurretSubsystem extends SubsystemBase {
     boolean isAutoAimEnabled = true;
     boolean isAutoAimOn = false;
     boolean automatedMove = false;
-    private boolean isInSlackArea = false;
     double lastActiveI = -1.0;
 
     // long lastSimulationPeriodicMillis = 0;
@@ -165,7 +165,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void autoAim() {
         automatedMove = false;
-        isManualControl = false;
+        isManualControl = false; // Try bumping this slightly for rotation
 
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
         ChassisSpeeds robotRelativeSpeeds = RobotContainer.driveSubsystem.getChassisSpeeds();
@@ -187,10 +187,12 @@ public class TurretSubsystem extends SubsystemBase {
 
         Translation2d futureRobotTranslation = robotPose.getTranslation().plus(
             new Translation2d(
-                fieldSpeeds.vxMetersPerSecond * PREDICTION_TIME,
-                fieldSpeeds.vyMetersPerSecond * PREDICTION_TIME
+                fieldSpeeds.vxMetersPerSecond * STRAFE_PREDICTION_TIME,
+                fieldSpeeds.vyMetersPerSecond * STRAFE_PREDICTION_TIME
             )
         );
+
+        Rotation2d futureRotation = robotPose.getRotation().plus(Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond * ROTATION_PREDICTION_TIME));
 
         Translation2d targetLocation = getDynamicTarget();
 
@@ -227,7 +229,9 @@ public class TurretSubsystem extends SubsystemBase {
         double fieldRelativeAngle = robotToTarget.getAngle().getDegrees();
 
         // 2. Subtract robot heading to get angle relative to robot front
-        double robotRelativeAngle = fieldRelativeAngle - robotPose.getRotation().getDegrees();
+        // double robotRelativeAngle = fieldRelativeAngle - robotPose.getRotation().getDegrees();
+
+        double robotRelativeAngle = fieldRelativeAngle - futureRotation.getDegrees();
 
         // 3. Apply your "Zero is Right" offset
         // Since Right is -90 in field terms, we add 90 to make it your 0.

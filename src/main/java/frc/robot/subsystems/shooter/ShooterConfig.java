@@ -33,21 +33,23 @@ public class ShooterConfig {
     // We only take into account the horizontal part of the flight vector (in m/s)
     public static final double AVERAGE_FUEL_VELOCITY = 3.0;
 
+    public static final double RPM_MODIFIER = 100.0;
+
     public static final HashMap<Integer, Double> FEET_TO_RPM_MAP = new HashMap<Integer, Double>() {{
-        put(3, 2300.0 + 100.0); // 2400
-        put(2, 2300.0 + 100.0); // 2400
-        put(4, 2300.0 + 100.0); // 2400
-        put(5, 2300.0 + 100.0); // 2400
-        put(6, 2400.0 + 100.0); // 2500
-        put(7, 2500.0 + 100.0); // 2600
-        put(8, 2600.0 + 100.0); // 2700
-        put(9, 2700.0 + 100.0); // 2800
-        put(10, 2800.0 + 100.0); // 2900
-        put(11, 2900.0 + 100.0); // 3000
-        put(12, 3000.0 + 100.0); // 3100
-        put(13, 3100.0 + 100.0); // 3200
-        put(14, 3200.0 + 100.0); // 3300
-        put(15, 3500.0 + 50.0); // 3600
+        put(3, 2300.0 + RPM_MODIFIER); // 2400
+        put(2, 2300.0 + RPM_MODIFIER); // 2400
+        put(4, 2300.0 + RPM_MODIFIER); // 2400
+        put(5, 2300.0 + RPM_MODIFIER); // 2400
+        put(6, 2400.0 + RPM_MODIFIER); // 2500
+        put(7, 2500.0 + RPM_MODIFIER); // 2600
+        put(8, 2600.0 + RPM_MODIFIER); // 2700
+        put(9, 2700.0 + RPM_MODIFIER); // 2800
+        put(10, 2800.0 + RPM_MODIFIER); // 2900
+        put(11, 2900.0 + RPM_MODIFIER); // 3000
+        put(12, 3000.0 + RPM_MODIFIER); // 3100
+        put(13, 3100.0 + RPM_MODIFIER); // 3200
+        put(14, 3200.0 + RPM_MODIFIER); // 3300
+        put(15, 3500.0 + (RPM_MODIFIER / 2)); // 3600
         put(16, 3600.0); // 3700
         put(17, 3700.0); // 3800
         put(18, 3800.0); // 3900

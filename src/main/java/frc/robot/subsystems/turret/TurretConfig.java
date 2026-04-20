@@ -36,7 +36,8 @@ public class TurretConfig {
     public static final double CCW_SOFT_MOVEMENT_LIMIT = -70.0;
     public static final double CW_SOFT_MOVEMENT_LIMIT = 0.0;
 
-    public static final double PREDICTION_TIME = 0.10; // Adjust this "Lookahead" to fix the lag. Lower number = shooting ahead, higher number = shooting behind.
+    public static final double STRAFE_PREDICTION_TIME = 0.10; // Adjust this "Lookahead" to fix the lag. Lower number = shooting ahead, higher number = shooting behind.
+    public static final double ROTATION_PREDICTION_TIME = 0.12; // Adjust this for rotation prediction
     public static final double LATENCY_COMPENSATION = 0.1;
     public static final double BACKWARDS_MOVEMENT_THRESHOLD = -0.25;
     public static final double BACKWARDS_BIAS_MODIFIER = 1.075;
