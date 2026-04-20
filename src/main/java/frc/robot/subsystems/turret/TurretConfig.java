@@ -10,7 +10,6 @@ public class TurretConfig {
 
     public static final double TURRET_ENCODER_OFFSET_DEGREES = 101.0; // 109.95;  //126.9
 
-
     public static final double inputDeadzone = 0.2;
     public static final double FEED_FORWARD_VOLTS = 2.0;
     public static final double DEGREES_TOLERANCE = 2.5;
@@ -52,7 +51,6 @@ public class TurretConfig {
     public static final Translation2d BLUE_RIGHT_PASS_AREA = new Translation2d(2.001647, 2.017268);
     public static final Translation2d RED_LEFT_PASS_AREA = new Translation2d(14.539341, 2.017268);
     public static final Translation2d RED_RIGHT_PASS_AREA = new Translation2d(14.539341, 6.051804);
-        
 
     public static final double BLUE_TRENCH_LINE = 4.333294;
     public static final double RED_TRENCH_LINE = 12.887694;

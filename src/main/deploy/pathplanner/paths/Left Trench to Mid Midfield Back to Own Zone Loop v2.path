@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 8.221712511091393,
-        "y": 5.350834072759539
+        "x": 8.19756876663709,
+        "y": 5.535936113575865
       },
       "prevControl": {
-        "x": 8.978216503992902,
-        "y": 6.574117125110913
+        "x": 9.847391304347827,
+        "y": 7.000656610470274
       },
       "nextControl": {
-        "x": 7.706446772121769,
-        "y": 4.517638409744827
+        "x": 7.581873245487113,
+        "y": 4.989318626506129
       },
       "isLocked": false,
       "linkedName": null
@@ -80,32 +80,32 @@
     },
     {
       "anchor": {
-        "x": 6.072919254658385,
-        "y": 4.063167701863353
+        "x": 7.996370896184562,
+        "y": 6.3487755102040815
       },
       "prevControl": {
-        "x": 5.625422201989117,
-        "y": 4.589099369502413
+        "x": 7.5488738435152944,
+        "y": 6.874707177843141
       },
       "nextControl": {
-        "x": 6.520416307327652,
-        "y": 3.5372360342242937
+        "x": 8.44386794885383,
+        "y": 5.822843842565022
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.521543921916594,
-        "y": 4.843815439219165
+        "x": 6.217781721384206,
+        "y": 4.505803016858917
       },
       "prevControl": {
-        "x": 7.449112688553684,
-        "y": 4.529946761313219
+        "x": 7.7820880375523505,
+        "y": 0.003653131301817325
       },
       "nextControl": {
-        "x": 7.6874208420641565,
-        "y": 5.562615426525272
+        "x": 5.5578527062999115,
+        "y": 6.405110913930789
       },
       "isLocked": false,
       "linkedName": null
@@ -167,7 +167,15 @@
     },
     {
       "waypointRelativePos": 5.5066312997347495,
-      "rotationDegrees": 0.0
+      "rotationDegrees": -120.85946561727275
+    },
+    {
+      "waypointRelativePos": 5.76127320954907,
+      "rotationDegrees": 169.47471040863144
+    },
+    {
+      "waypointRelativePos": 5.899204244031834,
+      "rotationDegrees": 130.30245104477464
     },
     {
       "waypointRelativePos": 6.25,
@@ -180,7 +188,7 @@
       "minWaypointRelativePos": 1.822147651006706,
       "maxWaypointRelativePos": 3.261744966442955,
       "constraints": {
-        "maxVelocity": 0.8,
+        "maxVelocity": 0.9,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -193,7 +201,7 @@
       "minWaypointRelativePos": 0.5234899328859057,
       "maxWaypointRelativePos": 1.3389261744966436,
       "constraints": {
-        "maxVelocity": 2.75,
+        "maxVelocity": 3.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -206,7 +214,7 @@
       "minWaypointRelativePos": 4.322147651006717,
       "maxWaypointRelativePos": 6.25,
       "constraints": {
-        "maxVelocity": 2.75,
+        "maxVelocity": 3.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -245,7 +253,7 @@
       "minWaypointRelativePos": 6.590604026845638,
       "maxWaypointRelativePos": 8.0,
       "constraints": {
-        "maxVelocity": 0.8,
+        "maxVelocity": 0.9,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -592,7 +600,7 @@
     },
     {
       "name": "Stop Everything",
-      "waypointRelativePos": 6.35,
+      "waypointRelativePos": 6.21476510067114,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -616,7 +624,7 @@
     },
     {
       "name": "Stow Intake",
-      "waypointRelativePos": 6.45,
+      "waypointRelativePos": 6.25503355704698,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -640,7 +648,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 6.684563758389261,
+      "waypointRelativePos": 6.617449664429531,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
