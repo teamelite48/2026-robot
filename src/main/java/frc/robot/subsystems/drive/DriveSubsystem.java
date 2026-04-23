@@ -235,13 +235,18 @@ public class DriveSubsystem extends SubsystemBase{
                 // Now apply your trust curve
                 double trustValue;
                 
-                if (distance < 1.5) trustValue = 0.5;
-                else if (distance < 4.0) trustValue = 4.0;
+                if (distance <= 1.5) trustValue = 0.5;
+                else if (distance <= 4.0) trustValue = 4.0;
                 else trustValue = 20.0;
 
                 var result = LimelightHelpers.getBotPoseEstimate_wpiBlue(name);
-
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(trustValue, trustValue, trustValue));
+                
+                if (LimelightHelpers.getTargetCount(name) < 2) {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(4.0, 4.0, 4.0));
+                }
+                else {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(trustValue, trustValue, trustValue));
+                }
                 poseEstimator.addVisionMeasurement(result.pose, result.timestampSeconds);
             }
         }

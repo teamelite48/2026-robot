@@ -72,7 +72,7 @@ public class TurretConfig {
         config.forwardLimit = motorForwardLimit;
         config.reverseLimit = motorBackwardsLimit;
         config.supplyCurrentLimit = 40;  //40
-        config.statorCurrentLimit = 100;  //100
+        config.statorCurrentLimit = 60;  //100
         config.motionMagicCruiseVelocity = 15.0; //1.5  // rotations/sec  (smooth start)
         config.motionMagicAcceleration = 70.0; //3.0   // rotations/sec^2 (smooth stop)
         config.motionMagicJerk = 0.0; //35.0           // change if overshooting
