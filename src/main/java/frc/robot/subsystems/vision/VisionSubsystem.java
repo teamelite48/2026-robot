@@ -40,6 +40,7 @@ public class VisionSubsystem extends SubsystemBase {
   final NetworkTableEntry ty;
   final NetworkTableEntry ta;
   final NetworkTableEntry tv;
+  final NetworkTableEntry tz;
   final NetworkTableEntry ledMode;
   final NetworkTableEntry pipeline;
   final double[] botpose;
@@ -59,6 +60,7 @@ public class VisionSubsystem extends SubsystemBase {
     this.ty = table.getEntry("ty");
     this.ta = table.getEntry("ta");
     this.tv = table.getEntry("tv");
+    this.tz = table.getEntry("tz");
     this.ledMode = table.getEntry("ledMode");
     this.pipeline = table.getEntry("pipeline");
     this.botpose = table.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
@@ -168,6 +170,16 @@ public class VisionSubsystem extends SubsystemBase {
     double distanceInches = heightDifferenceInches / Math.tan(angleRadians);
 
     distanceFromTargetFeet = distanceInches / 12.0;
+  }
+
+  public boolean doWeIgnoreVisionData() {
+
+    if (Math.abs(tz.getDouble(0.0)) > 0.5) {
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   // private void initDashboard(String tabName) {

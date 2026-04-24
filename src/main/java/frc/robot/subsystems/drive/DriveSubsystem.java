@@ -21,6 +21,7 @@ import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
 import frc.robot.lib.LimelightHelpers;
+import frc.robot.subsystems.vision.VisionSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -239,15 +240,21 @@ public class DriveSubsystem extends SubsystemBase{
                 else if (distance <= 4.0) trustValue = 4.0;
                 else trustValue = 20.0;
 
+                boolean zLeftHigh = RobotContainer.leftLimelight.doWeIgnoreVisionData();
+                boolean zRightHigh = RobotContainer.rightLimelight.doWeIgnoreVisionData();
+
                 var result = LimelightHelpers.getBotPoseEstimate_wpiBlue(name);
+
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(trustValue, trustValue, trustValue));
+                poseEstimator.addVisionMeasurement(result.pose, result.timestampSeconds);
                 
                 if (LimelightHelpers.getTargetCount(name) < 2) {
-                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(4.0, 4.0, 4.0));
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(8.0, 8.0, 8.0));
                 }
-                else {
-                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(trustValue, trustValue, trustValue));
+                
+                if (zLeftHigh || zRightHigh == true) {
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(10000.0, 10000.0, 10000.0));
                 }
-                poseEstimator.addVisionMeasurement(result.pose, result.timestampSeconds);
             }
         }
     }
