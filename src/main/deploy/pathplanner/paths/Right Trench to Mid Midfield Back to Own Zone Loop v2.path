@@ -96,16 +96,16 @@
     },
     {
       "anchor": {
-        "x": 5.606140195208518,
-        "y": 2.6789263531499548
+        "x": 6.04072759538598,
+        "y": 2.477728482697427
       },
       "prevControl": {
-        "x": 7.658358473824313,
-        "y": 3.3790949423247563
+        "x": 8.190488557139098,
+        "y": 2.76121344468685
       },
       "nextControl": {
-        "x": 3.271652812379619,
-        "y": 1.8824541872436238
+        "x": 4.57600709849157,
+        "y": 2.2845785270629984
       },
       "isLocked": false,
       "linkedName": null
@@ -364,7 +364,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 1.838926174496644,
+      "waypointRelativePos": 1.8120805369127517,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -652,7 +652,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 6.416107382550334,
+      "waypointRelativePos": 6.510067114093963,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
