@@ -16,6 +16,11 @@ public class FieldData {
      * Call this inside robotPeriodic() to ensure real-time updates.
      */
     public static void update() {
+
+        double matchTime = DriverStation.getMatchTime();
+        String currentShiftName = "None";
+        double shiftTimeRemaining = 0;
+
         // 1. Match Time
         double time = DriverStation.getMatchTime();
         SmartDashboard.putNumber("Field/Match Time", time);
@@ -35,13 +40,47 @@ public class FieldData {
         if (gameMessage != null && !gameMessage.isEmpty()) {
             currentShift = gameMessage.toUpperCase();
         }
-        
-        SmartDashboard.putString("Field/Current Shift", currentShift);
 
         // 4. Scoring Eligibility 
         // Example: logic to see if our alliance can currently score based on the shift
         boolean canScore = isOurShift(alliance, currentShift);
         SmartDashboard.putBoolean("Field/Can Score", canScore);
+
+        if (DriverStation.isAutonomous()) {
+            currentShiftName = "AUTONOMOUS";
+            shiftTimeRemaining = matchTime; // 20 -> 0
+        } 
+        else if (DriverStation.isTeleop()) {
+            // Teleop logic ladder based on your 140s total window
+            if (matchTime > 130) {
+                currentShiftName = "TRANSITION";
+                shiftTimeRemaining = matchTime - 130; // 140 -> 130 (10s)
+            }
+            else if (matchTime > 105) {
+                currentShiftName = "SHIFT 1";
+                shiftTimeRemaining = matchTime - 105; // 130 -> 105 (25s)
+            }
+            else if (matchTime > 80) {
+                currentShiftName = "SHIFT 2";
+                shiftTimeRemaining = matchTime - 80;  // 105 -> 80 (25s)
+            }
+            else if (matchTime > 55) {
+                currentShiftName = "SHIFT 3";
+                shiftTimeRemaining = matchTime - 55;  // 80 -> 55 (25s)
+            }
+            else if (matchTime > 30) {
+                currentShiftName = "SHIFT 4";
+                shiftTimeRemaining = matchTime - 30;  // 55 -> 30 (25s)
+            }
+            else {
+                currentShiftName = "ENDGAME";
+                shiftTimeRemaining = matchTime;       // 30 -> 0 (30s)
+            }
+        }
+
+        SmartDashboard.putNumber("Field/Shift Timer", Math.max(0, shiftTimeRemaining));
+        SmartDashboard.putString("Field/Current Shift", currentShiftName);
+
     }
 
     /**
