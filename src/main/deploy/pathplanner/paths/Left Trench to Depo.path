@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.11826403695563048,
-        "y": 7.4110000000000005
+        "x": 0.1070000000000002,
+        "y": 7.159111111111111
       },
       "isLocked": false,
       "linkedName": null
@@ -20,28 +20,28 @@
         "y": 5.255455665013829
       },
       "prevControl": {
-        "x": 0.4138478825623786,
-        "y": 6.311129043278029
+        "x": 0.7999999999999998,
+        "y": 6.379537396640716
       },
       "nextControl": {
-        "x": 1.2021915161358887,
-        "y": 4.1559333333333335
+        "x": 0.8000000000000002,
+        "y": 4.155245721197316
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.427188888888889,
-        "y": 6.111022222222221
+        "x": 1.3768,
+        "y": 6.4839
       },
       "prevControl": {
-        "x": 1.6892111111111108,
-        "y": 5.355188888888888
+        "x": 1.2558666666666667,
+        "y": 5.859077777777778
       },
       "nextControl": {
-        "x": 1.0941896253339438,
-        "y": 7.071597020938411
+        "x": 1.5699871947129185,
+        "y": 7.482033839350079
       },
       "isLocked": false,
       "linkedName": null
@@ -63,13 +63,13 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.26978417266188837,
-      "rotationDegrees": -123.84202870961819
+      "rotationDegrees": -156.14126716559772
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.8,
+      "minWaypointRelativePos": 0.5,
       "maxWaypointRelativePos": 3.0,
       "constraints": {
         "maxVelocity": 0.9,
@@ -85,73 +85,107 @@
   "eventMarkers": [
     {
       "name": "Deploy",
-      "waypointRelativePos": 0.27,
+      "waypointRelativePos": 0.13,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "deadline",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.1
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Deploy"
+              }
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Intake",
       "waypointRelativePos": 0.27,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake"
+        }
+      }
     },
     {
       "name": "Aim Assist",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 1.4,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Aim Assist"
+        }
+      }
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 1.45,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "deadline",
         "data": {
           "commands": [
             {
-              "type": "deadline",
+              "type": "wait",
+              "data": {
+                "waitTime": 7.0
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            },
+            {
+              "type": "sequential",
               "data": {
                 "commands": [
                   {
+                    "type": "deadline",
+                    "data": {
+                      "commands": [
+                        {
+                          "type": "wait",
+                          "data": {
+                            "waitTime": 0.33
+                          }
+                        },
+                        {
+                          "type": "named",
+                          "data": {
+                            "name": "Agitate In"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
                     "type": "wait",
                     "data": {
-                      "waitTime": 7.0
+                      "waitTime": 0.33
                     }
                   },
                   {
-                    "type": "named",
-                    "data": {
-                      "name": "Shoot"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "Intake"
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate In"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -170,7 +204,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -189,7 +229,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -208,7 +254,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -227,7 +279,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -246,7 +304,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -265,7 +329,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -284,7 +354,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -303,7 +379,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -322,7 +404,13 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.33
+                    }
+                  },
+                  {
+                    "type": "deadline",
                     "data": {
                       "commands": [
                         {
@@ -341,193 +429,9 @@
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "wait",
                     "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate Out"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate In"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate Out"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate In"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate Out"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate In"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate Out"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate In"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate Out"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 0.33
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Agitate In"
-                          }
-                        }
-                      ]
+                      "waitTime": 0.33
                     }
                   }
                 ]
@@ -541,7 +445,25 @@
       "name": "Stop Everything",
       "waypointRelativePos": 2.99,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "deadline",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.33
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Everything"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
