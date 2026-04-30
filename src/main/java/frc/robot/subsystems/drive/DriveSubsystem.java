@@ -220,7 +220,7 @@ public class DriveSubsystem extends SubsystemBase{
 
     private void updateVision() {
 
-        String[] limelights = {"limelight-left", "limelight-right"};
+        String[] limelights = {"limelight-left", "limelight-right", "limelight-rear"};
         
         for (String name : limelights) {
             double[] targetPose = LimelightHelpers.getTargetPose_CameraSpace(name); 
