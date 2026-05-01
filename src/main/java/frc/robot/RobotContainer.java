@@ -387,6 +387,7 @@ public class RobotContainer {
       new InstantCommand(() -> spindexerSubsystem.stop()),
       new InstantCommand(() -> intakeSubsystem.stop())
     ));
+    NamedCommands.registerCommand("X Mode", new InstantCommand(() -> driveSubsystem.setWheelsToX()));
     // NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
 
     var autoChooser = AutoBuilder.buildAutoChooser();
