@@ -16,13 +16,15 @@ public class ShooterConfig {
         LOW,
         MEDIUM,
         HIGH,
-        PASS
+        PASS,
+        DEMO
     }
 
     public static final double LOW_RPM = 2000.0;
     public static final double MEDIUM_RPM = 2850.0;
     public static final double HIGH_RPM = 3300.0;
     public static final double PASS_RPM = 4400.0;
+    public static final double DEMO_RPM = 2300.0;
 
     public static final double ON_SPEED_TOLERANCE_RPM = 200.0;
 

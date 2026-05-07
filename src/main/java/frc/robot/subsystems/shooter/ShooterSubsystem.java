@@ -256,22 +256,22 @@ public class ShooterSubsystem extends SubsystemBase {
         Pose2d robotPose = RobotContainer.driveSubsystem.getPose();
         boolean isBlue = DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue;
 
-        if (isBlue) {
-          // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
-          if (robotPose.getX() > TurretConfig.BLUE_TRENCH_LINE) {
-              targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
-              leftMotor.setVelocity(targetRPM);
-              break;
-          }
-        }
-        else {
-          // RED STRATEGY: If we are past the trench line, aim the turret for passing
-          if (robotPose.getX() < TurretConfig.RED_TRENCH_LINE) {
-              targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
-              leftMotor.setVelocity(targetRPM);
-              break;
-          }
-        }
+        // if (isBlue) {
+        //   // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
+        //   if (robotPose.getX() > TurretConfig.BLUE_TRENCH_LINE) {
+        //       targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
+        //       leftMotor.setVelocity(targetRPM);
+        //       break;
+        //   }
+        // }
+        // else {
+        //   // RED STRATEGY: If we are past the trench line, aim the turret for passing
+        //   if (robotPose.getX() < TurretConfig.RED_TRENCH_LINE) {
+        //       targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
+        //       leftMotor.setVelocity(targetRPM);
+        //       break;
+        //   }
+        // }
 
         targetRPM = feetToRpmInterpolator.calculate(TurretSubsystem.compensatedDistance * 3.281);
         leftMotor.setVelocity(targetRPM + rpmAdjust);
@@ -304,6 +304,9 @@ public class ShooterSubsystem extends SubsystemBase {
         break;
       case PASS:
         manualTargetRPM = PASS_RPM;
+        break;
+      case DEMO:
+        manualTargetRPM = DEMO_RPM;
         break;
     }
 
@@ -348,21 +351,21 @@ public class ShooterSubsystem extends SubsystemBase {
     rpmAdjust -= RPM_BUMP;
   }
 
-  public void bumpUpRPM() {
-    if (shooterMode != ShooterMode.MANUAL) {
-      shooterMode = ShooterMode.MANUAL;
-      manualTargetRPM = targetRPM;
-    }
-    manualTargetRPM += RPM_BUMP;
-  }
+  // public void bumpUpRPM() {
+  //   if (shooterMode != ShooterMode.MANUAL) {
+  //     shooterMode = ShooterMode.MANUAL;
+  //     manualTargetRPM = targetRPM;
+  //   }
+  //   manualTargetRPM += RPM_BUMP;
+  // }
 
-  public void bumpDownRPM() {
-    if (shooterMode != ShooterMode.MANUAL) {
-      shooterMode = ShooterMode.MANUAL;
-      manualTargetRPM = targetRPM;
-    }
-    manualTargetRPM -= RPM_BUMP;
-  }
+  // public void bumpDownRPM() {
+  //   if (shooterMode != ShooterMode.MANUAL) {
+  //     shooterMode = ShooterMode.MANUAL;
+  //     manualTargetRPM = targetRPM;
+  //   }
+  //   manualTargetRPM -= RPM_BUMP;
+  // }
 
   public boolean isShooterOn() {
     return shooterMode != ShooterMode.OFF && shooterMode != ShooterMode.IDLE;

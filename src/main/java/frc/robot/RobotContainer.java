@@ -165,7 +165,7 @@ public class RobotContainer {
       .onFalse(IntakeCommands.stop());
 
     pilotController.r2
-      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
+      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.DEMO));
       // .whileTrue(Commands.parallel(
       //   SpindexerCommands.FeedTowardsFeed(),
       //   ShooterFeedCommands.FeedTowardsShooter()))
@@ -222,7 +222,7 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> toggleAimAssist()));
 
     copilotController.r2
-      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
+      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.DEMO));
 
     copilotController.up
       .onTrue(new InstantCommand(() -> shooterSubsystem.autoRpmBumpUp()));
@@ -303,12 +303,12 @@ public class RobotContainer {
       // .onTrue(ShooterCommands.idleShooter());
 
     testController.l1
-      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpDownRPM()));
+      .onTrue(new InstantCommand(() -> shooterSubsystem.autoRpmBumpDown()));
       // .whileTrue(DeployCommands.retract())
       // .onFalse(DeployCommands.stop());
 
     testController.r1
-      .onTrue(new InstantCommand(() -> shooterSubsystem.bumpUpRPM()));
+      .onTrue(new InstantCommand(() -> shooterSubsystem.autoRpmBumpUp()));
       // .whileTrue(DeployCommands.extend())
       // .onFalse(DeployCommands.stop());
 
@@ -339,8 +339,8 @@ public class RobotContainer {
     testController.touchpad
       .onTrue(new InstantCommand(() -> turretSubsystem.moveToDegrees(TurretConfig.HOME_POSITION), turretSubsystem));
 
-     testController.l3
-      .onTrue(TurretCommands.moveTo90());
+    // testController.l3
+    //   .onTrue(TurretCommands.moveTo90());
 
       // testController.share
     //   .onTrue(ShooterCommands.stop());

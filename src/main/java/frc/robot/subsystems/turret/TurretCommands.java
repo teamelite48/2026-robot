@@ -12,16 +12,16 @@ public class TurretCommands {
 
   static final TurretSubsystem turretSubsystem = RobotContainer.turretSubsystem;
 
-  public static Command RotateTurretClockwise() {
-    return Commands.run(() -> turretSubsystem.rotateClockwise(), turretSubsystem);
-  }
+  // public static Command RotateTurretClockwise() {
+  //   return Commands.run(() -> turretSubsystem.rotateClockwise(), turretSubsystem);
+  // }
 
   // @Override
   // public void initialize() {}
 
-  public static Command RotateTurretCounterClockwise() {
-    return Commands.run(() -> turretSubsystem.rotateCounterClockwise(), turretSubsystem);
-  }
+  // public static Command RotateTurretCounterClockwise() {
+  //   return Commands.run(() -> turretSubsystem.rotateCounterClockwise(), turretSubsystem);
+  // }
 
   public static Command moveToSafeState() {
     return new MoveTurretToDegrees(HOME_POSITION);

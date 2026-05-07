@@ -270,16 +270,16 @@ public class TurretSubsystem extends SubsystemBase {
 
         if (isBlue) {
             // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
-            if (robotPose.getX() > BLUE_TRENCH_LINE) {
-                return (robotPose.getY() >= Y_CENTER_LINE) ? BLUE_LEFT_PASS_AREA : BLUE_RIGHT_PASS_AREA;
-            }
+            // if (robotPose.getX() > BLUE_TRENCH_LINE) {
+            //     return (robotPose.getY() >= Y_CENTER_LINE) ? BLUE_LEFT_PASS_AREA : BLUE_RIGHT_PASS_AREA;
+            // }
             return BLUE_HUB_LOCATION; // Standard scoring
         } else {
             // RED STRATEGY: If we are past the trench line, aim the turret for passing
-            if (robotPose.getX() < RED_TRENCH_LINE) {
-                // Note: "Left" and "Right" are relative to the driver's view!
-                return (robotPose.getY() >= Y_CENTER_LINE) ? RED_RIGHT_PASS_AREA : RED_LEFT_PASS_AREA;
-            }
+            // if (robotPose.getX() < RED_TRENCH_LINE) {
+            //     // Note: "Left" and "Right" are relative to the driver's view!
+            //     return (robotPose.getY() >= Y_CENTER_LINE) ? RED_RIGHT_PASS_AREA : RED_LEFT_PASS_AREA;
+            // }
             return RED_HUB_LOCATION; // Standard scoring
         }
     }
@@ -310,25 +310,25 @@ public class TurretSubsystem extends SubsystemBase {
         moveToDegrees(HOME_POSITION);
     }
 
-    public void rotateClockwise() {
-        RobotContainer.disableAimAssist();
-        automatedMove = false;
-        isManualControl = true;
+    // public void rotateClockwise() {
+    //     RobotContainer.disableAimAssist();
+    //     automatedMove = false;
+    //     isManualControl = true;
 
-        manualSpeedRequest = TurretConfig.clockwiseSpeed;
+    //     manualSpeedRequest = TurretConfig.clockwiseSpeed;
 
-        // targetDegrees = clampTarget(targetDegrees + 2);
-    }
+    //     // targetDegrees = clampTarget(targetDegrees + 2);
+    // }
 
-    public void rotateCounterClockwise() {
-        RobotContainer.disableAimAssist();
-        automatedMove = false;
-        isManualControl = true;
+    // public void rotateCounterClockwise() {
+    //     RobotContainer.disableAimAssist();
+    //     automatedMove = false;
+    //     isManualControl = true;
 
-        manualSpeedRequest = TurretConfig.counterClockwiseSpeed;
+    //     manualSpeedRequest = TurretConfig.counterClockwiseSpeed;
 
-        // targetDegrees = clampTarget(targetDegrees - 2);
-    }
+    //     // targetDegrees = clampTarget(targetDegrees - 2);
+    // }
 
     public double getPositionInDegrees() {
         return motor.getPosition() * 360.0;
@@ -355,16 +355,16 @@ public class TurretSubsystem extends SubsystemBase {
         return Math.max(CCW_LIMIT, Math.min(CW_LIMIT, degrees));
     }
 
-    private boolean isTurretInitialized() {
-        double turretDegrees = getPositionInDegrees();
-        double absAngle = getAbsoluteAngle();
+    // private boolean isTurretInitialized() {
+    //     double turretDegrees = getPositionInDegrees();
+    //     double absAngle = getAbsoluteAngle();
 
-        // Use && to check if both conditions are true
-        boolean turretInRange = (0.0 < turretDegrees) && (turretDegrees < TURRET_INIT_DEGREES);
-        boolean absInRange = (0.0 < absAngle) && (absAngle < TURRET_INIT_DEGREES);
+    //     // Use && to check if both conditions are true
+    //     boolean turretInRange = (0.0 < turretDegrees) && (turretDegrees < TURRET_INIT_DEGREES);
+    //     boolean absInRange = (0.0 < absAngle) && (absAngle < TURRET_INIT_DEGREES);
 
-        return turretInRange && absInRange;
-    }
+    //     return turretInRange && absInRange;
+    // }
 
     public static Translation2d getTargetHub() {
         // This checks which alliance you are on so you aim at the correct Hub
@@ -421,7 +421,7 @@ public class TurretSubsystem extends SubsystemBase {
         tab.addDouble("Motor Rotations", () -> motor.getPosition());
         tab.addDouble("Motor Velocity", () -> motor.getVelocity());
         tab.addBoolean("Is Manual Mode Enabled", () -> isManualControl);
-        tab.addBoolean("Is Turret Initialized", () -> isTurretInitialized());
+        // tab.addBoolean("Is Turret Initialized", () -> isTurretInitialized());
 
         tab.addDouble("Distance to Hub (m)", () -> {
             Pose2d robotPose = RobotContainer.driveSubsystem.getPose();

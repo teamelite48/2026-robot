@@ -48,14 +48,14 @@ public class TurretConfig {
     public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.625594, 4.034536); 
     public static final Translation2d RED_HUB_LOCATION = new Translation2d(11.915394, 4.034536);
 
-    public static final Translation2d BLUE_LEFT_PASS_AREA = new Translation2d(2.001647, 6.051804);
-    public static final Translation2d BLUE_RIGHT_PASS_AREA = new Translation2d(2.001647, 2.017268);
-    public static final Translation2d RED_LEFT_PASS_AREA = new Translation2d(14.539341, 2.017268);
-    public static final Translation2d RED_RIGHT_PASS_AREA = new Translation2d(14.539341, 6.051804);
+    // public static final Translation2d BLUE_LEFT_PASS_AREA = new Translation2d(2.001647, 6.051804);
+    // public static final Translation2d BLUE_RIGHT_PASS_AREA = new Translation2d(2.001647, 2.017268);
+    // public static final Translation2d RED_LEFT_PASS_AREA = new Translation2d(14.539341, 2.017268);
+    // public static final Translation2d RED_RIGHT_PASS_AREA = new Translation2d(14.539341, 6.051804);
 
-    public static final double BLUE_TRENCH_LINE = 4.333294;
-    public static final double RED_TRENCH_LINE = 12.887694;
-    public static final double Y_CENTER_LINE = 4.034536;
+    // public static final double BLUE_TRENCH_LINE = 4.333294;
+    // public static final double RED_TRENCH_LINE = 12.887694;
+    // public static final double Y_CENTER_LINE = 4.034536;
 
     //TODO: Find home/starting position of turret for start of match configuration
 
