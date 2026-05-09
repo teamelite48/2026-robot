@@ -50,6 +50,29 @@ wpi.java.debugJni = false
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+//Used for AdvantageKit Logging
+task(replayWatch, type: JavaExec) {
+    mainClass = "org.littletonrobotics.junction.ReplayWatch"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+import groovy.json.JsonSlurper
+
+// Parse vendordeps AdvantageKit.json so $akitJson.version can be used in dependencies
+def akitFile = file('vendordeps/AdvantageKit.json')
+def akitJson = akitFile.exists() ? new JsonSlurper().parseText(akitFile.text) : [:]
+
+// Ensure Gradle searches common repos and the vendor maven(s)
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+    if (akitJson?.mavenUrls) {
+        akitJson.mavenUrls.each { urlStr ->
+            maven { url urlStr }
+        }
+    }
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
 dependencies {
@@ -61,18 +84,14 @@ dependencies {
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
 
     roborioRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.roborio)
-    roborioRelease wpi.java.vendor.jniRelease(wpi.platforms.roborio)
 
-    nativeDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.desktop)
-    nativeDebug wpi.java.vendor.jniDebug(wpi.platforms.desktop)
-    simulationDebug wpi.sim.enableDebug()
+    // AdvantageKit: only add artifacts that exist for the vendordep version
+    implementation "org.littletonrobotics.akit:akit-java:$akitJson.version"
+    // implementation "org.littletonrobotics.akit:akit-wpilib:$akitJson.version" // not published for 26.0.2
+    // implementation "org.littletonrobotics.akit:akit-replay:$akitJson.version" // not published for 26.0.2
 
-    nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
-    nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
-    simulationRelease wpi.sim.enableRelease()
-
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Keep autolog processor if you use AutoLog annotations
+    annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 }
 
 test {
