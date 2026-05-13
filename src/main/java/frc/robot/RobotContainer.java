@@ -57,7 +57,7 @@ public class RobotContainer {
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
-  
+
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(
     () -> {
       // 1. Get where the robot center is
@@ -76,7 +76,7 @@ public class RobotContainer {
       Translation2d turretFieldLocation = robotPose.getTranslation().plus(rotatedOffset);
 
       // 5. Calculate distance from TURRET to HUB
-      Translation2d target = RobotContainer.isAimAssistEnabled 
+      Translation2d target = RobotContainer.isAimAssistEnabled
       ? TurretSubsystem.compensatedTarget // Use the virtual lead target
       : TurretSubsystem.getTargetHub();    // Use the real hub if aim assist is off
 
@@ -104,13 +104,13 @@ public class RobotContainer {
     autoChooser = RobotContainer.initAutoChooser();
 
     // CameraServer.startAutomaticCapture();
-    
+
     driveSubsystem
         .setDefaultCommand(DriveCommands.drive(() -> pilotController.getLeftAxes(), () -> pilotController.getRightAxes()));
 
     turretSubsystem.setDefaultCommand(
       new RunCommand(
-        () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()), 
+        () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()),
         turretSubsystem
         )
     );
@@ -158,7 +158,8 @@ public class RobotContainer {
       // ));
 
     pilotController.l2
-      .onTrue(ShooterCommands.idleShooter());
+      .whileTrue(new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
+    //.onTrue(ShooterCommands.idleShooter());
 
     pilotController.r1
       .whileTrue(IntakeCommands.outtake())
@@ -174,11 +175,13 @@ public class RobotContainer {
       //   ShooterFeedCommands.stop()));
 
     pilotController.left
-      .whileTrue(new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
+      // .whileTrue(new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
+      .whileTrue(TurretCommands.RotateTurretCounterClockwise())
+      .onFalse(TurretCommands.stop());
 
-    // pilotController.right
-    //   .whileTrue(TurretCommands.RotateTurretClockwise())
-    //   .onFalse(TurretCommands.stop());
+    pilotController.right
+      .whileTrue(TurretCommands.RotateTurretClockwise())
+      .onFalse(TurretCommands.stop());
 
     pilotController.share
       .onTrue(ShooterCommands.idleShooter());
