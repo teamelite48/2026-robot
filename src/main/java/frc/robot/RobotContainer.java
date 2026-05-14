@@ -343,7 +343,7 @@ public class RobotContainer {
       // .onTrue(new InstantCommand(() -> turretSubsystem.moveToDegrees(TurretConfig.HOME_POSITION), turretSubsystem));
 
     testController.touchpad
-      .onTrue(ShooterCommands.setIdle());
+      .onTrue(ShooterCommands.idleShooter());
 
     testController.l3
       .onTrue(TurretCommands.moveTo90());
