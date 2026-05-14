@@ -339,10 +339,13 @@ public class RobotContainer {
       .whileTrue(IntakeCommands.outtake())
       .onFalse(IntakeCommands.stop());
 
-    testController.touchpad
-      .onTrue(new InstantCommand(() -> turretSubsystem.moveToDegrees(TurretConfig.HOME_POSITION), turretSubsystem));
+    // testController.touchpad
+      // .onTrue(new InstantCommand(() -> turretSubsystem.moveToDegrees(TurretConfig.HOME_POSITION), turretSubsystem));
 
-     testController.l3
+    testController.touchpad
+      .onTrue(ShooterCommands.setIdle());
+
+    testController.l3
       .onTrue(TurretCommands.moveTo90());
 
       // testController.share
