@@ -260,7 +260,7 @@ public class ShooterSubsystem extends SubsystemBase {
           // BLUE STRATEGY: If we are past the trench line, aim the turret for passing
           if (robotPose.getX() > TurretConfig.BLUE_TRENCH_LINE) {
               targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
-              leftMotor.setVelocity(targetRPM);
+              leftMotor.setVelocity(targetRPM + rpmAdjust);
               break;
           }
         }
@@ -268,12 +268,22 @@ public class ShooterSubsystem extends SubsystemBase {
           // RED STRATEGY: If we are past the trench line, aim the turret for passing
           if (robotPose.getX() < TurretConfig.RED_TRENCH_LINE) {
               targetRPM = feetToRpmInterpolatorPassing.calculate(feet);
-              leftMotor.setVelocity(targetRPM);
+              leftMotor.setVelocity(targetRPM + rpmAdjust);
               break;
           }
         }
 
-        targetRPM = feetToRpmInterpolator.calculate(TurretSubsystem.compensatedDistance * 3.281);
+        // Use physics-based solver first; fall back to legacy interpolator if invalid
+        double distanceFeet = TurretSubsystem.compensatedDistance * 3.281;
+        ShooterConfig.ShotResult shot = ShooterConfig.distanceToRPM(distanceFeet);
+
+        if (shot == null || shot.rpm < 0.0) {
+          targetRPM = feetToRpmInterpolator.calculate(distanceFeet);
+        } else {
+          targetRPM = shot.rpm;
+          double timeToTarget = shot.timeSeconds; // available if you want to use it
+        }
+
         leftMotor.setVelocity(targetRPM + rpmAdjust);
         break;
     }

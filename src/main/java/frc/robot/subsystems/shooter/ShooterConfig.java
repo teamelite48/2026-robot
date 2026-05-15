@@ -30,6 +30,22 @@ public class ShooterConfig {
 
     public static final double RPM_BUMP = 100.0;
 
+    // Fixed hood angle
+    private static final double HOOD_ANGLE_DEGREES = 60.0;
+
+    // Heights
+    private static final double TARGET_HEIGHT_FEET = 5.0;
+    private static final double SHOOTER_HEIGHT_FEET = 20.75 / 12.0;
+
+    // Wheel diameter
+    private static final double WHEEL_DIAMETER_INCHES = 3.5;
+
+    // Experimental efficiency factor
+    private static final double VELOCITY_FACTOR = 0.48;
+
+    // Gravity
+    private static final double GRAVITY = 32.174; // ft/s^2
+
     // We only take into account the horizontal part of the flight vector (in m/s)
     public static final double AVERAGE_FUEL_VELOCITY = 3.0;
 
@@ -169,6 +185,61 @@ public class ShooterConfig {
         // put(53, 4900.0);
         // put(54, 4900.0);
     }};
+
+    // Result container for computed shot values
+    public static class ShotResult {
+        public final double rpm;
+        public final double timeSeconds;
+
+        public ShotResult(double rpm, double timeSeconds) {
+            this.rpm = rpm;
+            this.timeSeconds = timeSeconds;
+        }
+    }
+
+    public static ShotResult distanceToRPM(double distanceFeet) {
+        double theta = Math.toRadians(HOOD_ANGLE_DEGREES);
+
+        double y = TARGET_HEIGHT_FEET - SHOOTER_HEIGHT_FEET;
+
+        double cos = Math.cos(theta);
+        double tan = Math.tan(theta);
+
+        // Projectile equation
+        double denominator = 2.0 * cos * cos * (distanceFeet * tan - y);
+
+        if (denominator <= 0.0 || distanceFeet <= 0.0) {
+            return new ShotResult(-1.0, -1.0);
+        }
+
+        // Launch velocity (ft/s)
+        double velocity =
+                Math.sqrt(
+                        (GRAVITY * distanceFeet * distanceFeet)
+                                / denominator
+                );
+
+        // Time to target (s)
+        double timeInAir = distanceFeet / (velocity * cos);
+
+        // Vertical velocity at impact
+        double verticalVelocity = velocity * Math.sin(theta)
+                    - (GRAVITY * timeInAir);
+
+        // Only accept shots that are descending at the target
+        if (verticalVelocity > 0.0) {
+            return new ShotResult(-1.0, -1.0);
+        }
+
+        // Convert velocity -> RPM
+        double circumference =
+                Math.PI * WHEEL_DIAMETER_INCHES;
+
+        double rpm =
+                (velocity * 12.0 * 60.0) / (circumference * VELOCITY_FACTOR);
+
+        return new ShotResult(rpm, timeInAir);
+    }
 
     public static MotorConfig getShooterRightConfig() {
 
