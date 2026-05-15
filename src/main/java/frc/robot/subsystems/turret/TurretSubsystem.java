@@ -210,7 +210,7 @@ public class TurretSubsystem extends SubsystemBase {
             // fallback: use average horizontal fuel velocity (m/s) defined in ShooterConfig
             timeToTarget = distance / AVERAGE_FUEL_VELOCITY;
         }
-        
+
         double flightTime = timeToTarget + LATENCY_COMPENSATION;
 
         double driftX = fieldSpeeds.vxMetersPerSecond * flightTime;
