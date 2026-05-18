@@ -31,7 +31,7 @@ public class ShooterConfig {
     public static final double RPM_BUMP = 100.0;
 
     // Fixed hood angle
-    private static final double HOOD_ANGLE_DEGREES = 60.0;
+    private static final double HOOD_ANGLE_DEGREES = 65.0;
 
     // Heights
     private static final double TARGET_HEIGHT_FEET = 5.0;
