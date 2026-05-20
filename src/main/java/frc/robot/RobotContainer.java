@@ -35,6 +35,7 @@ import frc.robot.subsystems.turret.TurretCommands;
 import frc.robot.subsystems.turret.TurretConfig;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.logging.InputLogger;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -57,7 +58,7 @@ public class RobotContainer {
   public static TurretSubsystem turretSubsystem = new TurretSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static DeploySubsystem deploySubsystem = new DeploySubsystem();
-  
+
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(
     () -> {
       // 1. Get where the robot center is
@@ -76,7 +77,7 @@ public class RobotContainer {
       Translation2d turretFieldLocation = robotPose.getTranslation().plus(rotatedOffset);
 
       // 5. Calculate distance from TURRET to HUB
-      Translation2d target = RobotContainer.isAimAssistEnabled 
+      Translation2d target = RobotContainer.isAimAssistEnabled
       ? TurretSubsystem.compensatedTarget // Use the virtual lead target
       : TurretSubsystem.getTargetHub();    // Use the real hub if aim assist is off
 
@@ -89,6 +90,7 @@ public class RobotContainer {
 
   public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
   public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
+  public static InputLogger inputLogger;
 
   private final SendableChooser<Command> autoChooser;
 
@@ -101,16 +103,18 @@ public class RobotContainer {
 
   public RobotContainer() {
 
+    inputLogger = new frc.robot.logging.InputLogger(pilotController, copilotController, testController);
+
     autoChooser = RobotContainer.initAutoChooser();
 
     // CameraServer.startAutomaticCapture();
-    
+
     driveSubsystem
         .setDefaultCommand(DriveCommands.drive(() -> pilotController.getLeftAxes(), () -> pilotController.getRightAxes()));
 
     turretSubsystem.setDefaultCommand(
       new RunCommand(
-        () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()), 
+        () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()),
         turretSubsystem
         )
     );

@@ -31,7 +31,7 @@ public class ShooterConfig {
     public static final double RPM_BUMP = 100.0;
 
     // Fixed hood angle
-    private static final double HOOD_ANGLE_DEGREES = 65.0;
+    private static final double HOOD_ANGLE_DEGREES = 64.0;
 
     // Heights
     private static final double TARGET_HEIGHT_FEET = 5.0;
@@ -213,18 +213,13 @@ public class ShooterConfig {
         }
 
         // Launch velocity (ft/s)
-        double velocity =
-                Math.sqrt(
-                        (GRAVITY * distanceFeet * distanceFeet)
-                                / denominator
-                );
+        double velocity = Math.sqrt((GRAVITY * distanceFeet * distanceFeet) / denominator);
 
         // Time to target (s)
         double timeInAir = distanceFeet / (velocity * cos);
 
         // Vertical velocity at impact
-        double verticalVelocity = velocity * Math.sin(theta)
-                    - (GRAVITY * timeInAir);
+        double verticalVelocity = velocity * Math.sin(theta) - (GRAVITY * timeInAir);
 
         // Only accept shots that are descending at the target
         if (verticalVelocity > 0.0) {
@@ -232,11 +227,9 @@ public class ShooterConfig {
         }
 
         // Convert velocity -> RPM
-        double circumference =
-                Math.PI * WHEEL_DIAMETER_INCHES;
+        double circumference = Math.PI * WHEEL_DIAMETER_INCHES;
 
-        double rpm =
-                (velocity * 12.0 * 60.0) / (circumference * VELOCITY_FACTOR);
+        double rpm = (velocity * 12.0 * 60.0) / (circumference * VELOCITY_FACTOR);
 
         return new ShotResult(rpm, timeInAir);
     }
