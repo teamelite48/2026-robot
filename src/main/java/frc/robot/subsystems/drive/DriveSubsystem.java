@@ -190,7 +190,7 @@ public class DriveSubsystem extends SubsystemBase{
 
         double speedModifier = SWERVE_CONFIG.getMaxGearSpeed();
 
-        if (gear == Gear.Low) { // SOTM Limiter = || RobotContainer.isShooting;
+        if (gear == Gear.Low || RobotContainer.isShooting) { // SOTM Limiter = || RobotContainer.isShooting;
             speedModifier = SWERVE_CONFIG.getLowGearSpeed();
         }
 
