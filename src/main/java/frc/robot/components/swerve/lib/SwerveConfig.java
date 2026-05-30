@@ -160,7 +160,7 @@ public final class SwerveConfig {
 
         public double slewRate = 2.0;
         public double maxGearSpeed = 1.0;
-        public double lowGearSpeed = 0.55;
+        public double lowGearSpeed = 0.48;
         public double strafeSpeed = 0.1;
         public double nominalVoltage = 12.0;
         public boolean isAngleMotorInverted = false;
