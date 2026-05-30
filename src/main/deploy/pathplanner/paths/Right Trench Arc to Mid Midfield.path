@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 7.664987897144512,
-        "y": 0.39816100856206715
+        "y": 0.39816100856206726
       },
       "nextControl": {
         "x": 7.907843833185449,
@@ -58,7 +58,7 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.93,
+      "maxWaypointRelativePos": 0.6375838926174471,
       "constraints": {
         "maxVelocity": 5.0,
         "maxAcceleration": 4.0,
@@ -70,7 +70,7 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.9328859060402693,
+      "minWaypointRelativePos": 0.6442953020134201,
       "maxWaypointRelativePos": 2.0,
       "constraints": {
         "maxVelocity": 2.75,
@@ -86,7 +86,7 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.01,
+      "waypointRelativePos": 0.24161073825503343,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -97,7 +97,7 @@
     },
     {
       "name": "Deploy",
-      "waypointRelativePos": 0.01,
+      "waypointRelativePos": 0.24496644295301995,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
