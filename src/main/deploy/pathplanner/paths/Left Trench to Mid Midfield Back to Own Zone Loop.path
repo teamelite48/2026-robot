@@ -142,6 +142,10 @@
       "rotationDegrees": 0.0
     },
     {
+      "waypointRelativePos": 3.27718832891247,
+      "rotationDegrees": -90.0
+    },
+    {
       "waypointRelativePos": 3.429708222811672,
       "rotationDegrees": 0.0
     },
@@ -238,7 +242,7 @@
   "eventMarkers": [
     {
       "name": "Deploy",
-      "waypointRelativePos": 0.21140939597315445,
+      "waypointRelativePos": 0.01,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -536,19 +540,8 @@
       }
     },
     {
-      "name": "Intake",
-      "waypointRelativePos": 3.5,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Intake"
-        }
-      }
-    },
-    {
       "name": "Deploy",
-      "waypointRelativePos": 3.5033557046979933,
+      "waypointRelativePos": 3.3708053691275146,
       "endWaypointRelativePos": null,
       "command": {
         "type": "deadline",
@@ -567,6 +560,17 @@
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 3.5,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake"
         }
       }
     },
@@ -908,7 +912,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
