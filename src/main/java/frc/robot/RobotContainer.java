@@ -32,7 +32,6 @@ import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerCommands;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretCommands;
-import frc.robot.subsystems.turret.TurretConfig;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 

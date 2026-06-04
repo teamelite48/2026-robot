@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.components.motors.lib.MotorConfig;
-import frc.robot.subsystems.deploy.DeploySubsystem.ControlMode;
 
 public class Kraken implements Motor {
 

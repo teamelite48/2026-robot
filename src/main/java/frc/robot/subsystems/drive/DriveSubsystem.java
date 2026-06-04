@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,7 +20,7 @@ import frc.robot.components.controllers.angle.TalonFxAngleController;
 import frc.robot.components.controllers.drive.TalonFxDriveController;
 import frc.robot.components.swerve.SwerveModule;
 import frc.robot.lib.LimelightHelpers;
-import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -76,6 +75,8 @@ public class DriveSubsystem extends SubsystemBase{
     private final SwerveDrivePoseEstimator poseEstimator;
 
     private final Field2d field = new Field2d();
+
+    private Rotation2d gyroOffset = new Rotation2d();
 
     private double currX, currY, currRotation = 0.0;
 
@@ -383,9 +384,11 @@ public class DriveSubsystem extends SubsystemBase{
     // }
 
     private void resetOdometry(Pose2d pose) {
-        gyro.setYaw(pose.getRotation().getDegrees());
+        // gyro.setYaw(pose.getRotation().getDegrees());
+        gyroOffset = pose.getRotation().minus(gyro.getRotation2d());
         poseEstimator.resetPosition(
-            Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
+            //Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
+            getHeading(),
             new SwerveModulePosition[] {
                 frontLeft.getPosition(),
                 frontRight.getPosition(),
@@ -412,6 +415,10 @@ public class DriveSubsystem extends SubsystemBase{
     // public Pose2d getPose() {
     //     return odometry.getPoseMeters();
     // }
+
+    public Rotation2d getHeading() {
+        return gyro.getRotation2d().plus(gyroOffset);
+    }
 
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
@@ -462,7 +469,7 @@ public class DriveSubsystem extends SubsystemBase{
 
         // This shows the distance to the Hub in meters
         driveTab.addDouble("Dist to Hub (m)", () ->
-            getPose().getTranslation().getDistance(RobotContainer.turretSubsystem.getTargetHub()));
+            getPose().getTranslation().getDistance(TurretSubsystem.getTargetHub()));
 
         driveTab.add("Field", field)
             .withPosition(0, 4)
