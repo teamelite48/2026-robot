@@ -179,7 +179,7 @@ public class ShooterConfig {
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 60;
         config.positionConversionFactor = (1.0 / 1.0);
-        config.pidParameters = new PIDParameters(0.03, 0.0, 0.0, 0.0, 0.125);
+        config.pidParameters = new PIDParameters(0.025, 0.0, 0.0, 0.0, 0.125);
 
         return config;
     }
@@ -192,7 +192,7 @@ public class ShooterConfig {
         config.supplyCurrentLimit = 40;
         config.statorCurrentLimit = 60;
         config.positionConversionFactor = (1.0 / 1.0);
-        config.pidParameters = new PIDParameters(0.03, 0.0, 0.0, 0.0, 0.125);
+        config.pidParameters = new PIDParameters(0.025, 0.0, 0.0, 0.0, 0.125);
         config.enableFOC = false;
 
         return config;
