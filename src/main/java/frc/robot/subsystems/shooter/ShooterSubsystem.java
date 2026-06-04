@@ -192,6 +192,7 @@ import frc.robot.lib.LinearInterpolator;
 import frc.robot.subsystems.shooter.ShooterConfig.ShooterPreset;
 import frc.robot.subsystems.turret.TurretConfig;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.logging.SensorLogger;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -229,6 +230,9 @@ public class ShooterSubsystem extends SubsystemBase {
     rightMotor = new Kraken(rightConfig);
 
     rightMotor.follow(leftMotor, true);
+
+    RobotContainer.sensorLogger.addMotor("/shooter/right", rightMotor);
+    RobotContainer.sensorLogger.addMotor("/shooter/left", leftMotor);
 
     initDashboard();
   }

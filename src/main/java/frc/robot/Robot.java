@@ -27,11 +27,14 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotPeriodic() {
+    // Run the Scheduler
     CommandScheduler.getInstance().run();
 
-    // Run input logger each loop so controller inputs are appended to the datalog
     if (RobotContainer.inputLogger != null) {
-      RobotContainer.inputLogger.periodic();
+        RobotContainer.inputLogger.periodic();
+    }
+    if (RobotContainer.sensorLogger != null) {
+        RobotContainer.sensorLogger.periodic();
     }
 
     FieldData.update();

@@ -36,6 +36,8 @@ import frc.robot.subsystems.turret.TurretConfig;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.logging.InputLogger;
+import frc.robot.logging.SensorLogger;
+import frc.robot.logging.SubsystemMotorAutoRegistrar;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -43,6 +45,9 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 public class RobotContainer {
 
   PowerDistribution m_pdh = new PowerDistribution(1, ModuleType.kRev);
+
+  public static frc.robot.logging.InputLogger inputLogger; // added
+  public static frc.robot.logging.SensorLogger sensorLogger; // added
 
   DualShock4Controller pilotController = new DualShock4Controller(0);
   DualShock4Controller copilotController = new DualShock4Controller(1);
@@ -90,7 +95,6 @@ public class RobotContainer {
 
   public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
   public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
-  public static InputLogger inputLogger;
 
   private final SendableChooser<Command> autoChooser;
 
@@ -103,7 +107,31 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    inputLogger = new frc.robot.logging.InputLogger(pilotController, copilotController, testController);
+    // instantiate the input logger after controllers are created
+    inputLogger = new InputLogger(pilotController, copilotController, testController);
+    // instantiate sensor logger after subsystems/controllers exist
+    sensorLogger = new SensorLogger();
+
+    // auto-register motors found in all subsystem instances
+    SubsystemMotorAutoRegistrar.register(this);
+
+    // Example: also try common shooter motor field names and register them safely via reflection.
+    // This avoids modifying ShooterSubsystem source while still ensuring shooter motors are logged.
+    String[] shooterFieldCandidates = {
+      "rightMotor","leftMotor","rightShooter","leftShooter","rShooter","lShooter","rightMaster","leftMaster"
+    };
+    for (String fname : shooterFieldCandidates) {
+      try {
+        java.lang.reflect.Field f = shooterSubsystem.getClass().getDeclaredField(fname);
+        f.setAccessible(true);
+        Object motor = f.get(shooterSubsystem);
+        if (motor != null) {
+          sensorLogger.addMotor("/shooter/" + fname, motor);
+        }
+      } catch (NoSuchFieldException ignored) {
+      } catch (Exception ignored) {
+      }
+    }
 
     autoChooser = RobotContainer.initAutoChooser();
 

@@ -100,12 +100,12 @@
         "y": 4.682857142857142
       },
       "prevControl": {
-        "x": 7.586381600680276,
-        "y": -0.32032620465083106
+        "x": 7.6181188997338065,
+        "y": 1.7373203194321194
       },
       "nextControl": {
-        "x": 6.056823425022182,
-        "y": 6.0590505767524405
+        "x": 5.840961558542546,
+        "y": 5.988559449340627
       },
       "isLocked": false,
       "linkedName": null
@@ -128,12 +128,12 @@
     },
     {
       "anchor": {
-        "x": 3.6826885536823424,
-        "y": 7.491579414374445
+        "x": 8.27,
+        "y": 7.572058562555457
       },
       "prevControl": {
-        "x": 2.1374889086069206,
-        "y": 7.58815439219166
+        "x": 1.8477639751552797,
+        "y": 7.789352262644189
       },
       "nextControl": null,
       "isLocked": false,
@@ -180,6 +180,10 @@
     {
       "waypointRelativePos": 6.25,
       "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 7.734748010610078,
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [
@@ -188,7 +192,20 @@
       "minWaypointRelativePos": 1.822147651006706,
       "maxWaypointRelativePos": 3.261744966442955,
       "constraints": {
-        "maxVelocity": 0.9,
+        "maxVelocity": 1.1,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 6.590604026845638,
+      "maxWaypointRelativePos": 7.704697986577181,
+      "constraints": {
+        "maxVelocity": 1.1,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -201,7 +218,7 @@
       "minWaypointRelativePos": 0.5234899328859057,
       "maxWaypointRelativePos": 1.3389261744966436,
       "constraints": {
-        "maxVelocity": 3.0,
+        "maxVelocity": 3.1,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -214,7 +231,7 @@
       "minWaypointRelativePos": 4.322147651006717,
       "maxWaypointRelativePos": 6.25,
       "constraints": {
-        "maxVelocity": 3.0,
+        "maxVelocity": 3.1,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -227,7 +244,7 @@
       "minWaypointRelativePos": 1.5167785234899327,
       "maxWaypointRelativePos": 1.8389261744966447,
       "constraints": {
-        "maxVelocity": 3.25,
+        "maxVelocity": 4.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -240,20 +257,7 @@
       "minWaypointRelativePos": 6.402684563758389,
       "maxWaypointRelativePos": 6.65771812080537,
       "constraints": {
-        "maxVelocity": 3.25,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    },
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 6.590604026845638,
-      "maxWaypointRelativePos": 8.0,
-      "constraints": {
-        "maxVelocity": 0.9,
+        "maxVelocity": 4.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -876,6 +880,54 @@
           ]
         }
       }
+    },
+    {
+      "name": "Stop Everything",
+      "waypointRelativePos": 7.677852348993299,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "deadline",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.33
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Everything"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Stow Intake",
+      "waypointRelativePos": 7.771812080536914,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "deadline",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.25
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Stow Intake"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -888,7 +940,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": null,
