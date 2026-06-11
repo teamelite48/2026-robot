@@ -139,7 +139,7 @@ public class ShootCommand extends Command {
     if (RobotContainer.isAimAssistEnabled) {
       readyToFeed =
           shooterSubsystem.getIsOnSpeed();
-          //&& shooterVisionSubsystem.hasTargetWithinParameters();
+          // && RobotContainer.turretSubsystem.isTargetAcquired();
     }
     else {
       readyToFeed = shooterSubsystem.getIsOnSpeed();

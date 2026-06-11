@@ -47,9 +47,9 @@ public class DeployCommands {
 
     public static Command agitate() {
         return Commands.sequence(
-            Commands.deadline(new WaitCommand(0.5), agitateOutPosition()),
+            Commands.deadline(new WaitCommand(0.25), agitateOutPosition()),
             new WaitCommand(0.25),
-            Commands.deadline(new WaitCommand(0.5), agitateInPosition()),
+            Commands.deadline(new WaitCommand(0.25), agitateInPosition()),
             new WaitCommand(0.25)
         ).repeatedly();
     }
