@@ -1,76 +1,59 @@
 package frc.robot.components.controllers.angle;
 
+import frc.robot.components.controllers.angle.lib.AngleController;
 import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
-import frc.robot.components.motors.Neo550;
+import frc.robot.components.motors.NEO;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.components.motors.lib.MotorConfig;
 
 import static frc.robot.components.swerve.lib.SwerveMath.*;
 
 
-public class SparkMaxAngleController {
+public class SparkMaxAngleController implements AngleController {
 
     private final Motor motor;
-    private final MotorConfig motorConfig;
-    // private final RelativeEncoder motorEncoder;
     private final CanCoder absoluteEncoder;
+    private final MotorConfig motorConfig;
     private final AbsoluteEncoderConfig absoluteEncoderConfig;
 
     private double targetAngle = 0.0;
     private boolean isInitialized = false;
 
-
     public SparkMaxAngleController(MotorConfig motorConfigs, AbsoluteEncoderConfig absEncoderConfig) {
 
         this.motorConfig = motorConfigs;
-        // this.angleConfig = angleControllerConfig;
         this.absoluteEncoderConfig = absEncoderConfig;
 
-        motor = new Neo550(motorConfig);
+        motor = new NEO(motorConfig);
         absoluteEncoder = new CanCoder(absoluteEncoderConfig);
 
         motor.setInitialPosition(getAbsoluteAngle());
 
-        // sparkMaxConfig.closedLoop.pid(1.0, 0.0, 0.0);
     }
 
     // Just about most of the time the motor encoder doesn't initialize properly, so we force it until it do
     public void init() {
 
+        // isInitialized = true;
+        
         if (isInitialized) return;
 
-        var currentAngle = getCurrentAngle();
         var absoluteAngle = getAbsoluteAngle();
 
-        if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
-            isInitialized = true;
-            return;
-        }
-
         motor.setInitialPosition(absoluteAngle);
+
+        this.targetAngle = absoluteAngle;
+
+        setAngle(absoluteAngle);
+
+        isInitialized = true;
+
     }
 
-    public void setAngle(double desiredAngle) {
-
-        if (isInitialized == false) return;
-
-        double currentAngle = motor.getPosition();
-        var currentAngleMod = normalizeAngle(currentAngle);
-
-        // The target angle has the range [0, 2pi) but the Neo's encoder can go above that
-        double adjustedDesiredAngle = desiredAngle + currentAngle - currentAngleMod;
-
-        if (desiredAngle - currentAngleMod > PI) {
-            adjustedDesiredAngle -= TAU;
-        }
-        else if (desiredAngle - currentAngleMod < -PI) {
-            adjustedDesiredAngle += TAU;
-        }
-
-        this.targetAngle = adjustedDesiredAngle;
-
-        motor.setPosition(this.targetAngle);
+     public void setAngle(double desiredAngle) {
+        this.targetAngle = desiredAngle;
+        motor.setPosition(desiredAngle);
     }
 
     public double getTargetAngle() {
@@ -82,10 +65,19 @@ public class SparkMaxAngleController {
     }
 
     public double getAbsoluteAngle() {
-        return normalizeAngle(absoluteEncoder.getPosition());
+        return normalizeAngle(absoluteEncoder.getRawPosition() * TAU);
     }
 
     public boolean isInitialized() {
         return isInitialized;
     }
+
+    public double getRawCurrentAngle() {
+        return motor.getPosition();
+    }
+
+    public double getTargetAngleWrappedDegrees() {
+        return Math.toDegrees(normalizeAngle(targetAngle));
+    }
+
 }

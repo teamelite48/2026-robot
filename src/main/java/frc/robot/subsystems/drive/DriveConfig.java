@@ -37,12 +37,22 @@ public class DriveConfig {
 
 
     public static final SwerveConfig SWERVE_CONFIG = new SwerveConfig.Builder()
-        .wheelDiameter(0.10033)
-        .setTrackWidth(0.61595) //0.47625
-        .wheelbase(0.47625) //0.61595
-        .maxSpeed(5.193792)         // with_foc=16.08f/s=4.901184m/s; without_foc=17.4f/s=5.193792m/s
-        .driveReduction(1.0 / 6.03)
-        .angleReduction(1.0 / 26.0)
+        //.wheelDiameter(0.10033)               //XM29 2026  
+        //.setTrackWidth(0.61595) //0.47625     //XM29 2026
+        //.wheelbase(0.47625) //0.61595         //XM29 2026
+
+        .wheelDiameter(0.10033)             //2026 Skateboard - presume TPU griplocks are same diameter as 2026 
+        .setTrackWidth(0.57785)             //2026 Skateboard - 22.75"
+        .wheelbase(0.57785)                 //2026 Skateboard - 22.75"
+
+        //.maxSpeed(5.193792)                   //XM29 2026 - with_foc=16.08f/s=4.901184m/s; without_foc=17.4f/s=5.193792m/s
+        //.driveReduction(1.0 / 6.03)           //XM29 2026
+        //.angleReduction(1.0 / 26.0)           //XM29 2026   
+        
+        .maxSpeed(4.97)                     //2026 Skateboard - 16.3 ft/sec (4.97 m/s) free speed L2 gearing and 4" wheels
+        .driveReduction(1.0 / 6.75)           //2026 Skateboard - SDS MK4i L2 gear ratio
+        .angleReduction(1.0 / 21.43)          //2026 Skateboard - SDS MK4i steering reduction
+        
         .setAngleInversion(IS_ANGLE_MOTOR_INVERTED)
         .build();
 

@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
-import frc.robot.components.controllers.angle.TalonFxAngleController;
-import frc.robot.components.controllers.drive.TalonFxDriveController;
+//import frc.robot.components.controllers.angle.TalonFxAngleController;
+//import frc.robot.components.controllers.drive.TalonFxDriveController;
+import frc.robot.components.controllers.angle.SparkMaxAngleController;
+import frc.robot.components.controllers.drive.SparkMaxDriveController;
 import frc.robot.components.swerve.SwerveModule;
 import frc.robot.lib.LimelightHelpers;
 import frc.robot.subsystems.turret.TurretSubsystem;
@@ -60,15 +62,29 @@ public class DriveSubsystem extends SubsystemBase{
     private final SwerveModule backLeft;
     private final SwerveModule backRight;
 
-    final TalonFxAngleController frontLeftAngle;
-    final TalonFxAngleController frontRightAngle;
-    final TalonFxAngleController backLeftAngle;
-    final TalonFxAngleController backRightAngle;
+    //2026 XM29
 
-    final TalonFxDriveController frontLeftDrive;
-    final TalonFxDriveController frontRightDrive;
-    final TalonFxDriveController backLeftDrive;
-    final TalonFxDriveController backRightDrive;
+    //final TalonFxAngleController frontLeftAngle;
+    //final TalonFxAngleController frontRightAngle;
+    //final TalonFxAngleController backLeftAngle;
+    //final TalonFxAngleController backRightAngle;
+
+    //final TalonFxDriveController frontLeftDrive;
+    //final TalonFxDriveController frontRightDrive;
+    //final TalonFxDriveController backLeftDrive;
+    //final TalonFxDriveController backRightDrive;
+
+    //2026 Skateboard
+
+    final SparkMaxAngleController frontLeftAngle;
+    final SparkMaxAngleController frontRightAngle;
+    final SparkMaxAngleController backLeftAngle;
+    final SparkMaxAngleController backRightAngle;
+
+    final SparkMaxDriveController frontLeftDrive;
+    final SparkMaxDriveController frontRightDrive;
+    final SparkMaxDriveController backLeftDrive;
+    final SparkMaxDriveController backRightDrive;
 
     private final SwerveDriveKinematics kinematics;
     // private final SwerveDriveOdometry odometry;
@@ -87,18 +103,26 @@ public class DriveSubsystem extends SubsystemBase{
         xLimiter = new SlewRateLimiter(SWERVE_CONFIG.slewRate);
         yLimiter = new SlewRateLimiter(SWERVE_CONFIG.slewRate);
         rotationLimiter = new SlewRateLimiter(SWERVE_CONFIG.slewRate);
-        // movingRoationPidController = new PIDController(swerveConfig.movingRotationPid.P, swerveConfig.movingRotationPid.I, swerveConfig.movingRotationPid.D);
-        // standingRoationPidController = new PIDController(swerveConfig.standingRotationPid.P, swerveConfig.standingRotationPid.I, swerveConfig.standingRotationPid.D);
 
-        frontLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftFrontAngle(), getAbsEncoderConfigLeftFront());
-        frontRightAngle = new TalonFxAngleController(getAngleControllerConfigRightFrontAngle(), getAbsEncoderConfigRightFront());
-        backLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftRearAngle(), getAbsEncoderConfigLeftRear());
-        backRightAngle = new TalonFxAngleController(getAngleControllerConfigRightRearAngle(), getAbsEncoderConfigRightRear());
+        //frontLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftFrontAngle(), getAbsEncoderConfigLeftFront());
+        //frontRightAngle = new TalonFxAngleController(getAngleControllerConfigRightFrontAngle(), getAbsEncoderConfigRightFront());
+        //backLeftAngle = new TalonFxAngleController(getAngleControllerConfigLeftRearAngle(), getAbsEncoderConfigLeftRear());
+        //backRightAngle = new TalonFxAngleController(getAngleControllerConfigRightRearAngle(), getAbsEncoderConfigRightRear());
 
-        frontLeftDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftFrontDrive());
-        frontRightDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightFrontDrive());
-        backLeftDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftRearDrive());
-        backRightDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightRearDrive());
+        //frontLeftDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftFrontDrive());
+        //frontRightDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightFrontDrive());
+        //backLeftDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftRearDrive());
+        //backRightDrive = new TalonFxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightRearDrive());
+
+        frontLeftAngle = new SparkMaxAngleController(getAngleControllerConfigLeftFrontAngle(), getAbsEncoderConfigLeftFront());
+        frontRightAngle = new SparkMaxAngleController(getAngleControllerConfigRightFrontAngle(), getAbsEncoderConfigRightFront());
+        backLeftAngle = new SparkMaxAngleController(getAngleControllerConfigLeftRearAngle(), getAbsEncoderConfigLeftRear());
+        backRightAngle = new SparkMaxAngleController(getAngleControllerConfigRightRearAngle(), getAbsEncoderConfigRightRear());
+
+        frontLeftDrive = new SparkMaxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftFrontDrive());
+        frontRightDrive = new SparkMaxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightFrontDrive());
+        backLeftDrive = new SparkMaxDriveController(SWERVE_CONFIG, getDriveControllerConfigLeftRearDrive());
+        backRightDrive = new SparkMaxDriveController(SWERVE_CONFIG, getDriveControllerConfigRightRearDrive());
 
         frontLeft = new SwerveModule(SWERVE_CONFIG, frontLeftDrive, frontLeftAngle);
         frontRight = new SwerveModule(SWERVE_CONFIG, frontRightDrive, frontRightAngle);

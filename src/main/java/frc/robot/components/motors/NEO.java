@@ -1,7 +1,7 @@
 package frc.robot.components.motors;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.VelocityVoltage;
+//import com.ctre.phoenix6.configs.Slot0Configs;
+//import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -17,7 +17,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.components.motors.lib.Motor;
 import frc.robot.components.motors.lib.MotorConfig;
 
-public class Neo550 implements Motor {
+public class NEO implements Motor {
 
   final SparkMax sparkMax;
   final SparkClosedLoopController pidController;
@@ -25,7 +25,7 @@ public class Neo550 implements Motor {
 
   final MotorConfig config;
 
-  public Neo550(MotorConfig motorConfig) {
+  public NEO(MotorConfig motorConfig) {
 
     this.config = motorConfig;
 

@@ -21,6 +21,7 @@ public class TalonFxAngleController implements AngleController {
     private boolean isInitialized = false;
 
     public TalonFxAngleController(MotorConfig motorConfigs, AbsoluteEncoderConfig absEncoderConfig) {
+
         this.motorConfig = motorConfigs;
         this.absoluteEncoderConfig = absEncoderConfig;
 
@@ -38,7 +39,6 @@ public class TalonFxAngleController implements AngleController {
 
         if (isInitialized) return;
 
-        // var currentAngle = getCurrentAngle();
         var absoluteAngle = getAbsoluteAngle();
 
         motor.setInitialPosition(absoluteAngle);
@@ -46,14 +46,9 @@ public class TalonFxAngleController implements AngleController {
         this.targetAngle = absoluteAngle;
 
         setAngle(absoluteAngle);
-        // setAngle(0.0);
+
         isInitialized = true;
 
-        // if (Math.abs(currentAngle - absoluteAngle) < 0.001) {
-        // // if (Math.abs(currentAngle - absoluteAngle) < 0.1) {
-        //     isInitialized = true;
-        //     return;
-        // }
     }
 
     public void setAngle(double desiredAngle) {
@@ -70,10 +65,6 @@ public class TalonFxAngleController implements AngleController {
     }
 
     public double getAbsoluteAngle() {
-        // rawPosition is [0, 1), multiplying by TAU makes it [0, 2pi)
-        // normalizeAngle ensures it stays strictly in [0, 2pi)
-        // return normalizeAngle(absoluteEncoder.getAbsolutePosition().getValueAsDouble() * TAU);
-        // return normalizeAngle(absoluteEncoder.getPosition());
         return normalizeAngle(absoluteEncoder.getRawPosition() * TAU);
     }
 
