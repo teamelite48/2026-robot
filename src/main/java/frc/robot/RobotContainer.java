@@ -15,24 +15,26 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.controls.DualShock4Controller;
-import frc.robot.subsystems.deploy.DeployCommands;
-import frc.robot.subsystems.deploy.DeploySubsystem;
+
+//TRAVIS
+//import frc.robot.subsystems.deploy.DeployCommands;
+//import frc.robot.subsystems.deploy.DeploySubsystem;
 import frc.robot.subsystems.drive.DriveCommands;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem.Gear;
-import frc.robot.subsystems.intake.IntakeCommands;
-import frc.robot.subsystems.intake.IntakeSubsystem;
+//import frc.robot.subsystems.intake.IntakeCommands;
+//import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.led.LedSubsystem;
-import frc.robot.subsystems.shooter.ShooterCommands;
-import frc.robot.subsystems.shooter.ShooterConfig;
-import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.shooter.commands.ShootCommand;
-import frc.robot.subsystems.shooterFeed.ShooterFeedCommands;
-import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
-import frc.robot.subsystems.spindexer.SpindexerCommands;
-import frc.robot.subsystems.spindexer.SpindexerSubsystem;
-import frc.robot.subsystems.turret.TurretCommands;
-import frc.robot.subsystems.turret.TurretSubsystem;
+//import frc.robot.subsystems.shooter.ShooterCommands;
+//import frc.robot.subsystems.shooter.ShooterConfig;
+//import frc.robot.subsystems.shooter.ShooterSubsystem;
+//import frc.robot.subsystems.shooter.commands.ShootCommand;
+//import frc.robot.subsystems.shooterFeed.ShooterFeedCommands;
+//import frc.robot.subsystems.shooterFeed.ShooterFeedSubsystem;
+//import frc.robot.subsystems.spindexer.SpindexerCommands;
+//import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+//import frc.robot.subsystems.turret.TurretCommands;
+//import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -53,10 +55,15 @@ public class RobotContainer {
   public static final VisionSubsystem rearLimelight = new VisionSubsystem("limelight-rear");
   public static LedSubsystem ledSubsystem = new LedSubsystem();
   // public static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-  public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  public static DeploySubsystem deploySubsystem = new DeploySubsystem();
+  
+  //TRAVIS
+  //public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+  //public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  //public static DeploySubsystem deploySubsystem = new DeploySubsystem();
 
+
+  //TRAVIS
+  /*
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem(
     () -> {
       // 1. Get where the robot center is
@@ -84,10 +91,14 @@ public class RobotContainer {
       // 6. Convert to feet for your interpolator
       return distanceMeters * 3.28084;
     }
-  );
+      
 
-  public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
-  public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
+  );
+  */
+  
+  //TRAVIS
+  //public static ShooterFeedSubsystem shooterFeedSubsystem = new ShooterFeedSubsystem();
+  //public static SpindexerSubsystem spindexerSubsystem = new SpindexerSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -107,12 +118,16 @@ public class RobotContainer {
     driveSubsystem
         .setDefaultCommand(DriveCommands.drive(() -> pilotController.getLeftAxes(), () -> pilotController.getRightAxes()));
 
+    
+    //TRAVIS
+    /*
     turretSubsystem.setDefaultCommand(
       new RunCommand(
         () -> turretSubsystem.setManualOutput(copilotController.getLeftXAxis()),
         turretSubsystem
         )
     );
+    */
 
     bindPilotControls();
     bindCopilotControls();
@@ -131,6 +146,8 @@ public class RobotContainer {
 
   private void bindPilotControls() {
 
+    //TRAVIS
+    /*
     pilotController.triangle
       .onTrue(Commands.sequence(
         new InstantCommand(() -> disableAimAssist()),
@@ -155,24 +172,34 @@ public class RobotContainer {
       //   DeployCommands.fullExtend(),
       //   IntakeCommands.intake()
       // ));
+    */
 
     pilotController.l2
       .whileTrue(new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
     //.onTrue(ShooterCommands.idleShooter());
 
+    //TRAVIS
+    /* 
     pilotController.r1
       .whileTrue(IntakeCommands.outtake())
-      .onFalse(IntakeCommands.stop());
+      .onFalse(IntakeCommands.stop())
+      ;
+    */
 
-    pilotController.r2
-      .whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
-      // .whileTrue(Commands.parallel(
+    //TRAVIS
+       //pilotController.r2
+       //.whileTrue(new ShootCommand(ShooterConfig.ShooterPreset.PASS));
+      
+       /* OLD JUNK */
+       // .whileTrue(Commands.parallel(
       //   SpindexerCommands.FeedTowardsFeed(),
       //   ShooterFeedCommands.FeedTowardsShooter()))
       // .onFalse(Commands.parallel(
       //   SpindexerCommands.stop(),
       //   ShooterFeedCommands.stop()));
 
+    //TRAVIS  
+    /*
     pilotController.left
       // .whileTrue(new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
       .whileTrue(TurretCommands.RotateTurretCounterClockwise())
@@ -187,8 +214,9 @@ public class RobotContainer {
 
     pilotController.options
       .onTrue(new InstantCommand(() -> toggleAimAssist()));
-
+    */
     pilotController.ps.onTrue(new InstantCommand(() -> driveSubsystem.zeroGyro(), driveSubsystem));
+    
 
      pilotController.touchpad
       .onTrue(Commands.either(
@@ -200,18 +228,24 @@ public class RobotContainer {
 
   private void bindCopilotControls() {
 
-    copilotController.triangle
-      .onTrue(TurretCommands.moveTo90());
+    //TRAVIS
+    //copilotController.triangle
+    //  .onTrue(TurretCommands.moveTo90());
 
+    /* OLD STUFF */
     // copilotController.square
     //   .onTrue();
 
-    copilotController.cross
-      .onTrue(ShooterCommands.stop());
+    //TRAVIS
+    //copilotController.cross
+    //  .onTrue(ShooterCommands.stop());
 
+    /* OLD STUFF */
     // copilotController.circle
     //   .onTrue(ShooterCommands.idleShooter());
 
+    //TRAVIS
+    /*
     copilotController.l1
       .whileTrue(SpindexerCommands.FeedAwayFromFeed())
       .onFalse(SpindexerCommands.stop());
@@ -252,7 +286,8 @@ public class RobotContainer {
      copilotController.touchpad
       .whileTrue(SpindexerCommands.FeedTowardsFeed())
       .onFalse(SpindexerCommands.stop());
-
+    */
+  
   }
 
   private void bindTestControls() {
@@ -291,6 +326,8 @@ public class RobotContainer {
     //   .onTrue(DeployCommands.setToHome())
     //   .onFalse(IntakeCommands.stop());
 
+    //TRAVIS
+    /*
     testController.square
       .onTrue(ShooterCommands.lowRPM());
 
@@ -349,9 +386,13 @@ public class RobotContainer {
 
       // testController.share
     //   .onTrue(ShooterCommands.stop());
+    */
   }
 
   public static void toggleAimAssist() {
+    
+    //TRAVIS
+    /*
     shooterSubsystem.rpmAdjust = 0.0;
     isAimAssistEnabled = !isAimAssistEnabled;
     // If we just enabled it, we MUST tell the turret to stop manual mode
@@ -360,6 +401,7 @@ public class RobotContainer {
         // better yet, move this logic into a Command.
         turretSubsystem.isManualControl = false;
     }
+    */
   }
 
   public static void disableAimAssist() {
@@ -372,6 +414,8 @@ public class RobotContainer {
 
   public static SendableChooser<Command> initAutoChooser() {
 
+    //TRAVIS  
+    /*
     NamedCommands.registerCommand("Deploy", DeployCommands.fullExtend());
     NamedCommands.registerCommand("Agitate Out", DeployCommands.agitateOutPosition());
     NamedCommands.registerCommand("Agitate In", DeployCommands.agitateInPosition());
@@ -394,7 +438,8 @@ public class RobotContainer {
     ));
     NamedCommands.registerCommand("X Mode", new RunCommand(() -> driveSubsystem.setWheelsToX(), driveSubsystem));
     // NamedCommands.registerCommand("Move Turret to Center", TurretCommands.moveToCenter());
-
+    */
+    
     var autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
