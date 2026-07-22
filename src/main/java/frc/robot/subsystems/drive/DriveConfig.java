@@ -17,10 +17,10 @@ public class DriveConfig {
     public static final boolean IS_ANGLE_BRAKE_MODE_ENABLED = false;
 
     // Set offset using Absolute Angle values from Elastic; always start with 0.0 & wheels straight when configuring.
-    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES = 244.8 + 180.0; //114.61; //294.83;
-    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 18.9 + 180.0; //161.81; //343.21;
-    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 258.0 + 180.0; //214.10; //34.57;
-    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 131.6; //229.39; //50.18;
+    public static final double FRONT_LEFT_ANGLE_OFFSET_DEGREES = 64.28; // 
+    public static final double FRONT_RIGHT_ANGLE_OFFSET_DEGREES = 41.88; //
+    public static final double REAR_LEFT_ANGLE_OFFSET_DEGREES = 311.57; //
+    public static final double REAR_RIGHT_ANGLE_OFFSET_DEGREES = 312.63; //
 
     public static final PIDParameters ANGLE_CONTROLLER_PID_PARAMETERS = new PIDParameters(0.2, 0.0, 0, 0.0, 0.0);
 
@@ -161,7 +161,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigLeftFrontDrive() {
         var config = new MotorConfig(FRONT_LEFT_DRIVE_CAN_ID);
-        config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
+        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
 
@@ -177,7 +177,7 @@ public class DriveConfig {
 
     public static MotorConfig getDriveControllerConfigRightFrontDrive() {
         var config = new MotorConfig(FRONT_RIGHT_DRIVE_CAN_ID);
-        config.isInverted = IS_DRIVE_MOTOR_INVERTED;
+        config.isInverted = !IS_DRIVE_MOTOR_INVERTED;
         config.isBrakeModeEnabled = IS_DRIVE_BRAKE_MODE_ENABLED;
         config.positionConversionFactor = SWERVE_CONFIG.driveMetersPerRotation();
 
