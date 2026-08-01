@@ -126,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase{
         //         backLeft.getPosition(),
         //         backRight.getPosition()
         // });
-    
+
         poseEstimator = new SwerveDrivePoseEstimator(
             kinematics,
             Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()),
@@ -201,7 +201,7 @@ public class DriveSubsystem extends SubsystemBase{
 
         Rotation2d robotRotation = getPose().getRotation();
         var alliance = DriverStation.getAlliance();
-        
+
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             robotRotation = robotRotation.plus(Rotation2d.fromDegrees(180));
         }
@@ -222,21 +222,21 @@ public class DriveSubsystem extends SubsystemBase{
     private void updateVision() {
 
         String[] limelights = {"limelight-left", "limelight-right", "limelight-rear"};
-        
+
         for (String name : limelights) {
-            double[] targetPose = LimelightHelpers.getTargetPose_CameraSpace(name); 
-    
+            double[] targetPose = LimelightHelpers.getTargetPose_CameraSpace(name);
+
             if (targetPose.length > 0 && targetPose[0] != 0) {
                 // The "Norm" or Euclidean distance to the target
                 double x = targetPose[0];
                 double y = targetPose[1];
                 double z = targetPose[2];
-                
+
                 double distance = Math.sqrt(x*x + y*y + z*z);
-    
+
                 // Now apply your trust curve
                 double trustValue;
-                
+
                 if (distance <= 1.5) trustValue = 0.5;
                 else if (distance <= 4.0) trustValue = 4.0;
                 else trustValue = 20.0;
@@ -248,11 +248,11 @@ public class DriveSubsystem extends SubsystemBase{
 
                 poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(trustValue, trustValue, trustValue));
                 poseEstimator.addVisionMeasurement(result.pose, result.timestampSeconds);
-                
+
                 if (LimelightHelpers.getTargetCount(name) < 2) {
                     poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(8.0, 8.0, 8.0));
                 }
-                
+
                 if (zLeftHigh || zRightHigh == true) {
                     poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(10000.0, 10000.0, 10000.0));
                 }
@@ -384,11 +384,11 @@ public class DriveSubsystem extends SubsystemBase{
     // }
 
     private void resetOdometry(Pose2d pose) {
-        // gyro.setYaw(pose.getRotation().getDegrees());
-        gyroOffset = pose.getRotation().minus(gyro.getRotation2d());
+        gyro.setYaw(pose.getRotation().getDegrees());
+        //gyroOffset = pose.getRotation().minus(gyro.getRotation2d());
         poseEstimator.resetPosition(
-            //Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
-            getHeading(),
+            Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
+            //getHeading(),
             new SwerveModulePosition[] {
                 frontLeft.getPosition(),
                 frontRight.getPosition(),
