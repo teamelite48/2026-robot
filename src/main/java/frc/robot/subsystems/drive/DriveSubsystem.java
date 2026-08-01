@@ -387,8 +387,8 @@ public class DriveSubsystem extends SubsystemBase{
         gyro.setYaw(pose.getRotation().getDegrees());
         //gyroOffset = pose.getRotation().minus(gyro.getRotation2d());
         poseEstimator.resetPosition(
-            Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
-            //getHeading(),
+            //Rotation2d.fromDegrees(pose.getRotation().getDegrees()),
+            getHeading(),
             new SwerveModulePosition[] {
                 frontLeft.getPosition(),
                 frontRight.getPosition(),
