@@ -22,7 +22,7 @@ public class ShooterConfig {
     public static final double LOW_RPM = 2000.0;
     public static final double MEDIUM_RPM = 2850.0;
     public static final double HIGH_RPM = 3300.0;
-    public static final double PASS_RPM = 4400.0;
+    public static final double PASS_RPM = 3000.0;
 
     public static final double ON_SPEED_TOLERANCE_RPM = 200.0;
 
@@ -45,11 +45,11 @@ public class ShooterConfig {
         put(8, 2600.0 + RPM_MODIFIER); // 2700
         put(9, 2700.0 + RPM_MODIFIER); // 2800
         put(10, 2800.0 + RPM_MODIFIER); // 2900
-        put(11, 2900.0 + RPM_MODIFIER + 50.0); // 3000
+        put(11, 2900.0 + RPM_MODIFIER + 25.0); // 3000
         put(12, 3000.0 + RPM_MODIFIER + 25.0); // 3100
-        put(13, 3100.0 + 50.0); // 3200
-        put(14, 3200.0 + 50.0); // 3300
-        put(15, 3500.0 + 50.0); // 3600
+        put(13, 3100.0 + 25.0); // 3200
+        put(14, 3200.0 + 25.0); // 3300
+        put(15, 3500.0 + 25.0); // 3600
         put(16, 3600.0 + 50.0); // 3700
         put(17, 3700.0 + 50.0); // 3800
         put(18, 3800.0 + 50.0); // 3900

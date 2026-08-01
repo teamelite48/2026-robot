@@ -17,7 +17,7 @@ public class TurretConfig {
     public static final double TURRET_GEAR_RATIO = 9.0;
     public static final double MANUAL_DEADBAND = 0.05;
 
-    public static final double motorMaxOutput = 0.5;   //0.2 
+    public static final double motorMaxOutput = 0.5;   //0.2
     public static final double clockwiseSpeed = motorMaxOutput; // motorMaxOutput * 0.25;
     public static final double counterClockwiseSpeed = -clockwiseSpeed;
 
@@ -27,6 +27,7 @@ public class TurretConfig {
     public static final double degreesPerMotorRotation = 40.0;
 
     public static final double HOME_POSITION = 0.0;
+    public static final double TRENCH_SHOT = 78.0;
     public static final double degreesAtCenter = 100.0;
 
     public static final double motorForwardLimit = CW_LIMIT / 360.0; //(float) (90 / degreesPerMotorRotation);
@@ -45,7 +46,7 @@ public class TurretConfig {
     public static final double moveWithinDegrees = 3;
     public static final long moveCoolDown = 1000;
 
-    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.625594, 4.034536); 
+    public static final Translation2d BLUE_HUB_LOCATION = new Translation2d(4.625594, 4.034536);
     public static final Translation2d RED_HUB_LOCATION = new Translation2d(11.915394, 4.034536);
 
     public static final Translation2d BLUE_LEFT_PASS_AREA = new Translation2d(2.001647, 6.051804);

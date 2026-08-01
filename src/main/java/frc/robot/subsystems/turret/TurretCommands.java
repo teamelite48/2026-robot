@@ -1,6 +1,7 @@
 package frc.robot.subsystems.turret;
 
 import static frc.robot.subsystems.turret.TurretConfig.HOME_POSITION;
+import static frc.robot.subsystems.turret.TurretConfig.TRENCH_SHOT;
 import static frc.robot.subsystems.turret.TurretConfig.degreesAtCenter;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +26,10 @@ public class TurretCommands {
 
   public static Command moveToSafeState() {
     return new MoveTurretToDegrees(HOME_POSITION);
+  }
+
+  public static Command moveToTrenchShot() {
+    return new MoveTurretToDegrees(TRENCH_SHOT);
   }
 
   public static Command moveTo90() {

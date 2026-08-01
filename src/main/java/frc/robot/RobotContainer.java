@@ -182,6 +182,12 @@ public class RobotContainer {
       .whileTrue(TurretCommands.RotateTurretClockwise())
       .onFalse(TurretCommands.stop());
 
+    pilotController.up
+      .onTrue(Commands.sequence(
+        new InstantCommand(() -> disableAimAssist()),
+        TurretCommands.moveToTrenchShot()
+      ));
+
     pilotController.share
       .onTrue(ShooterCommands.idleShooter());
 
@@ -203,8 +209,11 @@ public class RobotContainer {
     copilotController.triangle
       .onTrue(TurretCommands.moveTo90());
 
-    // copilotController.square
-    //   .onTrue();
+    copilotController.square
+       .onTrue(Commands.sequence(
+        new InstantCommand(() -> disableAimAssist()),
+        TurretCommands.moveToTrenchShot()
+      ));
 
     copilotController.cross
       .onTrue(ShooterCommands.stop());
