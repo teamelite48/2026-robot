@@ -16,6 +16,7 @@ import frc.robot.components.encoders.absolute.CanCoder;
 import frc.robot.components.encoders.absolute.lib.AbsoluteEncoderConfig;
 import frc.robot.components.motors.Minion;
 import frc.robot.components.motors.lib.Motor;
+import frc.robot.subsystems.shooter.ShooterConfig;
 
 import static frc.robot.subsystems.turret.TurretConfig.*;
 import static frc.robot.subsystems.shooter.ShooterConfig.*;
@@ -83,7 +84,7 @@ public class TurretSubsystem extends SubsystemBase {
         // Only update the motor if the state has actually CHANGED
         // if (shouldBeInSlackArea != isInSlackArea) {
         //     isInSlackArea = shouldBeInSlackArea;
-            
+
         //     if (isInSlackArea) {
         //         // Precision values applied ONCE
         //         motor.setPID(12.0, 0.02, 0.0, 0.55, 0.12);
@@ -181,7 +182,7 @@ public class TurretSubsystem extends SubsystemBase {
         );
 
         ChassisSpeeds fieldSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(
-            turretRelativeSpeeds, 
+            turretRelativeSpeeds,
             robotPose.getRotation()
         );
 
@@ -213,7 +214,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         // If we are moving backwards (vx is negative)
         if (fieldSpeeds.vxMetersPerSecond < BACKWARDS_MOVEMENT_THRESHOLD) {
-            // Because the flight time is 2s, the penalty is huge. 
+            // Because the flight time is 2s, the penalty is huge.
             // Add 15-20% extra distance to the shooter's "perceived" target.
             compensatedDistance = effectiveDistance * BACKWARDS_BIAS_MODIFIER;
         }
