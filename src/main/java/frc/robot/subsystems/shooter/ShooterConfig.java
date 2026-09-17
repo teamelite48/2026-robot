@@ -38,7 +38,7 @@ public class ShooterConfig {
     private static final double SHOOTER_HEIGHT_FEET = 20.75 / 12.0;
 
     // Wheel diameter
-    private static final double WHEEL_DIAMETER_INCHES = 3.5;
+    private static final double WHEEL_DIAMETER_INCHES = 3.65;
 
     // Experimental efficiency factor
     private static final double VELOCITY_FACTOR = 0.48;
